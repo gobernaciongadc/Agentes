@@ -350,7 +350,17 @@
                           <li role="separator" class="divider"></li>
                           <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
                           <li role="separator" class="divider"></li>
-                          <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+                          <li>
+                              <a href="{{ route('logout') }}"
+                                  onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                  <i class="fa fa-power-off"></i> Salir del sistema
+                              </a>
+
+                              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                  @csrf
+                              </form>
+                          </li>
                       </ul>
                   </div>
               </li>
