@@ -4,9 +4,9 @@
       <nav class="sidebar-nav">
           <ul id="sidebarnav">
               <li class="user-profile">
-                  <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><img
-                          src="../assets/images/users/profile.png" alt="user" /><span class="hide-menu">Steave
-                          Jobs </span></a>
+                  <a class="has-arrow waves-effect waves-dark mt-3" href="#" aria-expanded="false"><i class="fa fa-user
+                  " style="font-size: 1.2rem;"></i> <span class="hide-menu">{{ Auth::user()->name }} </span>
+                  </a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="javascript:void()">My Profile </a></li>
                       <li><a href="javascript:void()">My Balance</a></li>
