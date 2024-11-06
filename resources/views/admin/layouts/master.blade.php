@@ -18,8 +18,10 @@
     <!-- You can change the theme colors from here -->
     <link href="{{asset('backend/css/colors/default-dark.css')}}" id="theme" rel="stylesheet">
 
-    <!-- Scripts -->
-    @vite(['resources/js/app.js'])
+    <!-- Estilos generales -->
+    @vite('resources/css/app.css')
+    <!-- Estilos específicos de cada vista (por ejemplo, persona.css para vistas de persona) -->
+    @yield('styles')
 
 </head>
 
@@ -96,10 +98,33 @@
     <script src="{{asset('backend/assets/plugins/sparkline/jquery.sparkline.min.js')}}"></script>
     <!--Custom JavaScript -->
     <script src="{{asset('backend/js/custom.min.js')}}"></script>
+
+
+    <!-- This is data table -->
+    <script src="{{asset('backend/assets/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+
+    <!-- start - This is for export functionality only -->
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <!-- end - This is for export functionality only -->
+
     <!-- ============================================================== -->
     <!-- Style switcher -->
     <!-- ============================================================== -->
     <script src="{{asset('backend/assets/plugins/styleswitcher/jQuery.style.switcher.js')}}"></script>
+
+
+
+    <!-- Script general -->
+    @vite('resources/js/app.js')
+    <!-- Scripts específicos de cada vista (por ejemplo, persona.js para vistas de persona) -->
+    @yield('scripts')
+
 </body>
 
 </html>

@@ -4,6 +4,11 @@
 {{ __('Create') }} Persona
 @endsection
 
+@section('styles')
+<!-- Estilos específicos para el componente persona -->
+@vite('resources/css/persona.css')
+@endsection
+
 @section('content')
 <section class="content">
     <div class="row">
@@ -29,4 +34,9 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('scripts')
+<!-- Scripts específicos para el componente persona -->
+@vite('resources/js/persona.js')
 @endsection

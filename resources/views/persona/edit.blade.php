@@ -26,4 +26,7 @@
         </div>
     </div>
 </section>
+<!-- Estilos Para el el componente persona -->
+@vite('resources/css/persona.css')
+@vite('resources/js/persona.js')
 @endsection
