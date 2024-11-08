@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PersonaRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use Yajra\DataTables\DataTables;
 
 class PersonaController extends Controller
 {
@@ -17,20 +16,11 @@ class PersonaController extends Controller
      */
     public function index(Request $request): View
     {
-        $personas = Persona::select(['id', 'nombres', 'apellidos', 'carnet']);
+        $personas = Persona::paginate();
 
-        if ($request->ajax()) {
-            return DataTables::of($personas)
-                ->addColumn('acciones', function ($persona) {
-                    return view('personas.partials.actions', compact('persona'))->render();
-                })
-                ->rawColumns(['acciones']) // Permite que la columna de acciones interprete HTML.
-                ->make(true);
-        }
-
-        return view('personas.index', ['personas' => $personas]);
+        return view('persona.index', compact('personas'))
+            ->with('i', ($request->input('page', 1) - 1) * $personas->perPage());
     }
-
 
     /**
      * Show the form for creating a new resource.

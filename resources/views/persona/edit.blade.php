@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.master')
 
 @section('template_title')
 {{ __('Update') }} Persona
@@ -11,7 +11,7 @@
 
             <div class="card card-default">
                 <div class="card-header">
-                    <span class="card-title">{{ __('Modificar') }} Persona</span>
+                    <span class="card-title">{{ __('Update') }} Persona</span>
                 </div>
                 <div class="card-body bg-white">
                     <form method="POST" action="{{ route('personas.update', $persona->id) }}" role="form" enctype="multipart/form-data">
@@ -26,7 +26,7 @@
         </div>
     </div>
 </section>
-<!-- Estilos Para el el componente persona -->
+
 @vite('resources/css/persona.css')
 @vite('resources/js/persona.js')
 @endsection

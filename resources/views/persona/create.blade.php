@@ -4,23 +4,20 @@
 {{ __('Create') }} Persona
 @endsection
 
-@section('styles')
-<!-- Estilos específicos para el componente persona -->
-@vite('resources/css/persona.css')
-@endsection
-
 @section('content')
-<section class="content">
+<section class="content container-fluid">
     <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-md-12">
 
-            <div class="card card-default border">
-                <div class="card-header bg-tr">
-                    <span class="card-title">{{ __('Crear') }} Persona</span>
-                    <div class="float-right">
-                        <a href="{{ route('personas.index') }}" class="btn btn-primary btn-sm float-right" data-placement="left">
-                            <i class="fa fa-chevron-left"></i> {{ __('Regresar') }}
-                        </a>
+            <div class="card  border">
+                <div class="card-header card-bg">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="titulo-card">Crear Persona</span>
+                        <div class="float-right">
+                            <a href="{{ route('personas.index') }}" class="btn btn-info float-right" data-placement="left">
+                                <i class="fa fa-chevron-left"></i> Regresar
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body bg-white">
@@ -28,15 +25,14 @@
                         @csrf
 
                         @include('persona.form')
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </section>
-@endsection
 
-@section('scripts')
-<!-- Scripts específicos para el componente persona -->
+@vite('resources/css/persona.css')
 @vite('resources/js/persona.js')
 @endsection

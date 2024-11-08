@@ -1,5 +1,5 @@
 <div class="row padding-1 p-1">
-    <div class="col-md-12">
+    <div class="col-12 col-md-8 col-lg-4">
 
         <div class="form-group mb-2 mb20">
             <label for="nombres" class="form-label">{{ __('Nombres') }}<span class="text-danger">*</span></label>
@@ -11,13 +11,11 @@
             <input type="text" name="apellidos" class="form-control @error('apellidos') is-invalid @enderror" value="{{ old('apellidos', $persona?->apellidos) }}" id="apellidos" placeholder="Apellidos">
             {!! $errors->first('apellidos', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
-
         <div class="form-group mb-2 mb20">
             <label for="carnet" class="form-label">{{ __('Carnet') }}<span class="text-danger">*</span></label>
             <input type="text" name="carnet" class="form-control @error('carnet') is-invalid @enderror" value="{{ old('carnet', $persona?->carnet) }}" id="carnet" placeholder="Carnet">
             {!! $errors->first('carnet', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
-
         <div class="form-group mb-2 mb20">
             <label for="correo_electronico" class="form-label">{{ __('Correo Electronico') }}<span class="text-danger">*</span></label>
             <input type="text" name="correo_electronico" class="form-control @error('correo_electronico') is-invalid @enderror" value="{{ old('correo_electronico', $persona?->correo_electronico) }}" id="correo_electronico" placeholder="Correo Electronico">
@@ -34,10 +32,8 @@
             {!! $errors->first('direccion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 
-
     </div>
     <div class="col-md-12 mt20 mt-2">
-        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>
-            {{ __('Guardar') }} </button>
+        <button type="submit" class="btn btn-info"> <i class="fa fa-save"></i> Guardar </button>
     </div>
 </div>

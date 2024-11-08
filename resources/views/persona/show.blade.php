@@ -11,10 +11,10 @@
             <div class="card">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="float-left">
-                        <span class="card-title">{{ __('Datos') }} de la persona</span>
+                        <span class="card-title">{{ __('Show') }} Persona</span>
                     </div>
                     <div class="float-right">
-                        <a class="btn btn-primary btn-sm" href="{{ route('personas.index') }}"><i class="fa fa-chevron-left"></i> {{ __('Regresar') }}</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('personas.index') }}"> {{ __('Back') }}</a>
                     </div>
                 </div>
 
@@ -28,12 +28,10 @@
                         <strong>Apellidos:</strong>
                         {{ $persona->apellidos }}
                     </div>
-
                     <div class="form-group mb-2 mb20">
                         <strong>Carnet:</strong>
                         {{ $persona->carnet }}
                     </div>
-
                     <div class="form-group mb-2 mb20">
                         <strong>Correo Electronico:</strong>
                         {{ $persona->correo_electronico }}
@@ -52,7 +50,7 @@
         </div>
     </div>
 </section>
-<!-- Estilos Para el el componente persona -->
+
 @vite('resources/css/persona.css')
 @vite('resources/js/persona.js')
 @endsection

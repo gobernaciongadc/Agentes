@@ -21,7 +21,6 @@ Route::get('/admin/layouts/master', [App\Http\Controllers\AdminController::class
 
 // RUTA PARA PERSONAS
 Route::resource('personas', PersonaController::class);
-Route::get('personas/data', [PersonaController::class, 'getPersonasData'])->name('personas.data');
 
 /*
 Si deseas redirigir solo a los usuarios no autenticados, puedes hacer algo como esto:
