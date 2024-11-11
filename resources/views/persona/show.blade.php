@@ -7,14 +7,14 @@
 @section('content')
 <section class="content container-fluid">
     <div class="row">
-        <div class="col-md-12">
-            <div class="card">
+        <div class="col-md-12 border">
+            <div class="card card-bg">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="float-left">
-                        <span class="card-title">{{ __('Show') }} Persona</span>
+                        <span class="titulo-card">Datos de Persona</span>
                     </div>
                     <div class="float-right">
-                        <a class="btn btn-primary btn-sm" href="{{ route('personas.index') }}"> {{ __('Back') }}</a>
+                        <a class="btn btn-info" href="{{ route('personas.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
                     </div>
                 </div>
 

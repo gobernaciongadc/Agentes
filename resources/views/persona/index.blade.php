@@ -13,7 +13,7 @@ Personas
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
                         <span id="card_title" class="titulo-card">
-                            {{ __('Personas') }}
+                            Lista de Personas
                         </span>
 
                         <div class="float-right">

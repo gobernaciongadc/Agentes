@@ -5,24 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Persona
+ * Class Municipio
  *
  * @property $id
- * @property $nombres
- * @property $apellidos
- * @property $carnet
- * @property $correo_electronico
- * @property $telefono
- * @property $direccion
+ * @property $nombre
+ * @property $provincia
+ * @property $estado
  * @property $created_at
  * @property $updated_at
  *
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Persona extends Model
+class Municipio extends Model
 {
-
+    
     protected $perPage = 20;
 
     /**
@@ -30,5 +27,7 @@ class Persona extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['nombres', 'apellidos', 'carnet', 'correo_electronico', 'telefono', 'direccion'];
+    protected $fillable = ['nombre', 'provincia', 'estado'];
+
+
 }

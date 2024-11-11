@@ -48,9 +48,10 @@
               </li>
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-account-settings-variant"></i><span class="hide-menu">Configuraciónes<span
-                              class="label label-rouded label-danger pull-right">3</span></span></a>
+                              class="label label-rouded label-danger pull-right">4</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('personas.index')}}">Personas</a></li>
+                      <li><a href="{{route('municipios.index')}}">Municipios</a></li>
                       <li><a href="ui-user-card.html">Agentes</a></li>
                       <li><a href="ui-cards.html">Usuarios</a></li>
                   </ul>

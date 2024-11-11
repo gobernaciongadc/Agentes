@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\PersonaController;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +22,9 @@ Route::get('/admin/layouts/master', [App\Http\Controllers\AdminController::class
 
 // RUTA PARA PERSONAS
 Route::resource('personas', PersonaController::class);
+
+// RUTA PARA ENTIDADES TERRITORIALES MUNICIPIOS
+Route::resource('municipios', MunicipioController::class);
 
 /*
 Si deseas redirigir solo a los usuarios no autenticados, puedes hacer algo como esto:

@@ -17,6 +17,8 @@
     <link href="{{asset('backend/css/style.css')}}" rel="stylesheet">
     <!-- You can change the theme colors from here -->
     <link href="{{asset('backend/css/colors/default-dark.css')}}" id="theme" rel="stylesheet">
+    <!-- css personalizado global -->
+    <link href="{{asset('css/main.css')}}" rel="stylesheet">
 
     <!-- Estilos generales -->
     @vite('resources/css/app.css')
