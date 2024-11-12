@@ -37,11 +37,21 @@ class PersonaController extends Controller
      */
     public function store(PersonaRequest $request): RedirectResponse
     {
-        Persona::create($request->validated());
+        try {
+            // Intentar crear la persona
+            Persona::create($request->validated());
 
-        return Redirect::route('personas.index')
-            ->with('success', 'Persona created successfully.');
+            // Redireccionar con un mensaje de éxito si todo sale bien
+            return Redirect::route('personas.index')
+                ->with('success', 'Persona creada exitosamente.');
+        } catch (\Exception $e) {
+            // Capturar cualquier excepción y redireccionar con un mensaje de error
+            return Redirect::back()
+                ->withInput() // Retener los datos ingresados por el usuario
+                ->with('error', 'Hubo un problema al crear la persona. Por favor, intenta nuevamente.');
+        }
     }
+
 
     /**
      * Display the specified resource.

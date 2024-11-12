@@ -9,9 +9,14 @@
     <div class="">
         <div class="col-md-12">
 
-            <div class="card card-default">
-                <div class="card-header">
-                    <span class="card-title">{{ __('Update') }} Municipio</span>
+            <div class="card border">
+                <div class="card-header card-bg">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="titulo-card">Modificar Municipio</span>
+                        <div class="float-right">
+                            <a class="btn btn-info" href="{{ route('municipios.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body bg-white">
                     <form method="POST" action="{{ route('municipios.update', $municipio->id) }}" role="form" enctype="multipart/form-data">

@@ -23,20 +23,27 @@ Municipios
                         </div>
                     </div>
                 </div>
-                @if ($message = Session::get('success'))
-                <div class="alert alert-success m-4">
-                    <p>{{ $message }}</p>
+
+                @if (session('success'))
+                <div id="success-message" class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
+
+                @if (session('error'))
+                <div id="error-message" class="alert alert-danger">
+                    {{ session('error') }}
                 </div>
                 @endif
 
                 <div class="card-body bg-white">
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover">
+                        <table id="municipioTable" class="table table-striped table-hover">
                             <thead class="thead">
                                 <tr>
-                                    <th>No</th>
+                                    <th>Identificador</th>
 
-                                    <th>Nombre</th>
+                                    <th>Municipio</th>
                                     <th>Provincia</th>
                                     <th>Estado</th>
 
@@ -46,21 +53,22 @@ Municipios
                             <tbody>
                                 @foreach ($municipios as $municipio)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
+                                    <td style="width: 20%;">{{ ++$i }}</td>
 
-                                    <td>{{ $municipio->nombre }}</td>
-                                    <td>{{ $municipio->provincia }}</td>
-                                    <td>{{ $municipio->estado }}</td>
+                                    <td style="width: 20%;">{{ $municipio->nombre }}</td>
+                                    <td style="width: 20%;">{{ $municipio->provincia }}</td>
+                                    <td style="width: 25%;"> {{ $municipio->estado == 1 ? 'Activo' : 'No Activo' }}</td>
 
-                                    <td>
-                                        <form action="{{ route('municipios.destroy', $municipio->id) }}" method="POST">
-                                            <a class="btn btn-sm btn-primary " href="{{ route('municipios.show', $municipio->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                            <a class="btn btn-sm btn-success" href="{{ route('municipios.edit', $municipio->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                    <td style="width: 15%;">
+                                        <form id="delete-form-{{ $municipio->id }}" action="{{ route('municipios.destroy', $municipio->id) }}" method="POST">
+                                            <a class="btn btn-sm btn-primary" href="{{ route('municipios.show', $municipio->id) }}" title="Ver Datos"><i class="fa fa-fw fa-eye"></i></a>
+                                            <a class="btn btn-sm btn-success" href="{{ route('municipios.edit', $municipio->id) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $municipio->id }}')" title="Eliminar Datos"><i class="fa fa-fw fa-trash"></i></button>
                                         </form>
                                     </td>
+
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -75,4 +83,32 @@ Municipios
 
 @vite('resources/css/municipio.css')
 @vite('resources/js/municipio.js')
+@endsection
+
+@section('scripts')
+<script>
+    $('#municipioTable').DataTable({
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json'
+        }
+    });
+</script>
+<script>
+    function confirmDelete(id) {
+        swal({
+            title: "Esta seguro?",
+            text: "No podrás revertir esto!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, eliminar esto!",
+            closeOnConfirm: false
+        }, function() {
+            // Enviar el formulario para eliminar
+            document.getElementById('delete-form-' + id).submit();
+            swal("Eliminado!", "El registro ha sido eliminado.", "success");
+        });
+    }
+</script>
+
 @endsection

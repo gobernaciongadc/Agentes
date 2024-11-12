@@ -13,6 +13,8 @@
     <title>Agentes de información</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{asset('backend/assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <!--alerts CSS -->
+    <link href="{{asset('backend/assets/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
     <!-- Custom CSS -->
     <link href="{{asset('backend/css/style.css')}}" rel="stylesheet">
     <!-- You can change the theme colors from here -->
@@ -100,7 +102,9 @@
     <script src="{{asset('backend/assets/plugins/sparkline/jquery.sparkline.min.js')}}"></script>
     <!--Custom JavaScript -->
     <script src="{{asset('backend/js/custom.min.js')}}"></script>
-
+    <!-- Sweet-Alert  -->
+    <script src="{{asset('backend/assets/plugins/sweetalert/sweetalert.min.js')}}"></script>
+    <!-- <script src="{{asset('backend/assets/plugins/sweetalert/sweetalert.init.js')}}"></script> -->
 
     <!-- This is data table -->
     <script src="{{asset('backend/assets/plugins/datatables/jquery.dataTables.min.js')}}"></script>

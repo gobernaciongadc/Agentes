@@ -39,11 +39,21 @@ class MunicipioController extends Controller
      */
     public function store(MunicipioRequest $request): RedirectResponse
     {
-        Municipio::create($request->validated());
+        try {
+            // Intentar crear el municipio
+            Municipio::create($request->validated());
 
-        return Redirect::route('municipios.index')
-            ->with('success', 'Municipio created successfully.');
+            // Redireccionar con un mensaje de éxito si todo sale bien
+            return Redirect::route('municipios.index')
+                ->with('success', 'Municipio creado exitosamente.');
+        } catch (\Exception $e) {
+            // Capturar cualquier excepción y redireccionar con un mensaje de error
+            return Redirect::back()
+                ->withInput() // Retener los datos ingresados
+                ->with('error', 'Hubo un problema al crear el municipio. Por favor, intenta nuevamente.');
+        }
     }
+
 
     /**
      * Display the specified resource.
@@ -61,8 +71,8 @@ class MunicipioController extends Controller
     public function edit($id): View
     {
         $municipio = Municipio::find($id);
-
-        return view('municipio.edit', compact('municipio'));
+        $provincias = ['Arani', 'Arque', 'Ayopaya', 'Bolívar', 'Campero', 'Capinota', 'Carrasco', 'Cercado', 'Chapare', 'Esteban Arze', 'Germán Jordán', 'Mizque', 'Punata', 'Quillacollo', 'Tapacarí', 'Tiraque']; // lista de provincias
+        return view('municipio.edit', compact('municipio', 'provincias'));
     }
 
     /**
@@ -73,7 +83,7 @@ class MunicipioController extends Controller
         $municipio->update($request->validated());
 
         return Redirect::route('municipios.index')
-            ->with('success', 'Municipio updated successfully');
+            ->with('success', 'Municipio actualizado exitosamente.');
     }
 
     public function destroy($id): RedirectResponse
@@ -81,6 +91,6 @@ class MunicipioController extends Controller
         Municipio::find($id)->delete();
 
         return Redirect::route('municipios.index')
-            ->with('success', 'Municipio deleted successfully');
+            ->with('success', 'Municipio eliminado exitosamente.');
     }
 }

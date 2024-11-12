@@ -29,12 +29,18 @@ Personas
                 </div>
                 @endif
 
+                @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+                @endif
+
                 <div class="card-body bg-white">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover" id="personasTable">
                             <thead class="thead">
                                 <tr>
-                                    <th>No</th>
+                                    <th>Identificador</th>
 
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
@@ -64,7 +70,7 @@ Personas
                                             <a class="btn btn-sm btn-success" href="{{ route('personas.edit', $persona->id) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;" title="Eliminar Datos"><i class="fa fa-fw fa-trash"></i></button>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Esta seguro de eliminar?') ? this.closest('form').submit() : false;" title="Eliminar Datos"><i class="fa fa-fw fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>

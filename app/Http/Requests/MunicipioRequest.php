@@ -22,9 +22,8 @@ class MunicipioRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'nombre' => 'required|string',
-			'provincia' => 'required|string',
-			'estado' => 'required',
+            'nombre' => 'required|string',
+            'provincia' => 'required|string'
         ];
     }
 }
