@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgenteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MunicipioController;
@@ -25,6 +26,27 @@ Route::resource('personas', PersonaController::class);
 
 // RUTA PARA ENTIDADES TERRITORIALES MUNICIPIOS
 Route::resource('municipios', MunicipioController::class);
+
+// RUTA PARA AGENTES DESIGNADOS
+Route::resource('agentes', AgenteController::class);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 Si deseas redirigir solo a los usuarios no autenticados, puedes hacer algo como esto:

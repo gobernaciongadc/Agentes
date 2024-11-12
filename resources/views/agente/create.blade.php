@@ -1,29 +1,28 @@
 @extends('admin.layouts.master')
 
 @section('template_title')
-{{ __('Update') }} Persona
+{{ __('Create') }} Agente
 @endsection
 
 @section('content')
 <section class="content container-fluid">
-    <div class="">
+    <div class="row">
         <div class="col-md-12">
 
-            <div class="card card-default border">
+            <div class="card border">
                 <div class="card-header card-bg">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="titulo-card">Modificar Daros de Persona</span>
+                        <span class="titulo-card">Formulario de Agente de Información</span>
                         <div class="float-right">
                             <a class="btn btn-info" href="{{ route('personas.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body bg-white">
-                    <form method="POST" action="{{ route('personas.update', $persona->id) }}" role="form" enctype="multipart/form-data">
-                        {{ method_field('PATCH') }}
+                    <form method="POST" action="{{ route('agentes.store') }}" role="form" enctype="multipart/form-data">
                         @csrf
 
-                        @include('persona.form')
+                        @include('agente.form')
 
                     </form>
                 </div>
@@ -32,6 +31,6 @@
     </div>
 </section>
 
-@vite('resources/css/persona.css')
-@vite('resources/js/persona.js')
+@vite('resources/css/agente.css')
+@vite('resources/js/agente.js')
 @endsection

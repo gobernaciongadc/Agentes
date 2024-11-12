@@ -52,7 +52,7 @@
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('personas.index')}}">Personas</a></li>
                       <li><a href="{{route('municipios.index')}}">Municipios</a></li>
-                      <li><a href="ui-user-card.html">Agentes</a></li>
+                      <li><a href="{{route('agentes.index')}}">Agentes</a></li>
                       <li><a href="ui-cards.html">Usuarios</a></li>
                   </ul>
               </li>
