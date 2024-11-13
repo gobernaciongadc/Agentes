@@ -40,13 +40,29 @@ class AgenteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AgenteRequest $request): RedirectResponse
-    {
-        Agente::create($request->validated());
 
+    public function store(Request $request): RedirectResponse
+    {
+        // Realiza la validación de los datos
+        $validatedData = $request->validate([
+            'persona_id' => 'required',
+            'municipio_id' => 'required',
+            'tipoAgente' => 'required|string',
+            'respaldo' => 'required|file|mimes:pdf|max:2048', // El archivo es obligatorio y debe ser PDF con tamaño máximo de 2MB
+        ], [
+            'respaldo.required' => 'El archivo respaldo es obligatorio.',
+            'respaldo.mimes' => 'El archivo debe ser un PDF.',
+            'respaldo.max' => 'El archivo no debe exceder los 2 MB.',
+        ]);
+
+        // Crear el nuevo agente
+        Agente::create($validatedData);
+
+        // Redirigir con un mensaje de éxito
         return Redirect::route('agentes.index')
-            ->with('success', 'Agente created successfully.');
+            ->with('success', 'Agente creado exitosamente.');
     }
+
 
     /**
      * Display the specified resource.
