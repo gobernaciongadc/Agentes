@@ -34,11 +34,11 @@
 
         <!-- Campo Tipo Agente -->
         <div class="form-group mb-2 mb20">
-            <label for="tipoAgente" class="form-label">Tipo de Agente<span class="text-danger">*</span></label>
-            <select name="tipoAgente" class="form-control @error('tipoAgente') is-invalid @enderror mb-2 mb20" id="tipoAgente">
+            <label for="tipo_agente" class="form-label">Tipo de Agente<span class="text-danger">*</span></label>
+            <select name="tipo_agente" class="form-control @error('tipo_agente') is-invalid @enderror mb-2 mb20" id="tipo_agente">
                 <option value="" disabled selected>Selecciona un tipo de agente</option>
                 @foreach($tipoAgentes as $tipo)
-                <option value="{{ $tipo }}" {{ old('tipoAgente', $agente?->tipoAgente) == $tipo ? 'selected' : '' }}>
+                <option value="{{ $tipo }}" {{ old('tipo_agente', $agente?->tipo_agente) == $tipo ? 'selected' : '' }}>
                     {{ $tipo }}
                 </option>
                 @endforeach

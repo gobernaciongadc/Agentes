@@ -50,8 +50,8 @@ Agentes
                                 <tr>
                                     <td>{{ ++$i }}</td>
 
-                                    <td>{{ $agente->persona_id }}</td>
-                                    <td>{{ $agente->municipio_id }}</td>
+                                    <td>{{ $agente->persona->nombres }} {{$agente->persona->apellidos}}</td>
+                                    <td>{{ $agente->municipio->nombre }}</td>
                                     <td>{{ $agente->tipo_agente }}</td>
                                     <td>{{ $agente->respaldo }}</td>
                                     <td>{{ $agente->estado }}</td>

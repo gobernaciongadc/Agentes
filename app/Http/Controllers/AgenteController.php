@@ -18,7 +18,8 @@ class AgenteController extends Controller
      */
     public function index(Request $request): View
     {
-        $agentes = Agente::paginate();
+        // Cargar los agentes con la relación 'persona'
+        $agentes = Agente::with('persona,municipio')->paginate();
 
         return view('agente.index', compact('agentes'))
             ->with('i', ($request->input('page', 1) - 1) * $agentes->perPage());
@@ -40,28 +41,38 @@ class AgenteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(Request $request): RedirectResponse
     {
-        // Realiza la validación de los datos
-        $validatedData = $request->validate([
-            'persona_id' => 'required',
-            'municipio_id' => 'required',
-            'tipoAgente' => 'required|string',
-            'respaldo' => 'required|file|mimes:pdf|max:2048', // El archivo es obligatorio y debe ser PDF con tamaño máximo de 2MB
-        ], [
-            'respaldo.required' => 'El archivo respaldo es obligatorio.',
-            'respaldo.mimes' => 'El archivo debe ser un PDF.',
-            'respaldo.max' => 'El archivo no debe exceder los 2 MB.',
-        ]);
+        try {
+            // Validar datos
+            $validatedData = $request->validate([
+                'persona_id' => 'required',
+                'municipio_id' => 'required',
+                'tipo_agente' => 'required|string',
+                'respaldo' => 'required|file|mimes:pdf|max:2048',
+            ], [
+                'respaldo.required' => 'El archivo respaldo es obligatorio.',
+                'respaldo.mimes' => 'El archivo debe ser un PDF.',
+                'respaldo.max' => 'El archivo no debe exceder los 2 MB.',
+            ]);
 
-        // Crear el nuevo agente
-        Agente::create($validatedData);
+            // Subir archivo
+            if ($request->hasFile('respaldo')) {
+                $filePath = $request->file('respaldo')->store('respaldos', 'public');
+                $validatedData['respaldo'] = $filePath;
+            }
 
-        // Redirigir con un mensaje de éxito
-        return Redirect::route('agentes.index')
-            ->with('success', 'Agente creado exitosamente.');
+            // Crear el nuevo agente
+            Agente::create($validatedData);
+
+            // Redirigir con mensaje de éxito
+            return Redirect::route('agentes.index')->with('success', 'Agente creado exitosamente.');
+        } catch (\Exception $e) {
+            // Capturar cualquier excepción y redirigir con un mensaje de error
+            return Redirect::back()->with('error', 'Hubo un error al crear el agente: ' . $e->getMessage());
+        }
     }
+
 
 
     /**

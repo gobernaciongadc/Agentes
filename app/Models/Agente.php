@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Agente extends Model
 {
-    
+
     protected $perPage = 20;
 
     /**
@@ -31,7 +31,7 @@ class Agente extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['persona_id', 'municipio_id', 'tipo_agente', 'respaldo', 'estado'];
+    protected $fillable = ['persona_id', 'municipio_id', 'tipo_agente', 'respaldo'];
 
 
     /**
@@ -41,7 +41,7 @@ class Agente extends Model
     {
         return $this->belongsTo(\App\Models\Municipio::class, 'municipio_id', 'id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -49,5 +49,4 @@ class Agente extends Model
     {
         return $this->belongsTo(\App\Models\Persona::class, 'persona_id', 'id');
     }
-    
 }
