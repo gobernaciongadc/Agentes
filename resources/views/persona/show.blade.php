@@ -7,8 +7,8 @@
 @section('content')
 <section class="content container-fluid">
     <div class="row">
-        <div class="col-md-12 border">
-            <div class="card card-bg">
+        <div class="col-md-12">
+            <div class="card card-bg border">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="float-left">
                         <span class="titulo-card">Datos de Persona</span>

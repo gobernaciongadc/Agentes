@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -29,6 +31,9 @@ Route::resource('municipios', MunicipioController::class);
 
 // RUTA PARA AGENTES DESIGNADOS
 Route::resource('agentes', AgenteController::class);
+
+// RUTA PARA AGENTES USERS
+Route::resource('usuarios', UserController::class);
 
 
 

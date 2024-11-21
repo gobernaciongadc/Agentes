@@ -51,18 +51,23 @@ Agentes
                                     <td>{{ ++$i }}</td>
 
                                     <td>{{ $agente->persona->nombres }} {{$agente->persona->apellidos}}</td>
-                                    <td>{{ $agente->municipio->nombre }}</td>
+                                    <td>{{ $agente->municipio->nombre }} - {{ $agente->municipio->provincia }}</td>
                                     <td>{{ $agente->tipo_agente }}</td>
-                                    <td>{{ $agente->respaldo }}</td>
-                                    <td>{{ $agente->estado }}</td>
+                                    <td>
+                                        <a href="{{ asset('storage/respaldos/' . basename($agente->respaldo)) }}" target="_blank">
+                                            <i class="fa fa-file-pdf-o"></i> Ver PDF
+                                        </a>
+                                    </td>
+                                    <td>{{ $agente->estado == 1 ? 'Activo' : 'Inactivo' }}</td>
+
 
                                     <td>
                                         <form action="{{ route('agentes.destroy', $agente->id) }}" method="POST">
-                                            <a class="btn btn-sm btn-primary " href="{{ route('agentes.show', $agente->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                            <a class="btn btn-sm btn-success" href="{{ route('agentes.edit', $agente->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                            <a class="btn btn-sm btn-primary " href="{{ route('agentes.show', $agente->id) }}" title="Ver Datos"><i class="fa fa-fw fa-eye"></i></a>
+                                            <a class="btn btn-sm btn-success" href="{{ route('agentes.edit', $agente->id) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;" title="Dar de baja agente"><i class="fa fa-fw fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>

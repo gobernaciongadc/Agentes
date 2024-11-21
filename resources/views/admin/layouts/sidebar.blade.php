@@ -53,7 +53,8 @@
                       <li><a href="{{route('personas.index')}}">Personas</a></li>
                       <li><a href="{{route('municipios.index')}}">Municipios</a></li>
                       <li><a href="{{route('agentes.index')}}">Agentes</a></li>
-                      <li><a href="ui-cards.html">Usuarios</a></li>
+                      <li><a href="{{route('agentes.index')}}">Agentes</a></li>
+                      <li><a href="{{route('usuarios.index')}}">Usuarios</a></li>
                   </ul>
               </li>
               <li class="nav-small-cap">FORMS, TABLE &amp; WIDGETS</li>

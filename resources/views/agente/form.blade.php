@@ -55,12 +55,38 @@
                 📄 Seleccionar Archivo PDF
                 <input type="file" name="respaldo" id="respaldo" accept="application/pdf">
             </label>
+
             <span id="file-name">Ningún archivo seleccionado</span>
+
+            <!-- Mostrar el archivo actual si existe -->
+            @if ($respaldoUrl)
+            <div class="mt-2">
+                <a href="{{ $respaldoUrl }}" target="_blank"> <i class="fa fa-file-pdf-o"></i> Ver archivo actual</a>
+            </div>
+            @endif
 
             @if ($errors->has('respaldo'))
             <div class="text-danger text-sm" style="font-size: 14.4px;">{{ $errors->first('respaldo') }}</div>
             @endif
         </div>
+
+        <!-- Estados -->
+        @if ($respaldoUrl)
+        <div class="form-group mt-5 mb-2 mb20">
+            <label for="estado" class="form-label">Estado<span class="text-danger">*</span></label>
+            <select name="estado" class="form-control @error('estado') is-invalid @enderror mb-2 mb20" id="estado">
+                <option value="" disabled selected>Selecciona un estado</option>
+                @foreach($estados as $key => $value)
+                <option value="{{ $key }}" {{ old('estado', $agente?->estado) == $key ? 'selected' : '' }}>
+                    {{ $value }}
+                </option>
+                @endforeach
+            </select>
+            @error('estado')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        @endif
     </div>
 
     <div class="col-md-12 mt20 mt-2">

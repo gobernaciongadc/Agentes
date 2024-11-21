@@ -10,6 +10,8 @@ use App\Models\Municipio;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
+
 
 class AgenteController extends Controller
 {
@@ -18,12 +20,13 @@ class AgenteController extends Controller
      */
     public function index(Request $request): View
     {
-        // Cargar los agentes con la relación 'persona'
-        $agentes = Agente::with('persona,municipio')->paginate();
+        // Cargar los agentes con las relaciones 'persona' y 'municipio'
+        $agentes = Agente::with(['persona', 'municipio'])->paginate();
 
         return view('agente.index', compact('agentes'))
             ->with('i', ($request->input('page', 1) - 1) * $agentes->perPage());
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,8 +37,8 @@ class AgenteController extends Controller
         $personas = Persona::all();
         $municipios = Municipio::all();
         $tipoAgentes = ['Notarios de Fe Pública', 'Jueces y Secretarios del Tribunal Departamental de Justicia', 'SEPREC', 'Derechos Reales', 'proceso sancionador administrativo'];
-
-        return view('agente.create', compact('agente', 'personas', 'municipios', 'tipoAgentes'));
+        $respaldoUrl = false;
+        return view('agente.create', compact('agente', 'personas', 'municipios', 'tipoAgentes', 'respaldoUrl'));
     }
 
     /**
@@ -93,26 +96,82 @@ class AgenteController extends Controller
         $personas = Persona::all();
         $municipios = Municipio::all();
         $tipoAgentes = ['Notarios de Fe Pública', 'Jueces y Secretarios del Tribunal Departamental de Justicia', 'SEPREC', 'Derechos Reales', 'proceso sancionador administrativo'];
+        $estados = [
+            0 => 'Inactivo',
+            1 => 'Activo',
+        ]; // Asociamos un valor numérico con su significado para mostrarlo en el formulario.
 
-        return view('agente.edit', compact('agente', 'personas', 'municipios', 'tipoAgentes'));
+        // Verificar si el archivo existe y pasar a la vista
+        $respaldoUrl = $agente->respaldo ? asset('storage/' . $agente->respaldo) : null;
+
+        return view('agente.edit', compact('agente', 'personas', 'municipios', 'tipoAgentes', 'respaldoUrl', 'estados'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(AgenteRequest $request, Agente $agente): RedirectResponse
+    public function update(Request $request, Agente $agente): RedirectResponse
     {
-        $agente->update($request->validated());
+        try {
+            // Validar los datos enviados
+            $validatedData = $request->validate([
+                'persona_id' => 'required',
+                'municipio_id' => 'required',
+                'tipo_agente' => 'required|string',
+                'respaldo' => 'nullable|file|mimes:pdf|max:2048', // El archivo es opcional
+                'estado' => 'required', // Aunque no esté en el modelo, lo validamos
+            ], [
+                'respaldo.mimes' => 'El archivo debe ser un PDF.',
+                'respaldo.max' => 'El archivo no debe exceder los 2 MB.',
+            ]);
 
-        return Redirect::route('agentes.index')
-            ->with('success', 'Agente updated successfully');
+            // Guardar cada dato individualmente
+            $agente->persona_id = $validatedData['persona_id'];
+            $agente->municipio_id = $validatedData['municipio_id'];
+            $agente->tipo_agente = $validatedData['tipo_agente'];
+            $agente->estado = $validatedData['estado'];
+
+            // Manejar el archivo respaldo si es necesario
+            if ($request->hasFile('respaldo')) {
+                // Eliminar archivo anterior si existe
+                if ($agente->respaldo && Storage::exists('public/' . $agente->respaldo)) {
+                    Storage::delete('public/' . $agente->respaldo);
+                }
+
+                // Subir el nuevo archivo
+                $filePath = $request->file('respaldo')->store('respaldos', 'public');
+                $agente->respaldo = $filePath;
+            }
+
+            // Guardar los cambios del modelo
+            $agente->save();
+
+
+            // Redirigir con mensaje de éxito
+            return Redirect::route('agentes.index')->with('success', 'Agente actualizado exitosamente.');
+        } catch (\Exception $e) {
+            // Manejar excepciones y redirigir con un mensaje de error
+            return Redirect::back()->with('error', 'Hubo un error al actualizar el agente: ' . $e->getMessage());
+        }
     }
+
 
     public function destroy($id): RedirectResponse
     {
-        Agente::find($id)->delete();
+        try {
+            // Buscar el agente
+            $agente = Agente::findOrFail($id);
 
-        return Redirect::route('agentes.index')
-            ->with('success', 'Agente deleted successfully');
+            // Cambiar el estado a 0 (inactivo)
+            $agente->estado = 0;
+            $agente->save();
+
+            // Redirigir con un mensaje de éxito
+            return Redirect::route('agentes.index')
+                ->with('success', 'El estado del agente se cambió a inactivo exitosamente.');
+        } catch (\Exception $e) {
+            // Manejar cualquier error
+            return Redirect::back()->with('error', 'Hubo un error al intentar cambiar el estado: ' . $e->getMessage());
+        }
     }
 }

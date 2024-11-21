@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // Añadimos el campo agente_id con clave foránea
+            $table->foreignId('agente_id')->nullable()->constrained('agentes')->onDelete('cascade');
+
             $table->rememberToken();
             $table->timestamps();
         });
