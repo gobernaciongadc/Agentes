@@ -26,4 +26,7 @@
         </div>
     </div>
 </section>
+
+@vite('resources/css/usuarios.css')
+@vite('resources/js/usuarios.js')
 @endsection

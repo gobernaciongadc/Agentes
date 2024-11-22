@@ -8,17 +8,17 @@ Users
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
+            <div class="card border">
+                <div class="card-header card-bg">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
-                        <span id="card_title">
-                            {{ __('Users') }}
+                        <span id="titulo-card" class="titulo-card">
+                            Gestión de Usuarios
                         </span>
 
                         <div class="float-right">
-                            <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right" data-placement="left">
-                                {{ __('Create New') }}
+                            <a href="{{ route('users.create') }}" class="btn btn-info float-right" data-placement="left">
+                                <i class="fa fa-plus"></i> Crear nuevo usuario
                             </a>
                         </div>
                     </div>
@@ -31,7 +31,7 @@ Users
 
                 <div class="card-body bg-white">
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover">
+                        <table id="usuariosTable" class="table table-striped table-hover">
                             <thead class="thead">
                                 <tr>
                                     <th>No</th>
@@ -40,7 +40,7 @@ Users
                                     <th>Email</th>
                                     <th>Agente Id</th>
 
-                                    <th></th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,11 +54,11 @@ Users
 
                                     <td>
                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST">
-                                            <a class="btn btn-sm btn-primary " href="{{ route('users.show', $user->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                            <a class="btn btn-sm btn-success" href="{{ route('users.edit', $user->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                            <a class="btn btn-sm btn-primary " href="{{ route('users.show', $user->id) }}"><i class="fa fa-fw fa-eye" title="Ver datos"></i></a>
+                                            <a class="btn btn-sm btn-success" href="{{ route('users.edit', $user->id) }}"><i class="fa fa-fw fa-edit" title="Modificar datos"></i></a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;" title="Dar de baja a usuario"><i class="fa fa-fw fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -72,4 +72,7 @@ Users
         </div>
     </div>
 </div>
+
+@vite('resources/css/usuarios.css')
+@vite('resources/js/usuarios.js')
 @endsection

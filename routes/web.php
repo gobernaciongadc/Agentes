@@ -33,7 +33,7 @@ Route::resource('municipios', MunicipioController::class);
 Route::resource('agentes', AgenteController::class);
 
 // RUTA PARA AGENTES USERS
-Route::resource('usuarios', UserController::class);
+Route::resource('users', UserController::class);
 
 
 
