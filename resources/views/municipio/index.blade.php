@@ -53,7 +53,7 @@ Municipios
                             <tbody>
                                 @foreach ($municipios as $municipio)
                                 <tr>
-                                    <td style="width: 20%;">{{ ++$i }}</td>
+                                    <td style="width: 20%;">{{ ++$municipio->id }}</td>
 
                                     <td style="width: 20%;">{{ $municipio->nombre }}</td>
                                     <td style="width: 20%;">{{ $municipio->provincia }}</td>
@@ -76,7 +76,6 @@ Municipios
                     </div>
                 </div>
             </div>
-            {!! $municipios->withQueryString()->links() !!}
         </div>
     </div>
 </div>

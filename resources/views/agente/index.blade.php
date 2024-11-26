@@ -34,7 +34,7 @@ Agentes
                         <table id="agentesTable" class="table table-striped table-hover">
                             <thead class="thead">
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Identificador</th>
 
                                     <th>Agente</th>
                                     <th>Municipio ó Jurisdicción</th>
@@ -48,7 +48,7 @@ Agentes
                             <tbody>
                                 @foreach ($agentes as $agente)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $agente->id }}</td>
 
                                     <td>{{ $agente->persona->nombres }} {{$agente->persona->apellidos}}</td>
                                     <td>{{ $agente->municipio->nombre }} - {{ $agente->municipio->provincia }}</td>
@@ -77,7 +77,6 @@ Agentes
                     </div>
                 </div>
             </div>
-            {!! $agentes->withQueryString()->links() !!}
         </div>
     </div>
 </div>

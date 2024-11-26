@@ -6,6 +6,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\UserController;
+use App\Models\Agente;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,12 +26,14 @@ Route::get('/admin/layouts/master', [App\Http\Controllers\AdminController::class
 
 // RUTA PARA PERSONAS
 Route::resource('personas', PersonaController::class);
+Route::get('listpersonas', [PersonaController::class, 'listpersonas'])->name('admin.listpersonas');
 
 // RUTA PARA ENTIDADES TERRITORIALES MUNICIPIOS
 Route::resource('municipios', MunicipioController::class);
 
 // RUTA PARA AGENTES DESIGNADOS
 Route::resource('agentes', AgenteController::class);
+Route::get('listagentes', [AgenteController::class, 'listagentes'])->name('admin.listagentes');
 
 // RUTA PARA AGENTES USERS
 Route::resource('users', UserController::class);

@@ -13,6 +13,7 @@
     <title>Agentes de información</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{asset('backend/assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
     <!--alerts CSS -->
     <link href="{{asset('backend/assets/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
     <!-- Custom CSS -->
@@ -21,6 +22,9 @@
     <link href="{{asset('backend/css/colors/default-dark.css')}}" id="theme" rel="stylesheet">
     <!-- css personalizado global -->
     <link href="{{asset('css/main.css')}}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
 
     <!-- Estilos generales -->
     @vite('resources/css/app.css')
@@ -102,6 +106,9 @@
     <script src="{{asset('backend/assets/plugins/sparkline/jquery.sparkline.min.js')}}"></script>
     <!--Custom JavaScript -->
     <script src="{{asset('backend/js/custom.min.js')}}"></script>
+
+
+
     <!-- Sweet-Alert  -->
     <script src="{{asset('backend/assets/plugins/sweetalert/sweetalert.min.js')}}"></script>
     <!-- <script src="{{asset('backend/assets/plugins/sweetalert/sweetalert.init.js')}}"></script> -->
@@ -124,6 +131,8 @@
     <!-- ============================================================== -->
     <script src="{{asset('backend/assets/plugins/styleswitcher/jQuery.style.switcher.js')}}"></script>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
     <!-- Script general -->

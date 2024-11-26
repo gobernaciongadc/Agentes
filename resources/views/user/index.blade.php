@@ -34,11 +34,11 @@ Users
                         <table id="usuariosTable" class="table table-striped table-hover">
                             <thead class="thead">
                                 <tr>
-                                    <th>No</th>
-
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Agente Id</th>
+                                    <th>Identificador</th>
+                                    <th>Nombre</th>
+                                    <th>Usuario</th>
+                                    <th>Rol</th>
+                                    <th>Estado</th>
 
                                     <th>Acciones</th>
                                 </tr>
@@ -46,11 +46,11 @@ Users
                             <tbody>
                                 @foreach ($users as $user)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
-
-                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->id }}</td>
+                                    <td>{{ $user->agente->persona->nombres }} {{ $user->agente->persona->apellidos }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->agente_id }}</td>
+                                    <td>{{ $user->rol }}</td>
+                                    <td>{{ $user->estado == 1 ? 'Activo' : 'Inactivo' }}</td>
 
                                     <td>
                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST">
@@ -68,7 +68,6 @@ Users
                     </div>
                 </div>
             </div>
-            {!! $users->withQueryString()->links() !!}
         </div>
     </div>
 </div>

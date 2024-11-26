@@ -1,24 +1,153 @@
 <div class="row padding-1 p-1">
-    <div class="col-md-12">
-        
-        <div class="form-group mb-2 mb20">
-            <label for="name" class="form-label">{{ __('Name') }}</label>
-            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user?->name) }}" id="name" placeholder="Name">
-            {!! $errors->first('name', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+    <div class="col-12 col-md-8 col-lg-4">
+
+        <!-- Campo para seleccionar el rol -->
+        <div class="form-group mb-3">
+            <label for="rol" class="form-label">Rol de acceso<span class="text-danger">*</span></label>
+            <select name="rol" class="form-control" id="rol">
+                <option value="" disabled selected>Selecciona un rol de acceso</option>
+                @foreach($roles as $rol)
+                <option value="{{ $rol }}" {{ old('rol') == $rol ? 'selected' : '' }}>
+                    {{ $rol }}
+                </option>
+                @endforeach
+            </select>
         </div>
-        <div class="form-group mb-2 mb20">
-            <label for="email" class="form-label">{{ __('Email') }}</label>
-            <input type="text" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user?->email) }}" id="email" placeholder="Email">
-            {!! $errors->first('email', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+
+        <!-- Campo dinámico para seleccionar persona -->
+        <div class="form-group mb-3">
+            <label for="persona" class="form-label">Nombre<span class="text-danger">*</span></label><br>
+            <select name="opcion_id" class="form-control" id="persona"></select>
         </div>
-        <div class="form-group mb-2 mb20">
-            <label for="agente_id" class="form-label">{{ __('Agente Id') }}</label>
-            <input type="text" name="agente_id" class="form-control @error('agente_id') is-invalid @enderror" value="{{ old('agente_id', $user?->agente_id) }}" id="agente_id" placeholder="Agente Id">
-            {!! $errors->first('agente_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        <script>
+            // Dinamico select para administradores y agentes de información
+            document.addEventListener('DOMContentLoaded', () => {
+
+                // Evento al cambiar el rol
+                $('#rol').on('change', function() {
+                    const rol = $(this).val(); // Obtiene el valor seleccionado
+                    $('#persona').empty(); // Limpia el select de personas
+
+                    console.log(rol);
+
+
+                    if (rol === 'Administrador') {
+
+                        // Hace una llamada AJAX para obtener los datos
+                        $.ajax({
+                            url: "{{route('admin.listpersonas')}}", // Reemplaza con la URL correcta de tu controlador
+                            type: "GET", // Puedes cambiar a GET si es más apropiado
+                            success: function(data) {
+                                console.log(data); // Mensaje de depuración
+                                // Rellena el select con los resultados
+                                $('#persona').append('<option></option>'); // Opción vacía
+                                data.listpersonas.forEach(persona => {
+                                    $('#persona').append(
+                                        `<option value="${persona.id}">${persona.nombres} ${persona.apellidos}</option>`
+                                    );
+                                });
+
+                                // Reinicia Select2 para que detecte los nuevos elementos
+                                $('#persona').select2({
+                                    placeholder: 'Selecciona una opción',
+                                    allowClear: true,
+                                });
+
+                            },
+                            error: function() {
+                                alert('Error al cargar las personas.');
+                            },
+                        });
+                    }
+
+                    if (rol === 'Agente') {
+
+                        // Hace una llamada AJAX para obtener los datos
+                        $.ajax({
+                            url: "{{route('admin.listagentes')}}", // Reemplaza con la URL correcta de tu controlador
+                            type: "GET", // Puedes cambiar a GET si es más apropiado
+                            success: function(data) {
+                                console.log(data); // Mensaje de depuración
+                                // Rellena el select con los resultados
+                                $('#persona').append('<option></option>'); // Opción vacía
+                                data.listagentes.forEach(agente => {
+                                    $('#persona').append(
+                                        `<option value="${agente.id}">${agente.persona.nombres} ${agente.persona.apellidos}</option>`
+                                    );
+                                });
+
+                                // Reinicia Select2 para que detecte los nuevos elementos
+                                $('#persona').select2({
+                                    placeholder: 'Selecciona una opción',
+                                    allowClear: true,
+                                });
+
+                            },
+                            error: function() {
+                                alert('Error al cargar las personas.');
+                            },
+                        });
+
+                    }
+                });
+
+                // Evento al seleccionar una persona
+                $('#persona').on('change', function() {
+
+                    const selectedOption = $(this).find(':selected'); // Opción seleccionada
+                    const nombres = selectedOption[0].innerText // Inés Mendoza
+                    if (nombres) {
+                        // Separar el nombre completo en un array de palabras
+                        const nombresArray = nombres.split(' ');
+                        // Tomar el primer nombre
+                        const nombre = nombresArray[0].toLowerCase();
+                        // Tomar el primer apellido (todos los elementos después del primer nombre)
+                        const apellido = nombresArray.slice(-2).join(' ').toLowerCase(); // Usa los últimos dos elementos como apellido completo
+                        // Generar el usuario y la contraseña
+                        const usuario = `${nombre}.${apellido}`; // Usuario con formato "nombre.apellido"
+                        const password = generarPassword(); // Función para generar una contraseña
+
+                        // Actualizar los campos
+                        $('#email').val(usuario);
+                        $('#password').val(password);
+                    }
+                });
+
+                // Función para generar una contraseña aleatoria
+                function generarPassword() {
+                    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$';
+                    let password = '';
+                    for (let i = 0; i < 8; i++) {
+                        const randomIndex = Math.floor(Math.random() * caracteres.length);
+                        password += caracteres[randomIndex];
+                    }
+                    return password;
+                }
+
+            });
+        </script>
+
+        <div class="form-group mb-3">
+            <label for="email" class="form-label">Usuario<span class="text-danger">*</span></label>
+            <input type="text" name="email" class="form-control @error('email') is-invalid @enderror"
+                value="{{ old('email', $user?->email) }}" id="email" placeholder="Ingrese el usuario">
+
         </div>
+
+        <div class="form-group mb-3">
+            <label for="password" class=" col-form-label">Contraseña<span class="text-danger">*</span></label>
+            <input id="password" type="text" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Ingrese la Contraseña">
+            @error('password')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+
+        </div>
+
 
     </div>
     <div class="col-md-12 mt20 mt-2">
-        <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+        <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Guardar</button>
     </div>
 </div>

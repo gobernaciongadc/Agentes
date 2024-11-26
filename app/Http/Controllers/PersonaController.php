@@ -6,6 +6,7 @@ use App\Models\Persona;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\PersonaRequest;
+use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -16,11 +17,11 @@ class PersonaController extends Controller
      */
     public function index(Request $request): View
     {
-        $personas = Persona::paginate();
+        $personas = Persona::all();
 
-        return view('persona.index', compact('personas'))
-            ->with('i', ($request->input('page', 1) - 1) * $personas->perPage());
+        return view('persona.index', compact('personas'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -90,5 +91,26 @@ class PersonaController extends Controller
 
         return Redirect::route('personas.index')
             ->with('success', 'Persona deleted successfully');
+    }
+
+
+    function listpersonas()
+    {
+        $listaPersonas = Persona::where('estado_user', 1)->get();
+
+        try {
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'listpersonas' => $listaPersonas,
+            );
+        } catch (Exception $e) {
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'error' => $e->getMessage(),
+            );
+        }
+        return response()->json($data, $data['code']);
     }
 }

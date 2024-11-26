@@ -55,8 +55,7 @@ Personas
                             <tbody>
                                 @foreach ($personas as $persona)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
-
+                                    <td>{{ $persona->id }}</td>
                                     <td>{{ $persona->nombres }}</td>
                                     <td>{{ $persona->apellidos }}</td>
                                     <td>{{ $persona->carnet }}</td>
@@ -80,7 +79,6 @@ Personas
                     </div>
                 </div>
             </div>
-            {!! $personas->withQueryString()->links() !!}
         </div>
     </div>
 </div>

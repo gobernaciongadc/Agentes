@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AgenteRequest;
 use App\Models\Municipio;
 use App\Models\Persona;
+use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
@@ -21,10 +22,9 @@ class AgenteController extends Controller
     public function index(Request $request): View
     {
         // Cargar los agentes con las relaciones 'persona' y 'municipio'
-        $agentes = Agente::with(['persona', 'municipio'])->paginate();
+        $agentes = Agente::with(['persona', 'municipio'])->get();
 
-        return view('agente.index', compact('agentes'))
-            ->with('i', ($request->input('page', 1) - 1) * $agentes->perPage());
+        return view('agente.index', compact('agentes'));
     }
 
 
@@ -173,5 +173,25 @@ class AgenteController extends Controller
             // Manejar cualquier error
             return Redirect::back()->with('error', 'Hubo un error al intentar cambiar el estado: ' . $e->getMessage());
         }
+    }
+
+    function listagentes()
+    {
+        $listaAgentes = Agente::with('persona')->where('estado_user', 1)->get();
+
+        try {
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'listagentes' => $listaAgentes,
+            );
+        } catch (Exception $e) {
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'error' => $e->getMessage(),
+            );
+        }
+        return response()->json($data, $data['code']);
     }
 }

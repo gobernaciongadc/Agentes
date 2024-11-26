@@ -16,10 +16,8 @@ class MunicipioController extends Controller
      */
     public function index(Request $request): View
     {
-        $municipios = Municipio::paginate();
-
-        return view('municipio.index', compact('municipios'))
-            ->with('i', ($request->input('page', 1) - 1) * $municipios->perPage());
+        $municipios = Municipio::all();
+        return view('municipio.index', compact('municipios'));
     }
 
     /**

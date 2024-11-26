@@ -9,11 +9,24 @@
     <div class="row">
         <div class="col-md-12">
 
-            <div class="card card-default">
-                <div class="card-header">
-                    <span class="card-title">{{ __('Create') }} User</span>
+            <div class="card card-default border">
+                <div class="card-header card-bg">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="titulo-card">Formulario de Usuarios</span>
+                        <div class="float-right">
+                            <a class="btn btn-info" href="{{ route('users.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body bg-white">
+
+                    <!-- Mensaje de error global -->
+                    @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                    @endif
+
                     <form method="POST" action="{{ route('users.store') }}" role="form" enctype="multipart/form-data">
                         @csrf
 

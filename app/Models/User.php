@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function agente()
+    {
+        return $this->belongsTo(\App\Models\Agente::class, 'agente_id', 'id');
+    }
 }

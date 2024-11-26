@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\Hash;
+
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call(AgenteSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Obtener el primer agente de la tabla
+        $primerAgente = \App\Models\Agente::first();
+
+        if ($primerAgente) {
+            User::factory()->create([
+                'email' => 'admin@gmail.com',
+                'rol' => 'administrador',
+                'agente_id' => $primerAgente->id, // Usar el ID dinámico
+                'password' => Hash::make('12345678'),
+            ]);
+        }
     }
 }

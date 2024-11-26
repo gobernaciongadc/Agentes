@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('tipo_agente');
             $table->string('respaldo');
             $table->integer('estado')->default(1);
+            $table->integer('estado_user')->default(1);
             $table->timestamps();
         });
     }
