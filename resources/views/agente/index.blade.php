@@ -34,7 +34,7 @@ Agentes
                         <table id="agentesTable" class="table table-striped table-hover">
                             <thead class="thead">
                                 <tr>
-                                    <th>Identificador</th>
+                                    <th>Id</th>
 
                                     <th>Agente</th>
                                     <th>Municipio ó Jurisdicción</th>

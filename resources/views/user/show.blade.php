@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="form-group mb-2 mb20">
-                        <strong>Email:</strong>
+                        <strong>Usuario:</strong>
                         {{ $user->email }}
                     </div>
 

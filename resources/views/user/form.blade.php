@@ -1,6 +1,7 @@
 <div class="row padding-1 p-1">
     <div class="col-12 col-md-8 col-lg-4">
 
+        @if ($respaldoUrl==false)
         <!-- Campo para seleccionar el rol -->
         <div class="form-group mb-3">
             <label for="rol" class="form-label">Rol de acceso<span class="text-danger">*</span></label>
@@ -98,13 +99,16 @@
                     const nombres = selectedOption[0].innerText // Inés Mendoza
                     if (nombres) {
                         // Separar el nombre completo en un array de palabras
-                        const nombresArray = nombres.split(' ');
+                        const nombresArray = nombres.trim().split(/\s+/); // Divide por espacios y elimina espacios extra
+
                         // Tomar el primer nombre
                         const nombre = nombresArray[0].toLowerCase();
-                        // Tomar el primer apellido (todos los elementos después del primer nombre)
-                        const apellido = nombresArray.slice(-2).join(' ').toLowerCase(); // Usa los últimos dos elementos como apellido completo
+
+                        // Tomar el primer apellido (segunda palabra si existe, para evitar espacios)
+                        const apellido = nombresArray.length > 1 ? nombresArray[1].toLowerCase() : '';
+
                         // Generar el usuario y la contraseña
-                        const usuario = `${nombre}.${apellido}`; // Usuario con formato "nombre.apellido"
+                        const usuario = `${nombre}.${apellido}`.replace(/\s+/g, ''); // Elimina espacios adicionales
                         const password = generarPassword(); // Función para generar una contraseña
 
                         // Actualizar los campos
@@ -144,7 +148,43 @@
             @enderror
 
         </div>
+        @endif
 
+
+        @if ($respaldoUrl)
+
+
+        <div class="form-group mb-2 mb20">
+            <label>Rol de acceso<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" value="{{ $user->rol }}" readonly>
+        </div>
+
+        <div class="form-group mb-2 mb20">
+            <label>Nombre<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" value="{{ $user->agente->persona->nombres }} {{ $user->agente->persona->apellidos }}" readonly>
+
+        </div>
+
+        <div class="form-group mb-2 mb20">
+            <label>Usuario<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" value="{{ $user->email }}" readonly>
+        </div>
+
+        <div class="form-group  mb-2 mb20">
+            <label for="estado" class="form-label">Estado<span class="text-danger">*</span></label>
+            <select name="estado" class="form-control @error('estado') is-invalid @enderror mb-2 mb20" id="estado">
+                <option value="" disabled selected>Selecciona un estado</option>
+                @foreach($estados as $key => $value)
+                <option value="{{ $key }}" {{ old('estado', $user?->estado) == $key ? 'selected' : '' }}>
+                    {{ $value }}
+                </option>
+                @endforeach
+            </select>
+            @error('estado')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        @endif
 
     </div>
     <div class="col-md-12 mt20 mt-2">

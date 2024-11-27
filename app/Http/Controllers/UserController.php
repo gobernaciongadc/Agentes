@@ -32,7 +32,8 @@ class UserController extends Controller
     {
         $user = new User();
         $roles = ['Administrador', 'Agente'];
-        return view('user.create', compact('user', 'roles'));
+        $respaldoUrl = false;
+        return view('user.create', compact('user', 'roles', 'respaldoUrl'));
     }
 
     /**
@@ -130,7 +131,14 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $roles = ['Administrador', 'Agente'];
-        return view('user.edit', compact('user', 'roles'));
+        $estados = [
+            0 => 'Inactivo',
+            1 => 'Activo',
+        ]; // Asociamos un valor numérico con su significado para mostrarlo en el formulario.
+
+        // Verificar si el archivo existe y pasar a la vista
+        $respaldoUrl = true;
+        return view('user.edit', compact('user', 'roles', 'respaldoUrl', 'estados'));
     }
 
     /**
@@ -138,10 +146,14 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user): RedirectResponse
     {
-        $user->update($request->validated());
+        dd($user->id);
+
+        $user->update([
+            'estado' => $request->estado,
+        ]);
 
         return Redirect::route('users.index')
-            ->with('success', 'User updated successfully');
+            ->with('success', 'Usuario actualizado exitosamente.');
     }
 
     public function destroy($id): RedirectResponse

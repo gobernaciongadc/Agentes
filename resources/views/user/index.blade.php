@@ -34,7 +34,7 @@ Users
                         <table id="usuariosTable" class="table table-striped table-hover">
                             <thead class="thead">
                                 <tr>
-                                    <th>Identificador</th>
+                                    <th>Id</th>
                                     <th>Nombre</th>
                                     <th>Usuario</th>
                                     <th>Rol</th>

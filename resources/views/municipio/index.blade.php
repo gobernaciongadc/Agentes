@@ -41,7 +41,7 @@ Municipios
                         <table id="municipioTable" class="table table-striped table-hover">
                             <thead class="thead">
                                 <tr>
-                                    <th>Identificador</th>
+                                    <th>Id</th>
 
                                     <th>Municipio</th>
                                     <th>Provincia</th>

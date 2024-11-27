@@ -9,10 +9,17 @@
     <div class="">
         <div class="col-md-12">
 
-            <div class="card card-default">
-                <div class="card-header">
-                    <span class="card-title">{{ __('Update') }} User</span>
+            <div class="card card-default border">
+
+                <div class="card-header card-bg" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="float-left">
+                        <span class="titulo-card">Actualizar Datos de Usuario</span>
+                    </div>
+                    <div class="float-right">
+                        <a class="btn btn-info" href="{{ route('users.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
+                    </div>
                 </div>
+
                 <div class="card-body bg-white">
                     <form method="POST" action="{{ route('users.update', $user->id) }}" role="form" enctype="multipart/form-data">
                         {{ method_field('PATCH') }}
