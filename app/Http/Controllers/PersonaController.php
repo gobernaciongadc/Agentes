@@ -19,7 +19,7 @@ class PersonaController extends Controller
     {
         $personas = Persona::all();
 
-        return view('persona.index', compact('personas'));
+        return view('persona.index', compact('personas'), ['currentPage' => 'Gestión de Personas', 'titulo' => 'Gestión de Personas']);
     }
 
 
@@ -30,7 +30,7 @@ class PersonaController extends Controller
     {
         $persona = new Persona();
 
-        return view('persona.create', compact('persona'));
+        return view('persona.create', compact('persona'), ['currentPage' => 'Gestión de Personas', 'titulo' => 'Gestión de Personas']);
     }
 
     /**
@@ -61,7 +61,7 @@ class PersonaController extends Controller
     {
         $persona = Persona::find($id);
 
-        return view('persona.show', compact('persona'));
+        return view('persona.show', compact('persona'), ['currentPage' => 'Gestión de Personas', 'titulo' => 'Gestión de Personas']);
     }
 
     /**
@@ -71,7 +71,7 @@ class PersonaController extends Controller
     {
         $persona = Persona::find($id);
 
-        return view('persona.edit', compact('persona'));
+        return view('persona.edit', compact('persona'), ['currentPage' => 'Gestión de Personas', 'titulo' => 'Gestión de Personas']);
     }
 
     /**

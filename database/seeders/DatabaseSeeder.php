@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             User::factory()->create([
                 'email' => 'admin@gmail.com',
                 'rol' => 'administrador',
-                'agente_id' => $primerAgente->id, // Usar el ID dinámico
+                'persona_id' => $primerAgente->id, // Usar el ID dinámico
                 'password' => Hash::make('12345678'),
             ]);
         }

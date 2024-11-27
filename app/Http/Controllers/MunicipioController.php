@@ -17,7 +17,7 @@ class MunicipioController extends Controller
     public function index(Request $request): View
     {
         $municipios = Municipio::all();
-        return view('municipio.index', compact('municipios'));
+        return view('municipio.index', compact('municipios'), ['currentPage' => 'Gestión de Municipios', 'titulo' => 'Municipios']);
     }
 
     /**
@@ -29,7 +29,7 @@ class MunicipioController extends Controller
 
         $provincias = ['Arani', 'Arque', 'Ayopaya', 'Bolívar', 'Campero', 'Capinota', 'Carrasco', 'Cercado', 'chapare', 'Esteban Arze', 'Germán Jordán', 'Mizque', 'Punata', 'Quillacollo', 'Tapacarí', 'Tiraque']; // lista de provincias
 
-        return view('municipio.create', compact('municipio', 'provincias'));
+        return view('municipio.create', compact('municipio', 'provincias'), ['currentPage' => 'Gestión de Municipios', 'titulo' => 'Municipios']);
     }
 
     /**
@@ -60,7 +60,7 @@ class MunicipioController extends Controller
     {
         $municipio = Municipio::find($id);
 
-        return view('municipio.show', compact('municipio'));
+        return view('municipio.show', compact('municipio'), ['currentPage' => 'Gestión de Municipios', 'titulo' => 'Municipios']);
     }
 
     /**
@@ -70,7 +70,7 @@ class MunicipioController extends Controller
     {
         $municipio = Municipio::find($id);
         $provincias = ['Arani', 'Arque', 'Ayopaya', 'Bolívar', 'Campero', 'Capinota', 'Carrasco', 'Cercado', 'Chapare', 'Esteban Arze', 'Germán Jordán', 'Mizque', 'Punata', 'Quillacollo', 'Tapacarí', 'Tiraque']; // lista de provincias
-        return view('municipio.edit', compact('municipio', 'provincias'));
+        return view('municipio.edit', compact('municipio', 'provincias'), ['currentPage' => 'Gestión de Municipios', 'titulo' => 'Municipios']);
     }
 
     /**

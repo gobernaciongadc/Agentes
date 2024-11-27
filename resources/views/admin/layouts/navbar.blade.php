@@ -7,16 +7,19 @@
               <!-- Logo icon --><b>
                   <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                   <!-- Dark Logo icon -->
-                  <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                  <!-- <img class="img-fluid logo-navbar" src="{{ asset('img/escudo.png') }}" alt="homepage" class="dark-logo" /> -->
                   <!-- Light Logo icon -->
-                  <img src="../assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
+                  <img class="img-fluid logo-navbar" src="{{ asset('img/escudo.png') }}" alt="homepage" class="light-logo" />
               </b>
               <!--End Logo icon -->
-              <!-- Logo text --><span>
+              <!-- Logo text --><span class="font-weight-bold">
                   <!-- dark Logo text -->
-                  <img src="../assets/images/logo-text.png" alt="homepage" class="dark-logo" />
+                  <!-- <img class="img-fluid logo-navbar" src="{{ asset('img/escudo.png') }}" alt="homepage" class="dark-logo" /> -->
                   <!-- Light Logo text -->
-                  <img src="../assets/images/logo-light-text.png" class="light-logo" alt="homepage" /></span>
+                  <!-- <img class="img-fluid logo-navbar" src="{{ asset('img/escudo.png') }}" class="light-logo" alt="homepage" />
+                  -->AGENTES
+              </span>
+
           </a>
       </div>
       <!-- ============================================================== -->
@@ -45,7 +48,7 @@
                       aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-message"></i>
                       <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
                   </a>
-                  <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
+                  <div class="dropdown-menu dropdown-menu-right mailbox animated fallInDown">
                       <ul>
                           <li>
                               <div class="drop-title">Notifications</div>
@@ -106,7 +109,7 @@
                           class="mdi mdi-email"></i>
                       <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
                   </a>
-                  <div class="dropdown-menu mailbox dropdown-menu-right animated bounceInDown"
+                  <div class="dropdown-menu mailbox dropdown-menu-right animated fall-in-down"
                       aria-labelledby="2">
                       <ul>
                           <li>
@@ -176,7 +179,7 @@
                       aria-haspopup="true" aria-expanded="false">
                       <img src="{{asset('backend/assets/images/users/usuario_dos.png')}}"
                           alt="user" class="profile-pic" /></a>
-                  <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                  <div class="dropdown-menu dropdown-menu-right animated fall-in-down">
                       <ul class="dropdown-user">
                           <li>
                               <div class="dw-user-box">
@@ -184,16 +187,23 @@
                                       <img style="width:50px !important;" src="{{asset('backend/assets/images/users/usuario.png')}}" alt="user">
                                   </div>
                                   <div class="u-text">
-                                      <h4>{{ Auth::user()->name }}</h4>
+                                      <h4>
+                                          @if(Auth::user()->rol == 'agente')
+                                          {{Auth::user()->agente->persona->nombres}} {{Auth::user()->agente->persona->apellidos}}
+                                          @endif
+
+                                          @if(Auth::user()->rol == 'administrador')
+                                          {{Auth::user()->persona->nombres}} {{Auth::user()->persona->apellidos}}
+                                          @endif
+
+                                      </h4>
                                   </div>
                               </div>
                           </li>
                           <li role="separator" class="divider"></li>
-                          <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
-                          <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
-                          <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
+                          <li><a href="{{ route('admin.perfilusuario', Auth::user()->id) }}"><i class="ti-user"></i> Mi Perfil</a></li>
                           <li role="separator" class="divider"></li>
-                          <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
+                          <li><a href="{{ route('admin.viewpassword') }}"><i class="ti-settings"></i> Configuración de la cuenta</a></li>
                           <li role="separator" class="divider"></li>
                           <li>
                               <a href="{{ route('logout') }}"

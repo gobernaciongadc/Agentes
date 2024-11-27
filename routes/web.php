@@ -37,6 +37,9 @@ Route::get('listagentes', [AgenteController::class, 'listagentes'])->name('admin
 
 // RUTA PARA AGENTES USERS
 Route::resource('users', UserController::class);
+Route::get('perfilusuario/{id}', [UserController::class, 'perfilUsuario'])->name('admin.perfilusuario');
+Route::get('viewpassword', [UserController::class, 'viewPassword'])->name('admin.viewpassword');
+Route::post('changespassword', [UserController::class, 'changesPassword'])->name('admin.changespassword');
 
 
 

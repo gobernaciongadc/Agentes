@@ -29,7 +29,8 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'rol' => $this->faker->randomElement(['administrador', 'agente']),
-            'agente_id' => Agente::factory(), // Relación con un agente
+            // 'agente_id' => Agente::factory(), // Relación con un agente
+            // 'persona_id' => Agente::factory(), // Relación con un agente
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

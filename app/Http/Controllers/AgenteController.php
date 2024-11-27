@@ -24,7 +24,7 @@ class AgenteController extends Controller
         // Cargar los agentes con las relaciones 'persona' y 'municipio'
         $agentes = Agente::with(['persona', 'municipio'])->get();
 
-        return view('agente.index', compact('agentes'));
+        return view('agente.index', compact('agentes'), ['currentPage' => 'Agentes de Información', 'titulo' => 'Gestión de Agentes de Información']);
     }
 
 
@@ -38,7 +38,7 @@ class AgenteController extends Controller
         $municipios = Municipio::all();
         $tipoAgentes = ['Notarios de Fe Pública', 'Jueces y Secretarios del Tribunal Departamental de Justicia', 'SEPREC', 'Derechos Reales', 'proceso sancionador administrativo'];
         $respaldoUrl = false;
-        return view('agente.create', compact('agente', 'personas', 'municipios', 'tipoAgentes', 'respaldoUrl'));
+        return view('agente.create', compact('agente', 'personas', 'municipios', 'tipoAgentes', 'respaldoUrl'), ['currentPage' => 'Agentes de Información', 'titulo' => 'Gestión de Agentes de Información']);
     }
 
     /**
@@ -84,7 +84,7 @@ class AgenteController extends Controller
     public function show($id): View
     {
         $agente = Agente::find($id);
-        return view('agente.show', compact('agente'));
+        return view('agente.show', compact('agente'), ['currentPage' => 'Agentes de Información', 'titulo' => 'Gestión de Agentes de Información']);
     }
 
     /**
@@ -104,7 +104,7 @@ class AgenteController extends Controller
         // Verificar si el archivo existe y pasar a la vista
         $respaldoUrl = $agente->respaldo ? asset('storage/' . $agente->respaldo) : null;
 
-        return view('agente.edit', compact('agente', 'personas', 'municipios', 'tipoAgentes', 'respaldoUrl', 'estados'));
+        return view('agente.edit', compact('agente', 'personas', 'municipios', 'tipoAgentes', 'respaldoUrl', 'estados'), ['currentPage' => 'Agentes de Información', 'titulo' => 'Gestión de Agentes de Información']);
     }
 
     /**

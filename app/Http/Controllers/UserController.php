@@ -9,7 +9,9 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -22,7 +24,7 @@ class UserController extends Controller
     public function index(Request $request): View
     {
         $users = User::with('agente')->get();
-        return view('user.index', compact('users'));
+        return view('user.index', compact('users'), ['titulo' => 'Gestión de Usuarios', 'currentPage' => 'Usuarios']);
     }
 
     /**
@@ -33,7 +35,7 @@ class UserController extends Controller
         $user = new User();
         $roles = ['Administrador', 'Agente'];
         $respaldoUrl = false;
-        return view('user.create', compact('user', 'roles', 'respaldoUrl'));
+        return view('user.create', compact('user', 'roles', 'respaldoUrl'), ['titulo' => 'Gestión de Usuarios', 'currentPage' => 'Usuarios']);
     }
 
     /**
@@ -121,7 +123,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        return view('user.show', compact('user'));
+        return view('user.show', compact('user'), ['titulo' => 'Gestión de Usuarios', 'currentPage' => 'Usuarios']);
     }
 
     /**
@@ -138,7 +140,7 @@ class UserController extends Controller
 
         // Verificar si el archivo existe y pasar a la vista
         $respaldoUrl = true;
-        return view('user.edit', compact('user', 'roles', 'respaldoUrl', 'estados'));
+        return view('user.edit', compact('user', 'roles', 'respaldoUrl', 'estados'), ['titulo' => 'Gestión de Usuarios', 'currentPage' => 'Usuarios']);
     }
 
     /**
@@ -146,9 +148,12 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user): RedirectResponse
     {
-        dd($user->id);
 
-        $user->update([
+        $usuario = User::findOrFail($user->id);
+
+        // dd($usuario);
+
+        $usuario->update([
             'estado' => $request->estado,
         ]);
 
@@ -158,9 +163,88 @@ class UserController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        User::find($id)->delete();
+        try {
+            // Buscar el agente
+            $user = Agente::findOrFail($id);
 
-        return Redirect::route('users.index')
-            ->with('success', 'User deleted successfully');
+            // Cambiar el estado a 0 (inactivo)
+            $user->estado = 0;
+            $user->save();
+
+            // Redirigir con un mensaje de éxito
+            return Redirect::route('users.index')
+                ->with('success', 'El estado del usuario se cambió a inactivo exitosamente.');
+        } catch (\Exception $e) {
+            // Manejar cualquier error
+            return Redirect::back()->with('error', 'Hubo un error al intentar cambiar el estado: ' . $e->getMessage());
+        }
+    }
+
+    function perfilusuario($id): View
+    {
+        $user = User::find($id);
+
+        return view('user.perfil', compact('user'), ['titulo' => 'Perfil de Usuario', 'currentPage' => 'Perfil de usuario']);
+    }
+
+
+    function viewPassword()
+    {
+        // Encuentra el funcionario por su ID
+        $userAutencated = Auth::user(); // Accede al usuario autenticado
+        $idUsuario = $userAutencated->id;
+        return view('user.viewPassword', compact('idUsuario'), ['titulo' => 'Configuración de Usuario', 'currentPage' => 'Configuración']);
+    }
+
+    function changesPassword(Request $request)
+    {
+
+        // 1.-VALIDAR DATOS
+        $validate = Validator::make($request->all(), [
+            'new_password' => 'required|string|min:6',
+        ]);
+
+        // 2.-Recoger los usuarios por post
+        $params = (object) $request->all(); // Devuelve un obejto
+
+        // 3.- SI LA VALIDACION FUE CORRECTA
+        // Comprobar si los datos son validos
+        if ($validate->fails()) { // en caso si los datos fallan la validacion
+            // La validacion ha fallado
+            $data = array(
+                'status' => 'validacion',
+                'code' => 200,
+                'message' => 'Los datos enviados no son correctos.',
+                'errors' => $validate->errors()
+            );
+            return response()->json($data, $data['code']);
+        } else {
+            $user = Auth::user();
+            $usuario = User::find($user->id);
+
+            // Verificar si la contraseña actual es válida
+            if (!Hash::check($request->current_password, $user->password)) {
+                $data = [
+                    'code' => 200,
+                    'status' => 'error',
+                    'message' => 'Datos no validos',
+                    'errors' => 'Sin errores'
+                ];
+                return response()->json($data, $data['code']);
+            }
+
+            // Actualizar la contraseña en la base de datos
+            $usuario->password = Hash::make($request->new_password);
+            $usuario->save();
+
+            $data = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'La contraseña de cambio correctamente',
+                'errors' => 'Sin errores'
+            ];
+
+            return response()->json($data, $data['code']);
+        }
     }
 }

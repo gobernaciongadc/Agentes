@@ -47,7 +47,15 @@ Users
                                 @foreach ($users as $user)
                                 <tr>
                                     <td>{{ $user->id }}</td>
-                                    <td>{{ $user->agente->persona->nombres }} {{ $user->agente->persona->apellidos }}</td>
+                                    <td>
+                                        @if($user->agente_id == null)
+                                        {{$user->persona->nombres}} {{$user->persona->apellidos}}
+                                        @endif
+
+                                        @if($user->persona_id == null)
+                                        {{$user->agente->persona->nombres}} {{$user->agente->persona->apellidos}}
+                                        @endif
+                                    </td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->rol }}</td>
                                     <td>{{ $user->estado == 1 ? 'Activo' : 'Inactivo' }}</td>
