@@ -63,7 +63,7 @@ Personas
                                     <td>{{ $persona->telefono }}</td>
                                     <td>{{ $persona->direccion }}</td>
 
-                                    <td>
+                                    <td style="width: 10%;">
                                         <form action="{{ route('personas.destroy', $persona->id) }}" method="POST">
                                             <a class="btn btn-sm btn-primary " href="{{ route('personas.show', $persona->id) }}" title="Ver Datos"><i class="fa fa-fw fa-eye"></i></a>
                                             <a class="btn btn-sm btn-success" href="{{ route('personas.edit', $persona->id) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>

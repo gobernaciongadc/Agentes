@@ -61,7 +61,7 @@ Agentes
                                     <td>{{ $agente->estado == 1 ? 'Activo' : 'Inactivo' }}</td>
 
 
-                                    <td>
+                                    <td style="width: 10%;">
                                         <form action="{{ route('agentes.destroy', $agente->id) }}" method="POST">
                                             <a class="btn btn-sm btn-primary " href="{{ route('agentes.show', $agente->id) }}" title="Ver Datos"><i class="fa fa-fw fa-eye"></i></a>
                                             <a class="btn btn-sm btn-success" href="{{ route('agentes.edit', $agente->id) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>

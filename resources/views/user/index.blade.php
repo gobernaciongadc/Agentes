@@ -60,7 +60,7 @@ Users
                                     <td>{{ $user->rol }}</td>
                                     <td>{{ $user->estado == 1 ? 'Activo' : 'Inactivo' }}</td>
 
-                                    <td>
+                                    <td style="width: 10%;">
                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                             <a class="btn btn-sm btn-primary " href="{{ route('users.show', $user->id) }}"><i class="fa fa-fw fa-eye" title="Ver datos"></i></a>
                                             <a class="btn btn-sm btn-success" href="{{ route('users.edit', $user->id) }}"><i class="fa fa-fw fa-edit" title="Modificar datos"></i></a>

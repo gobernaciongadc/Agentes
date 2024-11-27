@@ -59,7 +59,7 @@ Municipios
                                     <td style="width: 20%;">{{ $municipio->provincia }}</td>
                                     <td style="width: 25%;"> {{ $municipio->estado == 1 ? 'Activo' : 'No Activo' }}</td>
 
-                                    <td style="width: 15%;">
+                                    <td style="width: 10%;">
                                         <form id="delete-form-{{ $municipio->id }}" action="{{ route('municipios.destroy', $municipio->id) }}" method="POST">
                                             <a class="btn btn-sm btn-primary" href="{{ route('municipios.show', $municipio->id) }}" title="Ver Datos"><i class="fa fa-fw fa-eye"></i></a>
                                             <a class="btn btn-sm btn-success" href="{{ route('municipios.edit', $municipio->id) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>

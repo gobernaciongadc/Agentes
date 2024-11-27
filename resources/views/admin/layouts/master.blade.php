@@ -75,7 +75,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer">
-                © 2024 Gobierno Autónomo Departamental de Cochabamba
+                © <span>{{date('Y')}}</span> Gobierno Autónomo Departamental de Cochabamba
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->
