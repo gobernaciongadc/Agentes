@@ -3,10 +3,12 @@
 use App\Http\Controllers\AgenteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\InformeNotarialController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\UserController;
 use App\Models\Agente;
+use App\Models\InformeNotarial;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,6 +42,9 @@ Route::resource('users', UserController::class);
 Route::get('perfilusuario/{id}', [UserController::class, 'perfilUsuario'])->name('admin.perfilusuario');
 Route::get('viewpassword', [UserController::class, 'viewPassword'])->name('admin.viewpassword');
 Route::post('changespassword', [UserController::class, 'changesPassword'])->name('admin.changespassword');
+
+// RUTA PARA AGENTES DESIGNADOS
+Route::resource('informe-notarials', InformeNotarialController::class);
 
 
 
