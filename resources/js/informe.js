@@ -10,12 +10,3 @@ $('#informesTable').DataTable({
 });
 
 
-// Modal crear nueva información
-const crearInformeBtn = document.getElementById('crearInformeBtn');
-const modal = new bootstrap.Modal(document.getElementById('responsive-modal'));
-
-crearInformeBtn.addEventListener('click', (e) => {
-    e.preventDefault(); // Evita la acción por defecto del enlace
-    modal.show(); // Abre el modal
-});
-// FIN Modal crear nueva información

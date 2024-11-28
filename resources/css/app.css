@@ -1,3 +1,8 @@
 .logo-navbar {
     width: 50px;
 }
+
+.card-borde {
+    border-top: 2px solid #0d54a560 !important;
+    border-radius: 0.5rem !important;
+}

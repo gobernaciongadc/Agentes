@@ -17,9 +17,7 @@ Informe Notarials
                     </span>
 
                     <div class="float-right">
-                        <a href="#" id="crearInformeBtn" class="btn btn-info float-right font-14" data-toggle="modal" data-target="#responsive-modal">
-                            <i class="fa fa-plus"></i> Crear Nuevo Informe
-                        </a>
+                        <button type="button" id="crearInformeBtn" class="btn btn-info float-right font-14" onclick="openModal()" data-placement="left"><i class="fa fa-plus"></i> Crear Nuevo Informe</button>
                     </div>
                 </div>
             </div>
@@ -53,14 +51,7 @@ Informe Notarials
                                 <td>{{ $informeNotarial->fecha_envio }}</td>
 
                                 <td>
-                                    <form action="{{ route('informe-notarials.destroy', $informeNotarial->id) }}" method="POST">
-                                        <a class="btn btn-sm btn-primary " href="{{ route('informe-notarials.show', $informeNotarial->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                        <a class="btn btn-sm btn-success" href="{{ route('informe-notarials.edit', $informeNotarial->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
-                                        <button type="button" id="guardarInformeBtn" class="btn btn-primary">Guardar</button>
-                                    </form>
+                                    <a class="btn btn-sm btn-primary" href="#"><i class="fa fa-file"></i> Realizar Informe</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -74,66 +65,82 @@ Informe Notarials
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    // Abrir modal
+    function openModal() {
+        $('#informe-modal').modal('show');
+    }
 
-        $('#guardarInformeBtn').on('click', function() {
-            // Capturamos los datos del formulario
-            const datos = {
-                descripcion: $('#descripcion').val(),
-                estado: $('#estado').val(),
-                _token: $('meta[name="csrf-token"]').attr('content') // Token CSRF
-            };
+    // Cerrar modal
+    function closeModal() {
+        $('#informe-modal').modal('hide');
+    }
 
-            // Realizamos la petición AJAX
-            $.ajax({
-                url: "{{ route('informe-notarials.store') }}", // Cambia a tu ruta de almacenamiento
-                method: 'POST',
-                data: datos,
-                success: function(response) {
-                    // Cerrar el modal
-                    $('#responsive-modal').modal('hide');
+    function guardarInforme() {
 
-                    // Limpiar el formulario
-                    $('#crearInformeForm')[0].reset();
+        // Capturamos los datos del formulario
+        const datos = {
+            descripcion: $('#descripcion-informe').val(),
+            _token: '{{ csrf_token() }}'
+        };
 
-                    // Actualizar la tabla con el nuevo dato
-                    const nuevoRegistro = `
-                    <tr>
-                        <td>${response.id}</td>
-                        <td>${response.descripcion}</td>
-                        <td>${response.estado}</td>
-                        <td>${response.fecha_envio}</td>
-                        <td>
-                            <a class="btn btn-sm btn-primary" href="/informe-notarials/${response.id}">
-                                <i class="fa fa-fw fa-eye"></i> Mostrar
-                            </a>
-                            <a class="btn btn-sm btn-success" href="/informe-notarials/${response.id}/edit">
-                                <i class="fa fa-fw fa-edit"></i> Editar
-                            </a>
-                            <form action="/informe-notarials/${response.id}" method="POST" style="display: inline;">
-                                <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('¿Estás seguro de eliminar?') ? this.closest('form').submit() : false;">
-                                    <i class="fa fa-fw fa-trash"></i> Eliminar
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+        // Realizamos la petición AJAX
+        $.ajax({
+
+            url: '{{ route("informe-notarials.store") }}',
+            method: 'POST',
+            data: datos,
+            success: function(response) {
+
+                const {
+                    informe
+                } = response;
+
+
+                // Cerrar el modal
+
+                // Limpiar el formulario
+                $('#descripcion-informe').val('');
+
+                // Actualizar la tabla con el nuevo dato
+                const nuevoRegistro = `
+                <tr>
+                <td>${informe.id}</td>
+                <td>${informe.descripcion}</td>
+                <td>${informe.estado}</td>
+                <td>${informe.fecha_envio}</td>
+                <td>
+                <a class="btn btn-sm btn-primary" href="/informe-notarials/${informe.id}">
+                <i class="fa fa-fw fa-eye"></i> Mostrar
+                </a>
+                <a class="btn btn-sm btn-success" href="/informe-notarials/${informe.id}/edit">
+                <i class="fa fa-fw fa-edit"></i> Editar
+                </a>
+                <form action="/informe-notarials/${informe.id}" method="POST" style="display: inline;">
+                <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('¿Estás seguro de eliminar?') ? this.closest('form').submit() : false;">
+                <i class="fa fa-fw fa-trash"></i> Eliminar
+                </button>
+                </form>
+                </td>
+                </tr>
                 `;
 
-                    // Agregar el nuevo registro al inicio de la tabla
-                    $('#informesTable tbody').prepend(nuevoRegistro);
+                // Agregar el nuevo registro al inicio de la tabla
+                $('#informesTable tbody').prepend(nuevoRegistro);
 
-                    // Mostrar mensaje de éxito (opcional)
-                    alert('Informe creado exitosamente');
-                },
-                error: function(error) {
-                    console.error('Error:', error);
-                    alert('Ocurrió un error al guardar el informe');
-                }
-            });
+                // Mostrar mensaje de éxito (opcional)
+                alert('Informe creado exitosamente');
+
+                $('#informe-modal').modal('hide');
+
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                alert('Ocurrió un error al guardar el informe');
+            }
         });
-    });
+    }
 </script>
 
 
@@ -141,24 +148,24 @@ Informe Notarials
 <div class="row">
     <div class="col-md-4">
         <!-- sample modal content -->
-        <div id="responsive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+        <div id="informe-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-info">
                         <span class="titulo-card">Crear Informe Notarial</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <button type="button" class="close" onclick="closeModal()" aria-label="Close">×</button>
                     </div>
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
                                 <label for="message-text" class="control-label">Descripción de Informe:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
+                                <textarea class="form-control" id="descripcion-informe"></textarea>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Crear</button>
+                        <button type="button" class="btn btn-default waves-effect" onclick="closeModal()">Cerrar</button>
+                        <button type="button" onclick="guardarInforme()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Crear</button>
                     </div>
                 </div>
             </div>

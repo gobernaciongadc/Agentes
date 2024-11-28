@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\InformeNotarialController;
 use App\Http\Controllers\MunicipioController;
+use App\Http\Controllers\NotaryRecordController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\UserController;
 use App\Models\Agente;
@@ -45,6 +46,9 @@ Route::post('changespassword', [UserController::class, 'changesPassword'])->name
 
 // RUTA PARA AGENTES DESIGNADOS
 Route::resource('informe-notarials', InformeNotarialController::class);
+
+// RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
+Route::resource('notary-record', NotaryRecordController::class);
 
 
 

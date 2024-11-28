@@ -6,6 +6,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/sass/app.scss',
+                'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/css/persona.css',     // estilos específicos de persona
                 'resources/js/persona.js',

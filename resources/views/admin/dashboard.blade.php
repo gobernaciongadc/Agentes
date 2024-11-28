@@ -31,7 +31,7 @@
     <!-- ============================================================== -->
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card card-borde">
                 <div class="card-body">
                     @yield('content')
                 </div>

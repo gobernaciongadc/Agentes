@@ -6,7 +6,9 @@ use App\Models\InformeNotarial;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\InformeNotarialRequest;
+use Exception;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class InformeNotarialController extends Controller
@@ -34,12 +36,52 @@ class InformeNotarialController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(InformeNotarialRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        InformeNotarial::create($request->validated());
 
-        return Redirect::route('informe-notarials.index')
-            ->with('success', 'InformeNotarial created successfully.');
+        $params = (object) $request->all(); // Devulve un obejto
+        $paramsArray = $request->all(); // Devuelve un array   
+
+        // Validación
+        $validate = Validator::make($paramsArray, [
+            'descripcion' => 'required'
+        ]);
+
+        // Comprobar si los datos son validos
+        if ($validate->fails()) { // en caso si los datos fallan la validacion
+            // La validacion ha fallado
+            $data = array(
+                'status' => 'Error',
+                'code' => 400,
+                'message' => 'Los datos enviados no son correctos',
+                'informe' => $request->all(),
+                'errors' => $validate->errors()
+            );
+        } else {
+            // Crear el objeto usuario para guardar en la base de datos
+            $informe = new InformeNotarial();
+            $informe->descripcion = $params->descripcion;
+
+            try {
+                // Guardar
+                $informe->save();
+                $data = array(
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'El informe notarial se ha creado correctamente',
+                    'informe'  => $informe
+                );
+            } catch (Exception $e) {
+                $data = array(
+                    'status' => 'Error',
+                    'code' => 404,
+                    'message' => $e
+                );
+            }
+        }
+
+        // Devuelve en json con laravel
+        return response()->json($data, $data['code']);
     }
 
     /**
