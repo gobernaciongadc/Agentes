@@ -22,6 +22,8 @@
     <link href="{{asset('backend/css/colors/default-dark.css')}}" id="theme" rel="stylesheet">
     <!-- css personalizado global -->
     <link href="{{asset('css/main.css')}}" rel="stylesheet">
+    <link href="{{asset('css/toastr.css')}}" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
@@ -106,6 +108,8 @@
     <script src="{{asset('backend/assets/plugins/sparkline/jquery.sparkline.min.js')}}"></script>
     <!--Custom JavaScript -->
     <script src="{{asset('backend/js/custom.min.js')}}"></script>
+
+    <script src="{{asset('js/toastr.min.js')}}"></script>
 
 
 

@@ -17,7 +17,9 @@ export default defineConfig({
                 'resources/css/informe.css',     // estilos específicos de persona
                 'resources/js/informe.js',
                 'resources/css/notarial.css',     // estilos específicos de persona
-                'resources/js/notarial.js'          // scripts específicos de persona
+                'resources/js/notarial.js',
+                'resources/css/empresa.css',     // estilos específicos de persona
+                'resources/js/empresa.js'         // scripts específicos de persona
             ],
             refresh: true,
         }),

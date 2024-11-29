@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgenteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InformeNotarialController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\NotaryRecordController;
@@ -46,13 +47,9 @@ Route::post('changespassword', [UserController::class, 'changesPassword'])->name
 
 // RUTA PARA AGENTES DESIGNADOS
 Route::resource('informe-notarials', InformeNotarialController::class);
+Route::get('informe-index-seprec', [InformeNotarialController::class, 'indexSeprec'])->name('informe-index-seprec.indexSeprec');
 
 // RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
-// Route::resource('notary-record', NotaryRecordController::class);
-// RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
-// Route::resource('notary-record', NotaryRecordController::class);
-
-// Listar todos los registros
 Route::get('notary-records', [NotaryRecordController::class, 'index'])->name('notary-records.index');
 
 // Mostrar formulario para crear un nuevo registro
@@ -70,6 +67,14 @@ Route::get('notary-records/edit/{id}', [NotaryRecordController::class, 'edit'])-
 // Actualizar un registro existente
 Route::put('notary-records/update/{id}', [NotaryRecordController::class, 'update'])->name('notary-records.update');
 
+
+// RUTA PARA AGENTES DE SEPREC
+Route::get('empresas', [EmpresaController::class, 'index'])->name('empresas.index');
+Route::get('empresas/create', [EmpresaController::class, 'create'])->name('empresas.create');
+Route::post('empresas/store', [EmpresaController::class, 'store'])->name('empresas.store');
+Route::get('empresas/show/{id}', [EmpresaController::class, 'show'])->name('empresas.show');
+Route::get('empresas/edit/{id}', [EmpresaController::class, 'edit'])->name('empresas.edit');
+Route::put('empresas/update/{id}', [EmpresaController::class, 'update'])->name('empresas.update');
 
 
 

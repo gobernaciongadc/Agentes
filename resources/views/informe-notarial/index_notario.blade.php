@@ -51,7 +51,7 @@ Informe Notarials
                                 <td>{{ $informeNotarial->fecha_envio }}</td>
 
                                 <td>
-                                    <a class="btn btn-sm btn-primary" href="{{ route('notary-records.index', $informeNotarial->id) }}"><i class="fa fa-file"></i> Realizar Informe</a>
+                                    <a class="btn btn-sm btn-primary" href="{{ route('empresas.index', $informeNotarial->id) }}"><i class="fa fa-file"></i> Realizar Informe</a>
                                 </td>
 
                             </tr>

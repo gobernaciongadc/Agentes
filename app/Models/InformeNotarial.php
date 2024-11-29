@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InformeNotarial extends Model
 {
-    
+
     protected $perPage = 20;
 
     /**
@@ -38,5 +38,10 @@ class InformeNotarial extends Model
     {
         return $this->hasMany(\App\Models\NotaryRecord::class, 'id', 'informe_id');
     }
-    
+
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'usuario_id', 'id');
+    }
 }
