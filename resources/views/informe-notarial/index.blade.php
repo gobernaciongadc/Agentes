@@ -51,7 +51,7 @@ Informe Notarials
                                 <td>{{ $informeNotarial->fecha_envio }}</td>
 
                                 <td>
-                                    <a class="btn btn-sm btn-primary" href="#"><i class="fa fa-file"></i> Realizar Informe</a>
+                                    <a class="btn btn-sm btn-primary" href="{{ route('notary-records.index', $informeNotarial->id) }}"><i class="fa fa-file"></i> Realizar Informe</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -95,6 +95,7 @@ Informe Notarials
                     informe
                 } = response;
 
+                console.log(informe);
 
                 // Cerrar el modal
 
@@ -109,19 +110,7 @@ Informe Notarials
                 <td>${informe.estado}</td>
                 <td>${informe.fecha_envio}</td>
                 <td>
-                <a class="btn btn-sm btn-primary" href="/informe-notarials/${informe.id}">
-                <i class="fa fa-fw fa-eye"></i> Mostrar
-                </a>
-                <a class="btn btn-sm btn-success" href="/informe-notarials/${informe.id}/edit">
-                <i class="fa fa-fw fa-edit"></i> Editar
-                </a>
-                <form action="/informe-notarials/${informe.id}" method="POST" style="display: inline;">
-                <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('¿Estás seguro de eliminar?') ? this.closest('form').submit() : false;">
-                <i class="fa fa-fw fa-trash"></i> Eliminar
-                </button>
-                </form>
+                <a class="btn btn-sm btn-primary" href="{{ route('notary-records.index', $informeNotarial->id) }}"><i class="fa fa-file"></i> Realizar Informe</a>
                 </td>
                 </tr>
                 `;

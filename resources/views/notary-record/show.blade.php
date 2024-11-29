@@ -94,4 +94,6 @@
         </div>
     </div>
 </section>
+@vite('resources/css/notarial.css')
+@vite('resources/js/notarial.js')
 @endsection

@@ -65,11 +65,15 @@ class InformeNotarialController extends Controller
             try {
                 // Guardar
                 $informe->save();
+
+                // Obtener el informe con el id del nuevo registro                 
+                $getInforme = InformeNotarial::find($informe->id);
+
                 $data = array(
                     'status' => 'success',
                     'code' => 200,
                     'message' => 'El informe notarial se ha creado correctamente',
-                    'informe'  => $informe
+                    'informe'  => $getInforme
                 );
             } catch (Exception $e) {
                 $data = array(

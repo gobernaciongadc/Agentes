@@ -48,7 +48,28 @@ Route::post('changespassword', [UserController::class, 'changesPassword'])->name
 Route::resource('informe-notarials', InformeNotarialController::class);
 
 // RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
-Route::resource('notary-record', NotaryRecordController::class);
+// Route::resource('notary-record', NotaryRecordController::class);
+// RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
+// Route::resource('notary-record', NotaryRecordController::class);
+
+// Listar todos los registros
+Route::get('notary-records', [NotaryRecordController::class, 'index'])->name('notary-records.index');
+
+// Mostrar formulario para crear un nuevo registro
+Route::get('notary-records/create', [NotaryRecordController::class, 'create'])->name('notary-records.create');
+
+// Guardar un nuevo registro
+Route::post('notary-records/store', [NotaryRecordController::class, 'store'])->name('notary-records.store');
+
+// Mostrar un registro específico
+Route::get('notary-records/show/{id}', [NotaryRecordController::class, 'show'])->name('notary-records.show');
+
+// Mostrar formulario para editar un registro
+Route::get('notary-records/edit/{id}', [NotaryRecordController::class, 'edit'])->name('notary-records.edit');
+
+// Actualizar un registro existente
+Route::put('notary-records/update/{id}', [NotaryRecordController::class, 'update'])->name('notary-records.update');
+
 
 
 

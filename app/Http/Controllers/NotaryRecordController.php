@@ -16,10 +16,9 @@ class NotaryRecordController extends Controller
      */
     public function index(Request $request): View
     {
-        $notaryRecords = NotaryRecord::paginate();
+        $notaryRecords = NotaryRecord::all();
 
-        return view('notary-record.index', compact('notaryRecords'))
-            ->with('i', ($request->input('page', 1) - 1) * $notaryRecords->perPage());
+        return view('notary-record.index', compact('notaryRecords'), ['titulo' => 'Gestión de Informe', 'currentPage' => 'Informe']);
     }
 
     /**
@@ -27,9 +26,11 @@ class NotaryRecordController extends Controller
      */
     public function create(): View
     {
+
         $notaryRecord = new NotaryRecord();
 
-        return view('notary-record.create', compact('notaryRecord'));
+
+        return view('notary-record.create', compact('notaryRecord'), ['titulo' => 'Gestión de Informe', 'currentPage' => 'Regitrar Formulario']);
     }
 
     /**
@@ -50,7 +51,7 @@ class NotaryRecordController extends Controller
     {
         $notaryRecord = NotaryRecord::find($id);
 
-        return view('notary-record.show', compact('notaryRecord'));
+        return view('notary-record.show', compact('notaryRecord'), ['titulo' => 'Gestión de Informe', 'currentPage' => 'Informe']);
     }
 
     /**
@@ -60,7 +61,7 @@ class NotaryRecordController extends Controller
     {
         $notaryRecord = NotaryRecord::find($id);
 
-        return view('notary-record.edit', compact('notaryRecord'));
+        return view('notary-record.edit', compact('notaryRecord'), ['titulo' => 'Gestión de Informe', 'currentPage' => 'Informe']);
     }
 
     /**
