@@ -59,8 +59,53 @@ class InformeNotarialController extends Controller
 
         $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
 
-        return view('informe-notarial.index_notario', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información Notarial', 'currentPage' => 'Informe Notarial']);
+        return view('informe-notarial.index_notario', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
     }
+
+    public function indexJuzgado(Request $request, $id = null): View
+    {
+
+        // Si $id no es null, filtra los resultados o realiza acciones específicas
+        // if ($id) {
+        //     $informeNotarials = InformeNotarial::where('id', $id)->get();
+        // } else {
+        //     // Si no se proporciona $id, muestra todos los registros
+        //     $informeNotarials = InformeNotarial::all();
+        // }
+
+
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        $agente = Agente::where('id', $user->agente_id)->first();
+
+        $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
+
+        return view('informe-notarial.index_juzgado', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Setratarios y Juzgados', 'currentPage' => 'Informe Juzgados']);
+    }
+
+    public function indexDerecho(Request $request, $id = null): View
+    {
+
+        // Si $id no es null, filtra los resultados o realiza acciones específicas
+        // if ($id) {
+        //     $informeNotarials = InformeNotarial::where('id', $id)->get();
+        // } else {
+        //     // Si no se proporciona $id, muestra todos los registros
+        //     $informeNotarials = InformeNotarial::all();
+        // }
+
+
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        $agente = Agente::where('id', $user->agente_id)->first();
+
+        $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
+
+        return view('informe-notarial.index_derechos', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Derechos Reales', 'currentPage' => 'Informe Derechos Reales']);
+    }
+
 
     /**
      * Show the form for creating a new resource.

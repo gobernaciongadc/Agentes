@@ -13,7 +13,7 @@
 .custom-file-upload {
     display: inline-block;
     padding: 5px 10px;
-    color: white;
+
     background-color: #487eb0;
     border-radius: 5px;
     cursor: pointer;
@@ -22,12 +22,16 @@
     margin-top: 5px;
 }
 
+.custom-file-upload span {
+    color: white !important;
+}
+
 .custom-file-upload:hover {
     background-color: #40739e;
 }
 
 /* Ocultar el input de archivo original */
-#respaldo {
+#respaldo-1 {
     display: none;
 }
 
@@ -38,7 +42,45 @@
 }
 
 /* Estilo para el nombre del archivo seleccionado */
-#file-name {
+#file-name-1 {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 1px;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+#respaldo-2 {
+    display: none;
+}
+
+/* Estilo para el mensaje de error */
+.invalid-feedback {
+    color: #e74c3c;
+    font-size: 0.9rem;
+}
+
+/* Estilo para el nombre del archivo seleccionado */
+#file-name-2 {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 1px;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+#respaldo-3 {
+    display: none;
+}
+
+/* Estilo para el mensaje de error */
+.invalid-feedback {
+    color: #e74c3c;
+    font-size: 0.9rem;
+}
+
+/* Estilo para el nombre del archivo seleccionado */
+#file-name-3 {
     font-size: 0.9rem;
     color: #555;
     margin-top: 1px;

@@ -9,10 +9,10 @@ Empresas
 <div class="row">
     <div class="col-sm-12">
 
-        <a href="{{ route('empresas.create') }}" class="btn btn-primary font-14 float-left" data-placement="left">
+        <a href="{{ route('empresas.create') }}" class="btn btn-primary font-14 float-right" data-placement="left">
             <i class="fa fa-plus"></i> Crear Nuevo Registro
         </a>
-        <a href="{{ route('informe-index-seprec.indexSeprec') }}" class="btn btn-danger font-14 float-right" data-placement="left">
+        <a href="{{ route('informe-index-seprec.indexSeprec') }}" class="btn btn-danger font-14 float-left" data-placement="left">
             <i class="fa fa-chevron-left"></i> Regresar a Información CEPREC
         </a>
 
@@ -48,7 +48,7 @@ Empresas
                 <tbody class="small">
                     @foreach ($empresas as $empresa)
                     <tr>
-                        <td>{{ ++$i }}</td>
+                        <td>{{ $empresa->id }}</td>
 
                         <td>{{ $empresa->nombre_representante_seprec }}</td>
                         <td>{{ $empresa->nombre_razon_social }}</td>

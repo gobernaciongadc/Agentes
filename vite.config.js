@@ -19,7 +19,11 @@ export default defineConfig({
                 'resources/css/notarial.css',     // estilos específicos de persona
                 'resources/js/notarial.js',
                 'resources/css/empresa.css',     // estilos específicos de persona
-                'resources/js/empresa.js'         // scripts específicos de persona
+                'resources/js/empresa.js',
+                'resources/css/juzgado.css',     // estilos específicos de persona
+                'resources/js/juzgado.js',
+                'resources/css/derechos.css',     // estilos específicos de persona
+                'resources/js/derechos.js'        // scripts específicos de persona
             ],
             refresh: true,
         }),

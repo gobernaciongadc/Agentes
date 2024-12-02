@@ -3,13 +3,16 @@
 use App\Http\Controllers\AgenteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\DerechosRealeController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InformeNotarialController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\NotaryRecordController;
 use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\SentenciasJudicialeController;
 use App\Http\Controllers\UserController;
 use App\Models\Agente;
+use App\Models\DerechosReale;
 use App\Models\InformeNotarial;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +51,8 @@ Route::post('changespassword', [UserController::class, 'changesPassword'])->name
 // RUTA PARA AGENTES DESIGNADOS
 Route::resource('informe-notarials', InformeNotarialController::class);
 Route::get('informe-index-seprec', [InformeNotarialController::class, 'indexSeprec'])->name('informe-index-seprec.indexSeprec');
+Route::get('informe-index-juzgado', [InformeNotarialController::class, 'indexJuzgado'])->name('informe-index-juzgado.indexJuzgado');
+Route::get('informe-index-derecho', [InformeNotarialController::class, 'indexDerecho'])->name('informe-index-derecho.indexDerecho');
 
 // RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
 Route::get('notary-records', [NotaryRecordController::class, 'index'])->name('notary-records.index');
@@ -76,6 +81,22 @@ Route::get('empresas/show/{id}', [EmpresaController::class, 'show'])->name('empr
 Route::get('empresas/edit/{id}', [EmpresaController::class, 'edit'])->name('empresas.edit');
 Route::put('empresas/update/{id}', [EmpresaController::class, 'update'])->name('empresas.update');
 
+
+// RUTA PARA AGENTES PARA SETRETARIOAS O SECRETARIOS DE JUZGADOS
+Route::get('sentencias-judiciales', [SentenciasJudicialeController::class, 'index'])->name('sentencias-judiciales.index');
+Route::get('sentencias-judiciales/create', [SentenciasJudicialeController::class, 'create'])->name('sentencias-judiciales.create');
+Route::post('sentencias-judiciales/store', [SentenciasJudicialeController::class, 'store'])->name('sentencias-judiciales.store');
+Route::get('sentencias-judiciales/show/{id}', [SentenciasJudicialeController::class, 'show'])->name('sentencias-judiciales.show');
+Route::get('sentencias-judiciales/edit/{id}', [SentenciasJudicialeController::class, 'edit'])->name('sentencias-judiciales.edit');
+Route::put('sentencias-judiciales/update/{id}', [SentenciasJudicialeController::class, 'update'])->name('sentencias-judiciales.update');
+
+// RUTA PARA AGENTES DE DERECHOS REALES
+Route::get('derechos-reales', [DerechosRealeController::class, 'index'])->name('derechos-reales.index');
+Route::get('derechos-reales/create', [DerechosRealeController::class, 'create'])->name('derechos-reales.create');
+Route::post('derechos-reales/store', [DerechosRealeController::class, 'store'])->name('derechos-reales.store');
+Route::get('derechos-reales/show/{id}', [DerechosRealeController::class, 'show'])->name('derechos-reales.show');
+Route::get('derechos-reales/edit/{id}', [DerechosRealeController::class, 'edit'])->name('derechos-reales.edit');
+Route::put('derechos-reales/update/{id}', [DerechosRealeController::class, 'update'])->name('derechos-reales.update');
 
 
 
