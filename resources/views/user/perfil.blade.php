@@ -17,18 +17,18 @@
             </div>
             <h4 class="card-title font-weight-bold">
 
-                @if($user->rol == 'agente')
+                @if($user->rol == 'Agente')
                 {{Auth::user()->agente->persona->nombres}} {{Auth::user()->agente->persona->apellidos}}
                 @endif
 
-                @if($user->rol == 'administrador')
+                @if($user->rol == 'Administrador')
                 {{Auth::user()->persona->nombres}} {{Auth::user()->persona->apellidos}}
                 @endif
 
             </h4>
             <p class="text-muted mb-2">Rol: <span class="font-weight-bold text-dark"> {{ $user->rol }}</span></p>
             <p class="text-muted mb-2">Usuario: <span class="font-weight-bold text-dark"> {{ $user->email }}</span></p>
-            @if($user->rol == 'agente')
+            @if($user->rol == 'Agente')
             <p class="text-muted mb-2">Tipo de Agente: <span class="font-weight-bold text-dark">
                     {{Auth::user()->agente->tipo_agente}}
                 </span></p>

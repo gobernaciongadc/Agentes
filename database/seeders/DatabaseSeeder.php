@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Primero ejecutar el AgenteSeeder
         $this->call(AgenteSeeder::class);
 
         // Obtener el primer agente de la tabla
@@ -28,5 +29,8 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('12345678'),
             ]);
         }
+
+        // Llamar al RoleSeeder después de crear el usuario
+        $this->call(RoleSeeder::class);
     }
 }

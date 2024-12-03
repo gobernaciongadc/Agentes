@@ -75,6 +75,8 @@ class UserController extends Controller
             $user->password = bcrypt($params->password);
             $user->save();
 
+            // Asignar rol al usuario
+            $user->assignRole($request->get('rol'));
 
             // Operaciones adicionales según el rol
             if ($params->rol == 'Administrador') {

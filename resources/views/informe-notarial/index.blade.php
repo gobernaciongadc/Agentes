@@ -84,13 +84,11 @@ Informe Notarials
 
         const datos = {
             descripcion: $('#descripcion-informe').val(),
-
             _token: '{{ csrf_token() }}'
         };
 
         // Realizamos la petición AJAX
         $.ajax({
-
             url: '{{ route("informe-notarials.store") }}',
             method: 'POST',
             data: datos,

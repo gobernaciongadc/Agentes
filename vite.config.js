@@ -23,7 +23,9 @@ export default defineConfig({
                 'resources/css/juzgado.css',     // estilos específicos de persona
                 'resources/js/juzgado.js',
                 'resources/css/derechos.css',     // estilos específicos de persona
-                'resources/js/derechos.js'        // scripts específicos de persona
+                'resources/js/derechos.js',
+                'resources/css/sancion.css',     // estilos específicos de persona
+                'resources/js/sancion.js'         // scripts específicos de persona
             ],
             refresh: true,
         }),

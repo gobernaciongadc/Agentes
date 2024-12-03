@@ -35,14 +35,19 @@
               <li class="nav-devider"></li>
               <li class="nav-small-cap">MENU PRINCIPAL</li>
 
+              @role('Agente')
+
+              @if(Auth::user()->agente->tipo_agente == "Notarios de Fe Pública")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Notarial<span
-                              class="label label-rouded label-themecolor pull-right">2</span></span></a>
+                              class="label label-rouded label-themecolor pull-right">1</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-notarials.index','Notarios de Fe Pública')}}">Información Notarial</a></li>
-                      <li><a href="#">Lista de envios</a></li>
                   </ul>
               </li>
+              @endif
+
+              @if(Auth::user()->agente->tipo_agente == "SEPREC")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión SEPREC<span
                               class="label label-rouded label-themecolor pull-right">2</span></span></a>
@@ -51,7 +56,9 @@
                       <li><a href="#">Lista de envios</a></li>
                   </ul>
               </li>
+              @endif
 
+              @if(Auth::user()->agente->tipo_agente == "Jueces y Secretarios del Tribunal Departamental de Justicia")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Juzgados<span
                               class="label label-rouded label-themecolor pull-right">2</span></span></a>
@@ -60,13 +67,30 @@
                       <li><a href="#">Lista de envios</a></li>
                   </ul>
               </li>
+              @endif
 
+              @if(Auth::user()->agente->tipo_agente == "Derechos Reales")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Derechos<span
                               class="label label-rouded label-themecolor pull-right">2</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Derechos</a></li>
                       <li><a href="#">Lista de envios</a></li>
+                  </ul>
+              </li>
+              @endif
+
+
+
+              @endrole
+
+              @role('Administrador')
+              <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
+                          class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Sancionador<span
+                              class="label label-rouded label-themecolor pull-right">2</span></span></a>
+                  <ul aria-expanded="false" class="collapse">
+                      <li><a href="{{route('sancions-bandeja-entrada.indexBandejaEntrada')}}">Bandeja de Entrada</a></li>
+                      <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Recibida</a></li>
                   </ul>
               </li>
 
@@ -80,7 +104,7 @@
                       <li><a href="{{route('users.index')}}">Usuarios</a></li>
                   </ul>
               </li>
-
+              @endrole
 
           </ul>
       </nav>
