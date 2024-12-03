@@ -188,11 +188,11 @@
                                   </div>
                                   <div class="u-text">
                                       <h4>
-                                          @if(Auth::user()->rol == 'agente')
+                                          @if(Auth::user()->rol == 'Agente')
                                           {{Auth::user()->agente->persona->nombres}} {{Auth::user()->agente->persona->apellidos}}
                                           @endif
 
-                                          @if(Auth::user()->rol == 'administrador')
+                                          @if(Auth::user()->rol == 'Administrador')
                                           {{Auth::user()->persona->nombres}} {{Auth::user()->persona->apellidos}}
                                           @endif
 

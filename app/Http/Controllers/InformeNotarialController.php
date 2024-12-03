@@ -125,12 +125,28 @@ class InformeNotarialController extends Controller
     {
 
         $params = (object) $request->all(); // Devulve un obejto
-        $paramsArray = $request->all(); // Devuelve un array   
+        $paramsArray = $request->all(); // Devuelve un array  
 
+        // Obtener todos los parámetros de la URL
+        $todosLosParametros = $request->query();
+
+        // Si necesitas un valor específico y no sabes el nombre exacto
+        $claveDinamica = array_key_first($todosLosParametros); // Obtiene la primera clave
+
+        $data = array(
+            'status' => 'success',
+            'code' => 200,
+            'message' => 'El informe notarial se ha creado correctamente',
+            'informe' => $claveDinamica
+        );
+        // Devuelve en json con laravel
+        return response()->json($data, $data['code']);
         // Obtener el usuario autenticado
         $user = Auth::user();
 
         if ($user->rol == 'Agente') {
+
+            $agente = Agente::where('id', $user->agente_id)->first();
 
             // Validación
             $validate = Validator::make($paramsArray, [

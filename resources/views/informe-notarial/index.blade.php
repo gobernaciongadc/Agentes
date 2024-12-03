@@ -80,8 +80,11 @@ Informe Notarials
 
         const baseUrl = "{{ url('/') }}"; // Base de la URL
         // Capturamos los datos del formulario
+        // Obtener la URL actual
+
         const datos = {
             descripcion: $('#descripcion-informe').val(),
+
             _token: '{{ csrf_token() }}'
         };
 
@@ -99,6 +102,9 @@ Informe Notarials
                 } = response;
 
                 // Siempre sera un agente el que crea el informe
+
+                console.log(response);
+                return;
 
                 switch (agente.tipo_agente) {
                     case 'Notarios de Fe Pública':

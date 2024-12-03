@@ -6,11 +6,11 @@
               <li class="user-profile">
                   <a class="has-arrow waves-effect waves-dark mt-3" href="#" aria-expanded="false"><i class="fa fa-user" style="font-size: 1.2rem;"></i> <span class="hide-menu">
 
-                          @if(Auth::user()->rol == 'agente')
+                          @if(Auth::user()->rol == 'Agente')
                           {{Auth::user()->agente->persona->nombres}}
                           @endif
 
-                          @if(Auth::user()->rol == 'administrador')
+                          @if(Auth::user()->rol == 'Administrador')
                           {{Auth::user()->persona->nombres}}
                           @endif
 
@@ -39,7 +39,7 @@
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Notarial<span
                               class="label label-rouded label-themecolor pull-right">2</span></span></a>
                   <ul aria-expanded="false" class="collapse">
-                      <li><a href="{{route('informe-notarials.index')}}">Información Notarial</a></li>
+                      <li><a href="{{route('informe-notarials.index','Notarios de Fe Pública')}}">Información Notarial</a></li>
                       <li><a href="#">Lista de envios</a></li>
                   </ul>
               </li>
