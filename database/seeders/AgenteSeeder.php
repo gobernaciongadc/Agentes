@@ -18,7 +18,7 @@ class AgenteSeeder extends Seeder
         // Crear 10 municipios
         Municipio::factory(10)->create()->each(function ($municipio) {
             // Para cada municipio, crear 5 personas
-            $personas = Persona::factory(5)->create();
+            $personas = Persona::factory(1)->create();
 
             // Para cada persona, crear un agente relacionado con el municipio
             $personas->each(function ($persona) use ($municipio) {
