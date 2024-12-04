@@ -6,6 +6,10 @@ use App\Models\NotaryRecord;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\NotaryRecordRequest;
+use App\Models\Agente;
+use App\Models\Municipio;
+use App\Models\Persona;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -26,11 +30,21 @@ class NotaryRecordController extends Controller
      */
     public function create(): View
     {
+        // Datos de la persona  autenticada
+
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        $agente = Agente::where('id', $user->agente_id)->first();
+
+        $notario = Persona::where('id', $agente->persona_id)->first();
+
+        $municipio = Municipio::where('id', $agente->municipio_id)->first();
 
         $notaryRecord = new NotaryRecord();
 
 
-        return view('notary-record.create', compact('notaryRecord'), ['titulo' => 'Gestión de Informe', 'currentPage' => 'Regitrar Formulario']);
+        return view('notary-record.create', compact('notaryRecord', 'notario', 'municipio'), ['titulo' => 'Gestión de Informe', 'currentPage' => 'Regitrar Formulario']);
     }
 
     /**

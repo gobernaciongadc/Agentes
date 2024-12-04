@@ -4,7 +4,7 @@
     <div class="col-md-3">
         <div class="form-group mb-2 mb20">
             <label for="municipio" class="form-label">{{ __('Municipio') }} <span class="text-danger">*</span></label>
-            <input type="text" name="municipio" class="form-control @error('municipio') is-invalid @enderror" value="{{ old('municipio', $notaryRecord?->municipio) }}" id="municipio">
+            <input type="text" name="municipio" class="form-control @error('municipio') is-invalid @enderror" value="{{ old('municipio', $notaryRecord?->municipio?: $municipio->nombre.' - '.$municipio->provincia ) }}" id="municipio" readonly>
             {!! $errors->first('municipio', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
@@ -20,7 +20,7 @@
     <div class="col-md-4">
         <div class="form-group mb-2 mb20">
             <label for="nombre_notaria" class="form-label">{{ __('Nombre Notaria') }} <span class="text-danger">*</span></label>
-            <input type="text" name="nombre_notaria" class="form-control @error('nombre_notaria') is-invalid @enderror" value="{{ old('nombre_notaria', $notaryRecord?->nombre_notaria) }}" id="nombre_notaria">
+            <input type="text" name="nombre_notaria" class="form-control @error('nombre_notaria') is-invalid @enderror" value="{{ old('nombre_notaria', $notaryRecord?->nombre_notaria?: $notario->nombres .' '.$notario->apellidos ) }}" id="nombre_notaria" readonly>
             {!! $errors->first('nombre_notaria', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
@@ -38,7 +38,7 @@
     <div class="col-md-3">
         <div class="form-group mb-2 mb20">
             <label for="fecha_escritura" class="form-label">{{ __('Fecha Escritura') }} <span class="text-danger">*</span></label>
-            <input type="text" name="fecha_escritura" class="form-control @error('fecha_escritura') is-invalid @enderror" value="{{ old('fecha_escritura', $notaryRecord?->fecha_escritura) }}" id="fecha_escritura">
+            <input type="date" name="fecha_escritura" class="form-control @error('fecha_escritura') is-invalid @enderror" value="{{ old('fecha_escritura', $notaryRecord?->fecha_escritura) }}" id="fecha_escritura">
             {!! $errors->first('fecha_escritura', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
