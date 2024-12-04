@@ -1,3 +1,8 @@
+.bg-cabecera {
+    background-color: #487eb0;
+    color: aliceblue;
+}
+
 .texto-form>div>div label {
     font-size: 15px !important;
     font-weight: normal !important;

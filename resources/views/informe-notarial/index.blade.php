@@ -32,13 +32,13 @@ Informe Notarials
                     <table id="informesTable" class="table table-striped table-hover">
                         <thead class="thead">
                             <tr>
-                                <th>Id</th>
+                                <th style="width: 10%;">Id</th>
 
-                                <th>Descripcion</th>
-                                <th>Estado</th>
-                                <th>Fecha Envio</th>
+                                <th style="width: 30%;">Descripcion</th>
+                                <th style="width: 10%;">Estado</th>
+                                <th style="width: 20%;">Fecha Envio</th>
 
-                                <th>Acciones</th>
+                                <th style="width: 30%;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,11 +47,19 @@ Informe Notarials
                                 <td>{{ $informeNotarial->id }}</td>
 
                                 <td>{{ $informeNotarial->descripcion }}</td>
-                                <td>{{ $informeNotarial->estado }}</td>
-                                <td>{{ $informeNotarial->fecha_envio }}</td>
-
+                                <td>
+                                    <span class="badge badge-warning">{{ $informeNotarial->estado }}</span>
+                                </td>
+                                <td>
+                                    @if ($informeNotarial->fecha_envio)
+                                    {{ $informeNotarial->fecha_envio }}
+                                    @else
+                                    Sin fecha de envío
+                                    @endif
+                                </td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="{{ route('notary-records.index', $informeNotarial->id) }}"><i class="fa fa-file"></i> Realizar Informe</a>
+                                    <a class="btn btn-sm btn-success" href="{{ route('notary-records.index', $informeNotarial->id) }}"><i class="fa fa-upload"></i> Enviar informe</a>
                                 </td>
 
                             </tr>
@@ -102,7 +110,7 @@ Informe Notarials
                 // Siempre sera un agente el que crea el informe
 
                 console.log(response);
-                return;
+                // return;
 
                 switch (agente.tipo_agente) {
                     case 'Notarios de Fe Pública':
@@ -116,7 +124,7 @@ Informe Notarials
                             <td>${informe.id}</td>
                             <td>${informe.descripcion}</td>
                             <td>${informe.estado}</td>
-                            <td>${informe.fecha_envio}</td>
+                            // <td>${informe.fecha_envio}</td>
                             <td>
                             <a class="btn btn-sm btn-primary" href="${baseUrl}/notary-records/${informe.id}"><i class="fa fa-file"></i> Realizar Informe</a>
                             </td>
@@ -144,7 +152,7 @@ Informe Notarials
                             <td>${informe.id}</td>
                             <td>${informe.descripcion}</td>
                             <td>${informe.estado}</td>
-                            <td>${informe.fecha_envio}</td>
+                            <td>${informe.fecha_envio ? informe.fecha_envio : 'Sin fecha de envío'}</td>
                             <td>
                             <a class="btn btn-sm btn-primary" href="${baseUrl}/empresas/${informe.id}"><i class="fa fa-file"></i> Realizar Informe</a>
                             </td>

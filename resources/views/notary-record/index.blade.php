@@ -10,10 +10,13 @@ Notary Records
 <div class="row">
     <div class="col-sm-12">
 
-        <a href="{{ route('notary-records.create') }}" class="btn btn-info font-14 float-right" data-placement="left">
+
+        <a href="{{ route('notary-records.create') }}" class="btn btn-primary font-14 float-right" data-placement="left">
             <i class="fa fa-plus"></i> Crear Nuevo Registro
         </a>
-
+        <a href="{{ route('informe-notarials.index') }}" class="btn btn-danger font-14 float-left" data-placement="left">
+            <i class="fa fa-chevron-left"></i> Regresar a Información Notarios
+        </a>
 
 
         @if ($message = Session::get('success'))
@@ -24,7 +27,7 @@ Notary Records
 
         <div class="table-responsive">
             <table id="notarialesTable" class="table table-striped table-hover">
-                <thead class="thead small">
+                <thead class="thead small bg-cabecera">
                     <tr>
                         <th>#</th>
                         <th>Municipio</th>
@@ -67,7 +70,6 @@ Notary Records
                         <td>{{ $notaryRecord->numero_orden }}</td>
                         <td>{{ $notaryRecord->monto_pagado }}</td>
                         <td>{{ $notaryRecord->observaciones }}</td>
-                        <!-- <td>{{ $notaryRecord->informe_id }}</td> -->
 
                         <td>
                             <form action="{{ route('notary-records.destroy', $notaryRecord->id) }}" method="POST">

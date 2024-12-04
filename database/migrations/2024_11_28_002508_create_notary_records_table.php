@@ -29,6 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('numero_orden'); // Numérico
             $table->decimal('monto_pagado', 15, 2); // Numérico con dos decimales
             $table->text('observaciones')->nullable(); // Alfanumérico, puede ser nulo
+
             $table->foreignId('informe_id')->constrained('informe_notarials')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps(); // Crea las columnas created_at y updated_at
