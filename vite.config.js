@@ -8,6 +8,8 @@ export default defineConfig({
                 'resources/sass/app.scss',
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/css/agente.css',     // estilos específicos de persona
+                'resources/js/agente.js',
                 'resources/css/persona.css',     // estilos específicos de persona
                 'resources/js/persona.js',
                 'resources/css/municipio.css',     // estilos específicos de persona

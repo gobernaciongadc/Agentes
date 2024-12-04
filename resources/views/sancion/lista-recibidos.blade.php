@@ -36,7 +36,7 @@ Sancions
                     <tr>
                         <td>1</td>
                         <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi modi error similique mollitia omnis dolores molestiae, repellat tempora, saepe ut minima ipsa at ratione rerum, odit eius recusandae officiis ad!</td>
-                        <td>David salinas</td>
+                        <td>Rosario Perez</td>
                         <td>Derechos Reales</td>
                         <td>13-12-2022</td>
                         <td>Pendiente</td>
