@@ -14,6 +14,10 @@ class AdminController extends Controller
 
     public function master()
     {
-        return view('admin.layouts.master', ['currentPage' => 'Dashboard', 'titulo' => 'Tablero de Control']);
+        return view('admin.layouts.master', [
+            'currentPage' => 'Dashboard',
+            'titulo' => 'Tablero de Control',
+            'showPanel' => true,  // Variable para controlar la inclusión
+        ]);
     }
 }

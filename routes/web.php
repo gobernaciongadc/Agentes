@@ -44,6 +44,7 @@ Route::group(
         Route::get('informe-index-seprec', [InformeNotarialController::class, 'indexSeprec'])->name('informe-index-seprec.indexSeprec');
         Route::get('informe-index-juzgado', [InformeNotarialController::class, 'indexJuzgado'])->name('informe-index-juzgado.indexJuzgado');
         Route::get('informe-index-derecho', [InformeNotarialController::class, 'indexDerecho'])->name('informe-index-derecho.indexDerecho');
+        Route::get('enviar-informe', [InformeNotarialController::class, 'enviarInforme'])->name('enviar-informe.enviarInforme'); // Enviar informe
 
         // RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
         Route::get('notary-records', [NotaryRecordController::class, 'index'])->name('notary-records.index');
@@ -55,13 +56,17 @@ Route::group(
         Route::post('notary-records/store', [NotaryRecordController::class, 'store'])->name('notary-records.store');
 
         // Mostrar un registro específico
-        Route::get('notary-records/show/{id}', [NotaryRecordController::class, 'show'])->name('notary-records.show');
+        Route::get('notary-records/show/{id}/{idInforme}', [NotaryRecordController::class, 'show'])->name('notary-records.show');
 
         // Mostrar formulario para editar un registro
-        Route::get('notary-records/edit/{id}', [NotaryRecordController::class, 'edit'])->name('notary-records.edit');
+        Route::get('notary-records/edit/{id}/{idInforme}', [NotaryRecordController::class, 'edit'])->name('notary-records.edit');
 
         // Actualizar un registro existente
-        Route::put('notary-records/update/{id}', [NotaryRecordController::class, 'update'])->name('notary-records.update');
+        Route::match(['put', 'patch'], 'notary-records/update/{id}/{idInforme}', [NotaryRecordController::class, 'update'])->name('notary-records.update');
+
+
+        Route::delete('notary-records/{id}/{idInforme}', [NotaryRecordController::class, 'destroy'])->name('notary-records.destroy');
+
 
 
         // RUTA PARA AGENTES DE SEPREC

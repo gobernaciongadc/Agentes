@@ -6,6 +6,7 @@ use App\Models\Sancion;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\SancionRequest;
+use App\Models\InformeNotarial;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -23,9 +24,11 @@ class SancionController extends Controller
 
     public function indexBandejaEntrada(Request $request): View
     {
-        $sancions = Sancion::all();
 
-        return view('sancion.lista-recibidos', compact('sancions'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada']);
+
+        $informes = InformeNotarial::with('user')->where('estado', 'No verificado')->get();
+
+        return view('sancion.lista-recibidos', compact('informes'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada']);
     }
 
     /**

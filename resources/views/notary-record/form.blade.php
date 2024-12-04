@@ -136,14 +136,12 @@
         </div>
     </div>
 
-    <div class="d-none">
-        <div class="form-group mb-2 mb20">
-            <label for="informe_id" class="form-label">{{ __('Informe Id') }}</label>
-            <input type="text" name="informe_id" class="form-control @error('informe_id') is-invalid @enderror" value="{{ old('informe_id', $notaryRecord?->informe_id) }}" id="informe_id" placeholder="Informe Id">
-            {!! $errors->first('informe_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-    </div>
 
+    <!-- Id informe -->
+    <input type="hidden" name="informe_id" class="form-control @error('informe_id') is-invalid @enderror" value="{{ old('informe_id', $notaryRecord?->informe_id?: $idInforme) }}" id="informe_id" placeholder="Informe Id">
+
+    <!-- Id user -->
+    <input type="hidden" name="usuario_id" class="form-control @error('usuario_id') is-invalid @enderror" value="{{ old('usuario_id', $notaryRecord?->usuario_id?: $idUser) }}" id="usuario_id" placeholder="Usuario Id">
 
 
 </div>

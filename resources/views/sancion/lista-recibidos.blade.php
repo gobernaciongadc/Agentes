@@ -20,29 +20,38 @@ Sancions
             <table id="bandejaTable" class="table table-striped table-hover">
                 <thead class="thead">
                     <tr>
-                        <th>No</th>
-                        <th style="width: 20%">Informe</th>
-                        <th>agente_id</th>
-                        <th>tipo_agente</th>
-                        <th>feche emitida</th>
+                        <th>ID</th>
+                        <th style="width: 20%">Descripción de Informe</th>
+                        <th>Agente</th>
+                        <th>Tipo Agente</th>
+                        <th>Fecha Emitida</th>
                         <th>Estado Recibido</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
 
-
+                    @foreach ($informes as $informe)
 
                     <tr>
-                        <td>1</td>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi modi error similique mollitia omnis dolores molestiae, repellat tempora, saepe ut minima ipsa at ratione rerum, odit eius recusandae officiis ad!</td>
-                        <td>Rosario Perez</td>
-                        <td>Derechos Reales</td>
-                        <td>13-12-2022</td>
+                        <td>{{$informe->id}}</td>
+                        <td>{{$informe->descripcion}}</td>
+                        <td>{{$informe->user->agente->persona->nombres}} {{$informe->user->agente->persona->apellidos}}</td>
+                        <td>{{$informe->user->agente->tipo_agente}}</td>
+                        <td>{{$informe->fecha_envio}}</td>
                         <td>Pendiente</td>
-                        <td><button class="btn btn-primary">Recibir informe</button></td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down" title="Recibir Informe"></i> Recibir</button>
+                            <button type="button" class="btn btn-info btn-sm"><i class="fa fa-eye" title="Ver Informe"></i> Verificar</button>
+                            <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-search" title="Observar Informe"></i> Observación</button>
+                            <button type="button" class="btn btn-success btn-sm"><i class="fa fa-check" title="Consolidar Informe"></i> Consolidar</button>
+                            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-money" title="Sancionar Informe"></i> Sancionar</button>
+                        </td>
+
 
                     </tr>
+
+                    @endforeach
 
 
                 </tbody>

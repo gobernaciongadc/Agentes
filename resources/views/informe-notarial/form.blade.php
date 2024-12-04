@@ -1,6 +1,6 @@
 <div class="row padding-1 p-1">
     <div class="col-md-12">
-        
+
         <div class="form-group mb-2 mb20">
             <label for="descripcion" class="form-label">{{ __('Descripcion') }}</label>
             <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $informeNotarial?->descripcion) }}" id="descripcion" placeholder="Descripcion">

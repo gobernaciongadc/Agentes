@@ -33,6 +33,9 @@
         <div class="col-12">
             <div class="card card-borde">
                 <div class="card-body">
+                    @if ($showPanel ?? false)
+                    @include('admin.layouts.panel-control')
+                    @endif
                     @yield('content')
                 </div>
             </div>

@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class NotaryRecord extends Model
 {
-    
+
     protected $perPage = 20;
 
     /**
@@ -42,7 +42,7 @@ class NotaryRecord extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['municipio', 'numero_notaria', 'nombre_notaria', 'numero_escritura', 'fecha_escritura', 'naturaleza_escritura', 'nombre_cedente', 'ci_nit_cedente', 'nombre_beneficiario', 'ci_nit_beneficiario', 'tipo_bien', 'registro_bien', 'tipo_formulario', 'numero_orden', 'monto_pagado', 'observaciones', 'informe_id'];
+    protected $fillable = ['municipio', 'numero_notaria', 'nombre_notaria', 'numero_escritura', 'fecha_escritura', 'naturaleza_escritura', 'nombre_cedente', 'ci_nit_cedente', 'nombre_beneficiario', 'ci_nit_beneficiario', 'tipo_bien', 'registro_bien', 'tipo_formulario', 'numero_orden', 'monto_pagado', 'observaciones', 'informe_id', 'usuario_id'];
 
 
     /**
@@ -52,5 +52,4 @@ class NotaryRecord extends Model
     {
         return $this->belongsTo(\App\Models\InformeNotarial::class, 'informe_id', 'id');
     }
-    
 }

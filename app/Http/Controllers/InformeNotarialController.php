@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\InformeNotarialRequest;
 use App\Models\Agente;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -229,5 +230,22 @@ class InformeNotarialController extends Controller
 
         return Redirect::route('informe-notarials.index')
             ->with('success', 'InformeNotarial deleted successfully');
+    }
+
+    // Metodo que envia el informe
+    function enviarInforme(Request $request)
+    {
+        $idInforme = $request->query('id');
+        // Cargar manualmente el registro
+        $informeNotarial = InformeNotarial::findOrFail($idInforme);
+
+        // Actualizar con los datos validados
+        $informeNotarial->update([
+            'estado' => 'No verificado',
+            'fecha_envio' => Carbon::now()
+        ]);
+
+        return Redirect::route('informe-notarials.index')
+            ->with('success', 'El informe se envio correctamente');
     }
 }
