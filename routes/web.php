@@ -63,9 +63,16 @@ Route::group(
 
         // Actualizar un registro existente
         Route::match(['put', 'patch'], 'notary-records/update/{id}/{idInforme}', [NotaryRecordController::class, 'update'])->name('notary-records.update');
-
-
         Route::delete('notary-records/{id}/{idInforme}', [NotaryRecordController::class, 'destroy'])->name('notary-records.destroy');
+
+        // RUTA PARA AGENTES DE DERECHOS REALES
+        Route::get('derechos-reales', [DerechosRealeController::class, 'index'])->name('derechos-reales.index');
+        Route::get('derechos-reales/create', [DerechosRealeController::class, 'create'])->name('derechos-reales.create');
+        Route::post('derechos-reales/store', [DerechosRealeController::class, 'store'])->name('derechos-reales.store');
+        Route::get('derechos-reales/show/{id}/{idInforme}', [DerechosRealeController::class, 'show'])->name('derechos-reales.show');
+        Route::get('derechos-reales/edit/{id}/{idInforme}', [DerechosRealeController::class, 'edit'])->name('derechos-reales.edit');
+        Route::match(['put', 'patch'], 'notary-records/update/{id}/{idInforme}', [DerechosRealeController::class, 'update'])->name('derechos-reales.update');
+        Route::delete('derechos-reales/{id}/{idInforme}', [DerechosRealeController::class, 'destroy'])->name('derechos-reales.destroy');
 
 
 
@@ -85,14 +92,6 @@ Route::group(
         Route::get('sentencias-judiciales/show/{id}', [SentenciasJudicialeController::class, 'show'])->name('sentencias-judiciales.show');
         Route::get('sentencias-judiciales/edit/{id}', [SentenciasJudicialeController::class, 'edit'])->name('sentencias-judiciales.edit');
         Route::put('sentencias-judiciales/update/{id}', [SentenciasJudicialeController::class, 'update'])->name('sentencias-judiciales.update');
-
-        // RUTA PARA AGENTES DE DERECHOS REALES
-        Route::get('derechos-reales', [DerechosRealeController::class, 'index'])->name('derechos-reales.index');
-        Route::get('derechos-reales/create', [DerechosRealeController::class, 'create'])->name('derechos-reales.create');
-        Route::post('derechos-reales/store', [DerechosRealeController::class, 'store'])->name('derechos-reales.store');
-        Route::get('derechos-reales/show/{id}', [DerechosRealeController::class, 'show'])->name('derechos-reales.show');
-        Route::get('derechos-reales/edit/{id}', [DerechosRealeController::class, 'edit'])->name('derechos-reales.edit');
-        Route::put('derechos-reales/update/{id}', [DerechosRealeController::class, 'update'])->name('derechos-reales.update');
     }
 );
 

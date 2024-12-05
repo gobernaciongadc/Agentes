@@ -13,7 +13,7 @@ Informe Notarials
                 <div style="display: flex; justify-content: space-between; align-items: center;">
 
                     <span id="card_title" class="titulo-card">
-                        Informe Notarial
+                        Informe SEPREC
                     </span>
 
                     <div class="float-right">
@@ -21,10 +21,18 @@ Informe Notarials
                     </div>
                 </div>
             </div>
+
             @if ($message = Session::get('success'))
-            <div class="alert alert-success m-4">
-                <p>{{ $message }}</p>
-            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    toastr.success("{{ $message }}", "Agentes de Información", {
+                        closeButton: true,
+                        progressBar: true,
+                        timeOut: 5000,
+                        positionClass: 'toast-top-right'
+                    });
+                });
+            </script>
             @endif
 
             <div class="card-body bg-white">
@@ -32,13 +40,13 @@ Informe Notarials
                     <table id="informesTable" class="table table-striped table-hover">
                         <thead class="thead">
                             <tr>
-                                <th>Id</th>
+                                <th style="width: 10%;">Id</th>
 
-                                <th>Descripcion</th>
-                                <th>Estado</th>
-                                <th>Fecha Envio</th>
+                                <th style="width: 30%;">Descripcion</th>
+                                <th style="width: 10%;">Estado</th>
+                                <th style="width: 20%;">Fecha Envio</th>
 
-                                <th>Acciones</th>
+                                <th style="width: 30%;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,11 +55,51 @@ Informe Notarials
                                 <td>{{ $informeNotarial->id }}</td>
 
                                 <td>{{ $informeNotarial->descripcion }}</td>
-                                <td>{{ $informeNotarial->estado }}</td>
-                                <td>{{ $informeNotarial->fecha_envio }}</td>
+                                <td>
+
+                                    @switch($informeNotarial->estado)
+
+                                    @case('Pendiente')
+                                    <span class="badge badge-warning">{{ $informeNotarial->estado }}</span>
+                                    @break
+
+                                    @case('No verificado')
+                                    <span class="badge badge-danger">{{ $informeNotarial->estado }}</span>
+                                    @break
+                                    @case('Verificado')
+                                    <span class="badge badge-success">{{ $informeNotarial->estado }}</span>
+                                    @break
+                                    @default
+
+                                    @endswitch
+
+
+                                </td>
+                                <td>
+                                    @if ($informeNotarial->fecha_envio)
+                                    {{ $informeNotarial->fecha_envio }}
+                                    @else
+                                    Sin fecha de envío
+                                    @endif
+                                </td>
 
                                 <td>
-                                    <a class="btn btn-sm btn-primary" href="{{ route('empresas.index', $informeNotarial->id) }}"><i class="fa fa-file"></i> Realizar Informe</a>
+                                    @switch($informeNotarial->estado)
+
+                                    @case('Pendiente')
+                                    <a class="btn btn-sm btn-primary" href="{{ route('empresas.index', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-file"></i> Realizar Informe</a>
+                                    <a class="btn btn-sm btn-success" href="{{ route('enviar-informe.enviarInforme', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-upload"></i> Enviar informe</a>
+                                    @break
+
+                                    @case('No verificado')
+                                    <span class="badge badge-success">Enviado</span>
+                                    @break
+                                    @case('Verificado')
+                                    <span class="badge badge-info">Consolidado</span>
+                                    @break
+                                    @default
+
+                                    @endswitch
                                 </td>
 
                             </tr>

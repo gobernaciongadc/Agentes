@@ -12,7 +12,7 @@
 
                 <div class="card-header card-bg" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="float-left">
-                        <span class="card-title titulo-card">Datos de Registrados</span>
+                        <span class="card-title titulo-card">Datos de Registro</span>
                     </div>
                     <div class="float-right">
                         <a class="btn btn-info font-14" href="{{ route('notary-records.index', ['id'=>$idInforme]) }}"><i class="fa fa-chevron-left"></i> Regresar a gestión de Informe Notarios</a>

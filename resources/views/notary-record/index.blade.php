@@ -95,7 +95,7 @@ Notary Records
                                 <a class="btn btn-sm btn-success" href="{{ route('notary-records.edit', ['id' => $notaryRecord->id, 'idInforme' => $informe->id]) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;" title="Eliminar datos"><i class="fa fa-fw fa-trash"></i></button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Esta seguro de eliminar?') ? this.closest('form').submit() : false;" title="Eliminar datos"><i class="fa fa-fw fa-trash"></i></button>
                             </form>
                         </td>
                     </tr>

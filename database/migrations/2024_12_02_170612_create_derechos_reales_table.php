@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('nombre_registrador');
             $table->string('municipio_jurisdiccion');
-            $table->integer('naturaleza_titulo');
+            $table->string('naturaleza_titulo');
             $table->string('numero_titulo');
             $table->string('nombre_razon_social_cedente');
             $table->string('cedula_o_nit_cedente');
             $table->string('nombre_razon_social_beneficiario');
             $table->string('cedula_o_nit_beneficiario');
-            $table->integer('superficie_del_inmueble');
-            $table->integer('porcentaje_de_acciones');
+            $table->decimal('superficie_del_inmueble');
+            $table->decimal('porcentaje_de_acciones');
             $table->string('tipo_de_formulario');
             $table->integer('numero_de_orden');
             $table->decimal('monto_pagado', 10, 2);

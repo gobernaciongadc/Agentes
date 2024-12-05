@@ -22,9 +22,16 @@ Informe Notarials
                 </div>
             </div>
             @if ($message = Session::get('success'))
-            <div class="alert alert-success m-4">
-                <p>{{ $message }}</p>
-            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    toastr.success("{{ $message }}", "Agentes de Información", {
+                        closeButton: true,
+                        progressBar: true,
+                        timeOut: 5000,
+                        positionClass: 'toast-top-right'
+                    });
+                });
+            </script>
             @endif
 
             <div class="card-body bg-white">
@@ -32,13 +39,13 @@ Informe Notarials
                     <table id="informesTable" class="table table-striped table-hover">
                         <thead class="thead">
                             <tr>
-                                <th>Id</th>
+                                <th style="width: 10%;">ID</th>
 
-                                <th>Descripcion</th>
-                                <th>Estado</th>
-                                <th>Fecha Envio</th>
+                                <th style="width: 30%;">Descripcion</th>
+                                <th style="width: 10%;">Estado</th>
+                                <th style="width: 20%;">Fecha Envio</th>
 
-                                <th>Acciones</th>
+                                <th style="width: 30%;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,11 +54,52 @@ Informe Notarials
                                 <td>{{ $informeNotarial->id }}</td>
 
                                 <td>{{ $informeNotarial->descripcion }}</td>
-                                <td>{{ $informeNotarial->estado }}</td>
-                                <td>{{ $informeNotarial->fecha_envio }}</td>
+                                <td>
+
+                                    @switch($informeNotarial->estado)
+
+                                    @case('Pendiente')
+                                    <span class="badge badge-warning">{{ $informeNotarial->estado }}</span>
+                                    @break
+
+                                    @case('No verificado')
+                                    <span class="badge badge-danger">{{ $informeNotarial->estado }}</span>
+                                    @break
+                                    @case('Verificado')
+                                    <span class="badge badge-success">{{ $informeNotarial->estado }}</span>
+                                    @break
+                                    @default
+
+                                    @endswitch
+
+
+                                </td>
+                                <td>
+                                    @if ($informeNotarial->fecha_envio)
+                                    {{ $informeNotarial->fecha_envio }}
+                                    @else
+                                    Sin fecha de envío
+                                    @endif
+                                </td>
 
                                 <td>
-                                    <a class="btn btn-sm btn-primary" href="{{ route('derechos-reales.index', $informeNotarial->id) }}"><i class="fa fa-file"></i> Realizar Informe</a>
+
+                                    @switch($informeNotarial->estado)
+
+                                    @case('Pendiente')
+                                    <a class="btn btn-sm btn-primary" href="{{ route('derechos-reales.index', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-file"></i> Realizar Informe</a>
+                                    <a class="btn btn-sm btn-success" href="{{ route('enviar-informe.enviarInforme', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-upload"></i> Enviar informe</a>
+                                    @break
+
+                                    @case('No verificado')
+                                    <span class="badge badge-success">Enviado</span>
+                                    @break
+                                    @case('Verificado')
+                                    <span class="badge badge-info">Consolidado</span>
+                                    @break
+                                    @default
+
+                                    @endswitch
                                 </td>
 
                             </tr>
@@ -97,11 +145,6 @@ Informe Notarials
                     informe,
                     agente
                 } = response;
-
-                // Siempre sera un agente el que crea el informe
-
-                console.log(response);
-
 
 
                 switch (agente.tipo_agente) {
@@ -168,13 +211,51 @@ Informe Notarials
                         // Actualizar la tabla con el nuevo dato
                         const nuevoRegistroDerechos = `
                             <tr>
-                            <td>${informe.id}</td>
-                            <td>${informe.descripcion}</td>
-                            <td>${informe.estado}</td>
-                            <td>${informe.fecha_envio}</td>
-                            <td>
-                            <a class="btn btn-sm btn-primary" href="${baseUrl}/derechos-reales/${informe.id}"><i class="fa fa-file"></i> Realizar Informe</a>
-                            </td>
+                                <td style="width: 10%;">${informe.id}</td>
+                                <td style="width: 30%;">${informe.descripcion}</td>
+                                <td style="width: 10%;">
+                                
+                                 ${(() => {
+                                        switch (informe.estado) {
+                                            case 'Pendiente':
+                                                return '<span class="badge badge-warning">' + informe.estado + '</span>';
+                                            case 'No verificado':
+                                                return '<span class="badge badge-danger">' + informe.estado + '</span>';
+                                            case 'Verificado':
+                                                return '<span class="badge badge-success">' + informe.estado + '</span>';
+                                            default:
+                                                return '<span class="badge badge-secondary">Desconocido</span>';
+                                        }
+                                   })()}
+                                
+                                </td>
+                                <td style="width: 20%;">
+                                
+                                ${informe.fecha_envio || 'Sin fecha de envío'}
+                                
+                                </td>
+                                <td style="width: 30%;">
+
+                                ${(() => {
+                                    switch (informe.estado) {
+                                        case 'Pendiente':
+                                           return `
+                                             <a class="btn btn-sm btn-primary" href="${baseUrl}/derechos-reales?id=${informe.id}">
+                                                <i class="fa fa-file"></i> Realizar Informe
+                                             </a>
+                                             <a class="btn btn-sm btn-success" href="${baseUrl}/enviar-informe?id=${informe.id}">
+                                                <i class="fa fa-upload"></i> Enviar informe
+                                             </a> `;
+                                            case 'No verificado':
+                                                return  '<span class="badge badge-success">Enviado</span>';  
+                                            case 'Verificado':
+                                                return '<span class="badge badge-info">Consolidado</span>';
+                                            default:
+                                                return '<span class="badge badge-secondary">Desconocido</span>';
+                                        }
+                                   })()}
+                                
+                                </td>
                             </tr>
                             `;
 
@@ -186,7 +267,6 @@ Informe Notarials
 
                         $('#informe-modal').modal('hide');
 
-                        break;
                         break;
 
                     case 'Jueces y Secretarios del Tribunal Departamental de Justicia':

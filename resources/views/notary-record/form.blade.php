@@ -1,5 +1,16 @@
 <div class="row padding-1 p-1 texto-form">
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+
     <!-- Primera Fila -->
     <div class="col-md-3">
         <div class="form-group mb-2 mb20">

@@ -36,7 +36,7 @@ class InformeNotarialController extends Controller
 
         $agente = Agente::where('id', $user->agente_id)->first();
 
-        $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
+        $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
 
         return view('informe-notarial.index', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información Notarial', 'currentPage' => 'Informe Notarial']);
     }
@@ -235,6 +235,10 @@ class InformeNotarialController extends Controller
     // Metodo que envia el informe
     function enviarInforme(Request $request)
     {
+        $user = Auth::user();
+
+        $agente = Agente::where('id', $user->agente_id)->first();
+
         $idInforme = $request->query('id');
         // Cargar manualmente el registro
         $informeNotarial = InformeNotarial::findOrFail($idInforme);
@@ -245,7 +249,24 @@ class InformeNotarialController extends Controller
             'fecha_envio' => Carbon::now()
         ]);
 
-        return Redirect::route('informe-notarials.index')
-            ->with('success', 'El informe se envio correctamente');
+        switch ($agente->tipo_agente) {
+            case 'Notarios de Fe Pública':
+                return Redirect::route('informe-notarials.index')
+                    ->with('success', 'El informe se envio correctamente');
+                break;
+
+            case 'Derechos Reales':
+                return Redirect::route('informe-index-derecho.indexDerecho')
+                    ->with('success', 'El informe se envio correctamente');
+                break;
+            case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
+                return Redirect::route('informe-index-juzgado.indexJuzgado')
+                    ->with('success', 'El informe se envio correctamente');
+                break;
+            case 'SEPREC':
+                return Redirect::route('informe-index-seprec.indexSeprec')
+                    ->with('success', 'El informe se envio correctamente');
+                break;
+        }
     }
 }

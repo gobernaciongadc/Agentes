@@ -168,7 +168,7 @@ Informe Notarials
                             <td>${informe.id}</td>
                             <td>${informe.descripcion}</td>
                             <td>${informe.estado}</td>
-                            // <td>${informe.fecha_envio}</td>
+                            <td>${informe.fecha_envio}</td>
                             <td>
                             <a class="btn btn-sm btn-primary" href="${baseUrl}/notary-records/${informe.id}"><i class="fa fa-file"></i> Realizar Informe</a>
                             </td>
