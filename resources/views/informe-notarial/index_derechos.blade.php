@@ -88,7 +88,28 @@ Informe Notarials
 
                                     @case('Pendiente')
                                     <a class="btn btn-sm btn-primary" href="{{ route('derechos-reales.index', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-file"></i> Realizar Informe</a>
-                                    <a class="btn btn-sm btn-success" href="{{ route('enviar-informe.enviarInforme', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-upload"></i> Enviar informe</a>
+                                    <a class="btn btn-sm btn-success text-white" onclick="confirmarEnvio(event, 'enviar-informe?id={{ $informeNotarial->id }}' )">
+                                        <i class="fa fa-upload"></i> Enviar informe
+                                    </a>
+
+                                    <script>
+                                        function confirmarEnvio(event, url) {
+                                            event.preventDefault(); // Evita que el enlace se ejecute automáticamente.
+
+                                            swal({
+                                                title: "¿Estas seguro?",
+                                                text: "Esta acción enviará el informe. ¿Deseas continuar?",
+                                                type: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#16a085",
+                                                confirmButtonText: "Yes, enviar informe",
+                                                closeOnConfirm: false
+                                            }, function() {
+                                                // Redirige al enlace si el usuario confirma.
+                                                window.location.href = url;
+                                            });
+                                        }
+                                    </script>
                                     @break
 
                                     @case('No verificado')
