@@ -10,7 +10,7 @@
         <div class="col-md-12">
 
             <div class="card card-default border">
-                <div class="card-header">
+                <div class="card-header card-bg">
 
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="titulo-card">Modificar Datos de Registro</span>

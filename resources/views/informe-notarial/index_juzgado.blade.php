@@ -85,8 +85,32 @@ Informe Notarials
                                 <td>
                                     @switch($informeNotarial->estado)
 
+                                    @case('Pendiente')
                                     <a class="btn btn-sm btn-primary" href="{{ route('sentencias-judiciales.index', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-file"></i> Realizar Informe</a>
-                                    <a class="btn btn-sm btn-success" href="{{ route('enviar-informe.enviarInforme', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-upload"></i> Enviar informe</a>
+                                    <a class="btn btn-sm btn-success text-white" onclick="confirmarEnvio(event, 'enviar-informe?id={{ $informeNotarial->id }}' )">
+                                        <i class="fa fa-upload"></i> Enviar informe
+                                    </a>
+
+                                    <script>
+                                        function confirmarEnvio(event, url) {
+                                            event.preventDefault(); // Evita que el enlace se ejecute automáticamente.
+
+                                            swal({
+                                                title: "¿Estás seguro?",
+                                                text: "Esta acción enviará el informe. ¿Deseas continuar?",
+                                                type: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#398bf7", // Color del botón de confirmación
+                                                confirmButtonText: "Sí, enviar informe", // Texto del botón de confirmación
+                                                cancelButtonText: "Cancelar", // Texto del botón cancelar                              
+                                                closeOnConfirm: false
+                                            }, function() {
+                                                // Redirige al enlace si el usuario confirma.
+                                                window.location.href = url;
+                                            });
+
+                                        }
+                                    </script>
                                     @break
 
                                     @case('No verificado')
@@ -124,6 +148,8 @@ Informe Notarials
 
     function guardarInforme() {
 
+        const btnGuardar = document.getElementById('btn-guardar');
+
         const baseUrl = "{{ url('/') }}"; // Base de la URL
         // Capturamos los datos del formulario
         const datos = {
@@ -137,18 +163,19 @@ Informe Notarials
             url: '{{ route("informe-notarials.store") }}',
             method: 'POST',
             data: datos,
-            success: function(response) {
 
+            beforeSend: function() {
+                btnGuardar.disabled = true;
+            },
+
+            success: function(response) {
+                btnGuardar.disabled = false;
                 const {
                     informe,
                     agente
                 } = response;
 
                 // Siempre sera un agente el que crea el informe
-
-                console.log(response);
-
-
 
                 switch (agente.tipo_agente) {
                     case 'Notarios de Fe Pública':
@@ -217,26 +244,93 @@ Informe Notarials
                         $('#descripcion-informe').val('');
 
                         // Actualizar la tabla con el nuevo dato
-                        const nuevoRegistroJuez = `
+                        const nuevoRegistroDerechos = `
                             <tr>
-                            <td>${informe.id}</td>
-                            <td>${informe.descripcion}</td>
-                            <td>${informe.estado}</td>
-                            <td>${informe.fecha_envio}</td>
-                            <td>
-                            <a class="btn btn-sm btn-primary" href="${baseUrl}/sentencias-judiciales/${informe.id}"><i class="fa fa-file"></i> Realizar Informe</a>
-                            </td>
+                                <td style="width: 10%;">${informe.id}</td>
+                                <td style="width: 30%;">${informe.descripcion}</td>
+                                <td style="width: 10%;">
+                                
+                                 ${(() => {
+                                        switch (informe.estado) {
+                                            case 'Pendiente':
+                                                return '<span class="badge badge-warning">' + informe.estado + '</span>';
+                                            case 'No verificado':
+                                                return '<span class="badge badge-danger">' + informe.estado + '</span>';
+                                            case 'Verificado':
+                                                return '<span class="badge badge-success">' + informe.estado + '</span>';
+                                            default:
+                                                return '<span class="badge badge-secondary">Desconocido</span>';
+                                        }
+                                   })()}
+                                
+                                </td>
+                                <td style="width: 20%;">
+                                
+                                ${informe.fecha_envio || 'Sin fecha de envío'}
+                                
+                                </td>
+                                <td style="width: 30%;">
+
+                                ${(() => {
+                                    switch (informe.estado) {
+                                        case 'Pendiente':
+                                           return `
+                                             <a class="btn btn-sm btn-primary" href="${baseUrl}/sentencias-judiciales?id=${informe.id}">
+                                                <i class="fa fa-file"></i> Realizar Informe
+                                             </a>
+                                             <a class="btn btn-sm btn-success enviar-informe" data-id="${informe.id}" href="#">
+                                                <i class="fa fa-upload"></i> Enviar informe
+                                             </a>`;
+                                            case 'No verificado':
+                                                return  '<span class="badge badge-success">Enviado</span>';  
+                                            case 'Verificado':
+                                                return '<span class="badge badge-info">Consolidado</span>';
+                                            default:
+                                                return '<span class="badge badge-secondary">Desconocido</span>';
+                                        }
+                                   })()}
+                                
+                                </td>
                             </tr>
                             `;
 
+                        $(document).on('click', '.enviar-informe', function(e) {
+                            e.preventDefault(); // Prevenir la redirección predeterminada
+                            const informeId = $(this).data('id'); // Obtener el ID del informe
+
+                            swal({
+                                title: "¿Estás seguro?",
+                                text: "Esta acción enviará el informe. ¿Deseas continuar?",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#398bf7", // Color del botón de confirmación
+                                confirmButtonText: "Sí, enviar informe", // Texto del botón de confirmación
+                                cancelButtonText: "Cancelar", // Texto del botón cancelar 
+                                cancelButtonColor: "#f46a6a",
+                                closeOnConfirm: false
+
+                            }, function() {
+                                // Aquí puedes redirigir o hacer una solicitud AJAX
+                                $.ajax({
+                                    url: `${baseUrl}/enviar-informe?id=${informeId}`, // Ruta de tu servidor
+                                    type: 'GET',
+                                    success: function(response) {
+                                        window.location.href = `${baseUrl}/informe-index-juzgado`;
+                                    },
+                                    error: function() {
+                                        swal("Error", "Ocurrió un error al enviar el informe. Inténtalo nuevamente.", "error");
+                                    }
+                                });
+                            });
+                        });
+
                         // Agregar el nuevo registro al inicio de la tabla
-                        $('#informesTable tbody').prepend(nuevoRegistroJuez);
+                        $('#informesTable tbody').prepend(nuevoRegistroDerechos);
 
                         // Mostrar mensaje de éxito (opcional)
                         toastr.success('Informe creado exitosamente', 'Información correcta');
 
                         $('#informe-modal').modal('hide');
-
                         break;
 
                     case 'proceso sancionador administrativo':
@@ -278,7 +372,7 @@ Informe Notarials
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default waves-effect" onclick="closeModal()">Cerrar</button>
-                        <button type="button" onclick="guardarInforme()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Crear</button>
+                        <button type="button" id="btn-guardar" onclick="guardarInforme()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Crear</button>
                     </div>
                 </div>
             </div>

@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 use App\Models\Agente;
 use App\Models\DerechosReale;
 use App\Models\InformeNotarial;
+use App\Models\SentenciasJudiciale;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -89,9 +90,10 @@ Route::group(
         Route::get('sentencias-judiciales', [SentenciasJudicialeController::class, 'index'])->name('sentencias-judiciales.index');
         Route::get('sentencias-judiciales/create', [SentenciasJudicialeController::class, 'create'])->name('sentencias-judiciales.create');
         Route::post('sentencias-judiciales/store', [SentenciasJudicialeController::class, 'store'])->name('sentencias-judiciales.store');
-        Route::get('sentencias-judiciales/show/{id}', [SentenciasJudicialeController::class, 'show'])->name('sentencias-judiciales.show');
-        Route::get('sentencias-judiciales/edit/{id}', [SentenciasJudicialeController::class, 'edit'])->name('sentencias-judiciales.edit');
-        Route::put('sentencias-judiciales/update/{id}', [SentenciasJudicialeController::class, 'update'])->name('sentencias-judiciales.update');
+        Route::get('sentencias-judiciales/show/{id}/{idInforme}', [SentenciasJudicialeController::class, 'show'])->name('sentencias-judiciales.show');
+        Route::get('sentencias-judiciales/edit/{id}/{idInforme}', [SentenciasJudicialeController::class, 'edit'])->name('sentencias-judiciales.edit');
+        Route::match(['put', 'patch'], 'sentencias-judiciales/update/{id}/{idInforme}', [SentenciasJudicialeController::class, 'update'])->name('sentencias-judiciales.update');
+        Route::delete('sentencias-judiciales/{id}/{idInforme}', [SentenciasJudicialeController::class, 'destroy'])->name('sentencias-judiciales.destroy');
     }
 );
 

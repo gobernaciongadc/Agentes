@@ -14,12 +14,12 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="titulo-card">Formulario de Registro</span>
                         <div class="float-right">
-                            <a class="btn btn-info font-14" href="{{ route('sentencias-judiciales.index') }}"><i class="fa fa-chevron-left"></i> Regresar a gestión de Informe Juzgados</a>
+                            <a class="btn btn-info font-14" href="{{ route('sentencias-judiciales.index', ['id'=>$idInforme]) }}"><i class="fa fa-chevron-left"></i> Regresar a gestión de Informe Juzgados</a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body bg-white">
-                    <form method="POST" action="{{ route('sentencias-judiciales.store') }}" role="form" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('sentencias-judiciales.store', ['idInforme'=>$idInforme]) }}" role="form" enctype="multipart/form-data">
                         @csrf
 
                         @include('sentencias-judiciale.form')

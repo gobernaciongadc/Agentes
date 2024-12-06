@@ -149,6 +149,8 @@ Informe Notarials
 
     function guardarInforme() {
 
+        const btnGuardar = document.getElementById('btn-guardar');
+
         const baseUrl = "{{ url('/') }}"; // Base de la URL
         // Capturamos los datos del formulario
         const datos = {
@@ -162,8 +164,11 @@ Informe Notarials
             url: '{{ route("informe-notarials.store") }}',
             method: 'POST',
             data: datos,
+            beforeSend: function() {
+                btnGuardar.disabled = true;
+            },
             success: function(response) {
-
+                btnGuardar.disabled = false;
                 const {
                     informe,
                     agente
@@ -393,7 +398,7 @@ Informe Notarials
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default waves-effect" onclick="closeModal()">Cerrar</button>
-                        <button type="button" onclick="guardarInforme()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Crear</button>
+                        <button type="button" id="btn-guardar" onclick="guardarInforme()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Crear</button>
                     </div>
                 </div>
             </div>

@@ -22,16 +22,18 @@ class SentenciasJudicialeRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'nombre_secretario' => 'required|string',
-			'numero_juzgado' => 'required',
-			'municipio_jurisdiccion' => 'required|string',
-			'naturaleza_proceso' => 'required|string',
-			'numero_resolucion' => 'required|string',
-			'fecha_resolucion' => 'required',
-			'nombre_demandante' => 'required|string',
-			'cedula_demandante' => 'required|string',
-			'nombre_demandado' => 'required|string',
-			'cedula_demandado' => 'required|string',
+            'nombre_secretario' => 'required|string',
+            'numero_juzgado' => 'required|string',
+            'municipio_jurisdiccion' => 'required|string',
+            'naturaleza_proceso' => 'required|string',
+            'numero_resolucion' => 'required|string',
+            'fecha_resolucion' => 'required|date',
+            'nombre_demandante' => 'required|string',
+            'cedula_demandante' => 'required|string',
+            'nombre_demandado' => 'required|string',
+            'cedula_demandado' => 'required|string',
+            'informe_id' => 'required|integer', // Añade esto
+            'usuario_id' => 'required|integer', // Añade esto
         ];
     }
 }

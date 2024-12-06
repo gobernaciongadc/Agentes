@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sentencias_judiciales', function (Blueprint $table) {
             $table->id();
             $table->string('nombre_secretario');
-            $table->integer('numero_juzgado');
+            $table->string('numero_juzgado');
             $table->string('municipio_jurisdiccion');
             $table->string('naturaleza_proceso');
             $table->string('numero_resolucion');

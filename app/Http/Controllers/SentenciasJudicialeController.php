@@ -6,6 +6,11 @@ use App\Models\SentenciasJudiciale;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\SentenciasJudicialeRequest;
+use App\Models\Agente;
+use App\Models\InformeNotarial;
+use App\Models\Municipio;
+use App\Models\Persona;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -16,19 +21,34 @@ class SentenciasJudicialeController extends Controller
      */
     public function index(Request $request): View
     {
-        $sentenciasJudiciales = SentenciasJudiciale::all();
 
-        return view('sentencias-judiciale.index', compact('sentenciasJudiciales'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
+        $id = $request->query('id');
+        $sentenciasJudiciales = SentenciasJudiciale::where('informe_id', $id)->orderBy('id', 'desc')->get();
+        // Obtener la query string completa
+        $informe = InformeNotarial::where('id', $id)->first();
+
+        return view('sentencias-judiciale.index', compact('sentenciasJudiciales', 'id', 'informe'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        $sentenciasJudiciale = new SentenciasJudiciale();
+        $user = Auth::user();
+        $idUser = $user->id;
 
-        return view('sentencias-judiciale.create', compact('sentenciasJudiciale'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
+        $agente = Agente::where('id', $user->agente_id)->first();
+
+        $notario = Persona::where('id', $agente->persona_id)->first();
+
+        $municipio = Municipio::where('id', $agente->municipio_id)->first();
+
+        $sentenciasJudiciale = new SentenciasJudiciale();
+        // Obtener la query string completa
+        $idInforme = $request->query('idInforme');
+
+        return view('sentencias-judiciale.create', compact('sentenciasJudiciale', 'notario', 'municipio', 'idInforme', 'idUser'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
     }
 
     /**
@@ -36,48 +56,51 @@ class SentenciasJudicialeController extends Controller
      */
     public function store(SentenciasJudicialeRequest $request): RedirectResponse
     {
+        $idInforme = $request->query('idInforme');
+
         SentenciasJudiciale::create($request->validated());
 
-        return Redirect::route('sentencias-judiciales.index')
-            ->with('success', 'SentenciasJudiciale created successfully.');
+        return Redirect::route('sentencias-judiciales.index', ['id' => $idInforme])
+            ->with('success', 'Registro creado correctamente.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id): View
+    public function show($id, $idInforme): View
     {
         $sentenciasJudiciale = SentenciasJudiciale::find($id);
 
-        return view('sentencias-judiciale.show', compact('sentenciasJudiciale'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
+        return view('sentencias-judiciale.show', compact('sentenciasJudiciale', 'idInforme'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
+    public function edit($id, $idInforme): View
     {
         $sentenciasJudiciale = SentenciasJudiciale::find($id);
 
-        return view('sentencias-judiciale.edit', compact('sentenciasJudiciale'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
+        return view('sentencias-judiciale.edit', compact('sentenciasJudiciale', 'idInforme'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(SentenciasJudicialeRequest $request, SentenciasJudiciale $sentenciasJudiciale): RedirectResponse
+    public function update(SentenciasJudicialeRequest $request,  $id, $idInforme): RedirectResponse
     {
+        $sentenciasJudiciale = SentenciasJudiciale::find($id);
         $sentenciasJudiciale->update($request->validated());
 
-        return Redirect::route('sentencias-judiciales.index')
-            ->with('success', 'SentenciasJudiciale updated successfully');
+        return Redirect::route('sentencias-judiciales.index', ['id' => $idInforme])
+            ->with('success', 'Información actualizada correctamente.');
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy($id, $idInforme): RedirectResponse
     {
         SentenciasJudiciale::find($id)->delete();
 
-        return Redirect::route('sentencias-judiciales.index')
+        return Redirect::route('sentencias-judiciales.index', ['id' => $idInforme])
             ->with('success', 'SentenciasJudiciale deleted successfully');
     }
 }

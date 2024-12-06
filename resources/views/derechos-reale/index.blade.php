@@ -57,7 +57,7 @@ Derechos Reales
                         <!-- <th>Informe Id</th>
                         <th>Usuario Id</th> -->
 
-                        <th>Acciones</th>
+                        <th style="width: 10%;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="small">

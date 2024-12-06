@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SentenciasJudiciale extends Model
 {
-    
+
     protected $perPage = 20;
 
     /**
@@ -34,7 +34,5 @@ class SentenciasJudiciale extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['nombre_secretario', 'numero_juzgado', 'municipio_jurisdiccion', 'naturaleza_proceso', 'numero_resolucion', 'fecha_resolucion', 'nombre_demandante', 'cedula_demandante', 'nombre_demandado', 'cedula_demandado'];
-
-
+    protected $fillable = ['nombre_secretario', 'numero_juzgado', 'municipio_jurisdiccion', 'naturaleza_proceso', 'numero_resolucion', 'fecha_resolucion', 'nombre_demandante', 'cedula_demandante', 'nombre_demandado', 'cedula_demandado', 'informe_id', 'usuario_id'];
 }

@@ -152,6 +152,7 @@ Informe Notarials
     }
 
     function guardarInforme() {
+        const btnGuardar = document.getElementById('btn-guardar');
 
         const baseUrl = "{{ url('/') }}"; // Base de la URL
         // Capturamos los datos del formulario
@@ -167,8 +168,12 @@ Informe Notarials
             url: '{{ route("informe-notarials.store") }}',
             method: 'POST',
             data: datos,
+            beforeSend: function() {
+                btnGuardar.disabled = true;
+            },
             success: function(response) {
-
+                btnGuardar.disabled = false;
+                º
                 const {
                     informe,
                     agente
@@ -177,6 +182,7 @@ Informe Notarials
                 // Siempre sera un agente el que crea el informe
 
                 switch (agente.tipo_agente) {
+
                     case 'Notarios de Fe Pública':
 
                         // Limpiar el formulario
@@ -347,7 +353,7 @@ Informe Notarials
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default waves-effect" onclick="closeModal()">Cerrar</button>
-                        <button type="button" onclick="guardarInforme()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Crear</button>
+                        <button type="button" id="btn-guardar" onclick="guardarInforme()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Crear</button>
                     </div>
                 </div>
             </div>

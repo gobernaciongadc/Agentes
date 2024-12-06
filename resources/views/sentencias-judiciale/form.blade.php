@@ -1,10 +1,20 @@
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <div class="row padding-1 p-1 texto-form">
 
     <!-- primera fila -->
     <div class="col-md-4">
         <div class="form-group mb-2 mb20">
             <label for="nombre_secretario" class="form-label">{{ __('Nombre Secretario') }}<span class="text-danger">*</span></label>
-            <input type="text" name="nombre_secretario" class="form-control @error('nombre_secretario') is-invalid @enderror" value="{{ old('nombre_secretario', $sentenciasJudiciale?->nombre_secretario) }}" id="nombre_secretario">
+            <input type="text" name="nombre_secretario" class="form-control @error('nombre_secretario') is-invalid @enderror" value="{{ old('nombre_secretario', $sentenciasJudiciale?->nombre_secretario?: $notario->nombres .' '.$notario->apellidos) }}" id="nombre_secretario" readonly>
             {!! $errors->first('nombre_secretario', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
@@ -20,7 +30,7 @@
     <div class="col-md-3">
         <div class="form-group mb-2 mb20">
             <label for="municipio_jurisdiccion" class="form-label">{{ __('Municipio Jurisdicción') }}<span class="text-danger">*</span></label>
-            <input type="text" name="municipio_jurisdiccion" class="form-control @error('municipio_jurisdiccion') is-invalid @enderror" value="{{ old('municipio_jurisdiccion', $sentenciasJudiciale?->municipio_jurisdiccion) }}" id="municipio_jurisdiccion">
+            <input type="text" name="municipio_jurisdiccion" class="form-control @error('municipio_jurisdiccion') is-invalid @enderror" value="{{ old('municipio_jurisdiccion', $sentenciasJudiciale?->municipio_jurisdiccion?: $municipio->nombre.' - '.$municipio->provincia) }}" id="municipio_jurisdiccion" readonly>
             {!! $errors->first('municipio_jurisdiccion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
@@ -45,7 +55,7 @@
     <div class="col-md-4">
         <div class="form-group mb-2 mb20">
             <label for="fecha_resolucion" class="form-label">{{ __('Fecha Resolucion') }}<span class="text-danger">*</span></label>
-            <input type="text" name="fecha_resolucion" class="form-control @error('fecha_resolucion') is-invalid @enderror" value="{{ old('fecha_resolucion', $sentenciasJudiciale?->fecha_resolucion) }}" id="fecha_resolucion">
+            <input type="date" name="fecha_resolucion" class="form-control @error('fecha_resolucion') is-invalid @enderror" value="{{ old('fecha_resolucion', $sentenciasJudiciale?->fecha_resolucion) }}" id="fecha_resolucion">
             {!! $errors->first('fecha_resolucion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
@@ -81,6 +91,12 @@
             {!! $errors->first('cedula_demandado', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
+
+    <!-- Id informe -->
+    <input type="hidden" name="informe_id" class="form-control @error('informe_id') is-invalid @enderror" value="{{ old('informe_id', $sentenciasJudiciale?->informe_id?: $idInforme) }}">
+
+    <!-- Id user -->
+    <input type="hidden" name="usuario_id" class="form-control @error('usuario_id') is-invalid @enderror" value="{{ old('usuario_id', $sentenciasJudiciale?->usuario_id?: $idUser) }}">
 
 </div>
 
