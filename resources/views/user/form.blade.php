@@ -1,4 +1,15 @@
 <div class="row padding-1 p-1">
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <div class="col-12 col-md-8 col-lg-4">
 
         @if ($respaldoUrl==false)
@@ -73,7 +84,7 @@
                                 $('#persona').append('<option></option>'); // Opción vacía
                                 data.listagentes.forEach(agente => {
                                     $('#persona').append(
-                                        `<option value="${agente.id}">${agente.persona.nombres} ${agente.persona.apellidos}</option>`
+                                        `<option value="${agente.id}">${agente.persona.nombres} ${agente.persona.apellidos} - ${agente.tipo_agente}</option>`
                                     );
                                 });
 

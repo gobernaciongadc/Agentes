@@ -14,7 +14,7 @@
                         <span class="titulo-card">Datos de Usuario</span>
                     </div>
                     <div class="float-right">
-                        <a class="btn btn-info" href="{{ route('users.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
+                        <a class="btn btn-info font-14" href="{{ route('users.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
                     </div>
                 </div>
 

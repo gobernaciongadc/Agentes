@@ -97,17 +97,19 @@ Informe Notarials
                                             event.preventDefault(); // Evita que el enlace se ejecute automáticamente.
 
                                             swal({
-                                                title: "¿Estas seguro?",
+                                                title: "¿Estás seguro?",
                                                 text: "Esta acción enviará el informe. ¿Deseas continuar?",
                                                 type: "warning",
                                                 showCancelButton: true,
-                                                confirmButtonColor: "#16a085",
-                                                confirmButtonText: "Yes, enviar informe",
+                                                confirmButtonColor: "#398bf7", // Color del botón de confirmación
+                                                confirmButtonText: "Sí, enviar informe", // Texto del botón de confirmación
+                                                cancelButtonText: "Cancelar", // Texto del botón cancelar                              
                                                 closeOnConfirm: false
                                             }, function() {
                                                 // Redirige al enlace si el usuario confirma.
                                                 window.location.href = url;
                                             });
+
                                         }
                                     </script>
                                     @break
@@ -264,9 +266,9 @@ Informe Notarials
                                              <a class="btn btn-sm btn-primary" href="${baseUrl}/derechos-reales?id=${informe.id}">
                                                 <i class="fa fa-file"></i> Realizar Informe
                                              </a>
-                                             <a class="btn btn-sm btn-success" href="${baseUrl}/enviar-informe?id=${informe.id}">
+                                             <a class="btn btn-sm btn-success enviar-informe" data-id="${informe.id}" href="#">
                                                 <i class="fa fa-upload"></i> Enviar informe
-                                             </a> `;
+                                             </a>`;
                                             case 'No verificado':
                                                 return  '<span class="badge badge-success">Enviado</span>';  
                                             case 'Verificado':
@@ -279,6 +281,36 @@ Informe Notarials
                                 </td>
                             </tr>
                             `;
+
+                        $(document).on('click', '.enviar-informe', function(e) {
+                            e.preventDefault(); // Prevenir la redirección predeterminada
+                            const informeId = $(this).data('id'); // Obtener el ID del informe
+
+                            swal({
+                                title: "¿Estás seguro?",
+                                text: "Esta acción enviará el informe. ¿Deseas continuar?",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#398bf7", // Color del botón de confirmación
+                                confirmButtonText: "Sí, enviar informe", // Texto del botón de confirmación
+                                cancelButtonText: "Cancelar", // Texto del botón cancelar 
+                                cancelButtonColor: "#f46a6a",
+                                closeOnConfirm: false
+
+                            }, function() {
+                                // Aquí puedes redirigir o hacer una solicitud AJAX
+                                $.ajax({
+                                    url: `${baseUrl}/enviar-informe?id=${informeId}`, // Ruta de tu servidor
+                                    type: 'GET',
+                                    success: function(response) {
+                                        window.location.href = `${baseUrl}/informe-index-derecho`;
+                                    },
+                                    error: function() {
+                                        swal("Error", "Ocurrió un error al enviar el informe. Inténtalo nuevamente.", "error");
+                                    }
+                                });
+                            });
+                        });
 
                         // Agregar el nuevo registro al inicio de la tabla
                         $('#informesTable tbody').prepend(nuevoRegistroDerechos);
@@ -329,7 +361,11 @@ Informe Notarials
             },
             error: function(error) {
                 console.error('Error:', error);
-                toastr.error(`${error.responseJSON.message}`, 'Error!');
+                toastr.error(`
+                                    $ {
+                                        error.responseJSON.message
+                                    }
+                                    `, 'Error!');
             }
         });
     }
