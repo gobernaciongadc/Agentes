@@ -8,69 +8,70 @@
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="card border">
+
+                <div class="card-header card-bg" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="float-left">
-                        <span class="card-title">{{ __('Show') }} Empresa</span>
+                        <span class="card-title titulo-card">Datos de Registro</span>
                     </div>
                     <div class="float-right">
-                        <a class="btn btn-primary btn-sm" href="{{ route('empresas.index') }}"> {{ __('Back') }}</a>
+                        <a class="btn btn-primary font-14" href="{{ route('empresas.index', ['id'=>$idInforme]) }}"> Regresar a gestión de SEPREC</a>
                     </div>
                 </div>
 
                 <div class="card-body bg-white">
 
                     <div class="form-group mb-2 mb20">
-                        <strong>Nombre Representante Seprec:</strong>
+                        <strong style="color:black">Nombre Representante Seprec:</strong>
                         {{ $empresa->nombre_representante_seprec }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Nombre Razon Social:</strong>
+                        <strong style="color:black">Nombre Razon Social:</strong>
                         {{ $empresa->nombre_razon_social }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Numero Matricula Comercio:</strong>
+                        <strong style="color:black">Numero Matricula Comercio:</strong>
                         {{ $empresa->numero_matricula_comercio }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Direccion:</strong>
+                        <strong style="color:black">Direccion:</strong>
                         {{ $empresa->direccion }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Telefono:</strong>
+                        <strong style="color:black">Telefono:</strong>
                         {{ $empresa->telefono }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Actividad:</strong>
+                        <strong style="color:black">Actividad:</strong>
                         {{ $empresa->actividad }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Nombre Representante Legal:</strong>
+                        <strong style="color:black">Nombre Representante Legal:</strong>
                         {{ $empresa->nombre_representante_legal }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Numero Cedula Identidad:</strong>
+                        <strong style="color:black">Numero Cedula Identidad:</strong>
                         {{ $empresa->numero_cedula_identidad }}
                     </div>
+
+                    <!-- Sector archivos -->
                     <div class="form-group mb-2 mb20">
-                        <strong>Base Empresarial Empresas Activas:</strong>
-                        {{ $empresa->base_empresarial_empresas_activas }}
+                        <strong style="color:black">Base Empresarial Empresas Activas:</strong>
+                        <a href="{{ asset('storage/uploads/empresas/' . basename($empresa->base_empresarial_empresas_activas)) }}" target="_blank">
+                            <i class="fa fa-file-pdf-o"></i> Ver PDF
+                        </a>
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Transferencia Cuotas Capital:</strong>
-                        {{ $empresa->transferencia_cuotas_capital }}
+                        <strong style="color:black">Transferencia Cuotas Capital:</strong>
+                        <a href="{{ asset('storage/uploads/empresas/' . basename($empresa->transferencia_cuotas_capital)) }}" target="_blank">
+                            <i class="fa fa-file-pdf-o"></i> Ver PDF
+                        </a>
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Transferencia Empresa Unipersonal:</strong>
-                        {{ $empresa->transferencia_empresa_unipersonal }}
-                    </div>
-                    <div class="form-group mb-2 mb20">
-                        <strong>Informe Id:</strong>
-                        {{ $empresa->informe_id }}
-                    </div>
-                    <div class="form-group mb-2 mb20">
-                        <strong>Usuario Id:</strong>
-                        {{ $empresa->usuario_id }}
+                        <strong style="color:black">Transferencia Empresa Unipersonal:</strong>
+                        <a href="{{ asset('storage/uploads/empresas/' . basename($empresa->transferencia_empresa_unipersonal)) }}" target="_blank">
+                            <i class="fa fa-file-pdf-o"></i> Ver PDF
+                        </a>
                     </div>
 
                 </div>

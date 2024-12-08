@@ -14,7 +14,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="titulo-card">Formulario de Agente de Información</span>
                         <div class="float-right">
-                            <a class="btn btn-info" href="{{ route('personas.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
+                            <a class="btn btn-info font-14" href="{{ route('personas.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
                         </div>
                     </div>
                 </div>

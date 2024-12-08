@@ -17,7 +17,7 @@ Personas
                         </span>
 
                         <div class="float-right">
-                            <a href="{{ route('personas.create') }}" class="btn btn-info float-right" data-placement="left">
+                            <a href="{{ route('personas.create') }}" class="btn btn-info font-14 float-right" data-placement="left">
                                 <i class="fa fa-plus"></i> Crear Persona
                             </a>
                         </div>

@@ -21,10 +21,11 @@ return new class extends Migration
             $table->string('actividad');
             $table->string('nombre_representante_legal');
             $table->string('numero_cedula_identidad');
+
             // Archivos de la empresa
-            $table->string('base_empresarial_empresas_activas');
-            $table->string('transferencia_cuotas_capital');
-            $table->string('transferencia_empresa_unipersonal');
+            $table->string('base_empresarial_empresas_activas')->nullable();
+            $table->string('transferencia_cuotas_capital')->nullable();
+            $table->string('transferencia_empresa_unipersonal')->nullable();
 
             // Datos relacionados con el informe a URE
             $table->foreignId('informe_id')->constrained('informe_notarials')->onUpdate('cascade')->onDelete('restrict');

@@ -14,12 +14,12 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="titulo-card">Formulario de Registro</span>
                         <div class="float-right">
-                            <a class="btn btn-info font-14" href="{{ route('empresas.index') }}"><i class="fa fa-chevron-left"></i> Regresar a gestión de Informe Seprec</a>
+                            <a class="btn btn-info font-14" href="{{ route('empresas.index', ['id'=>$idInforme]) }}"><i class="fa fa-chevron-left"></i> Regresar a gestión de Informe SEPREC</a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body bg-white">
-                    <form method="POST" action="{{ route('empresas.store') }}" role="form" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('empresas.store', ['id'=>$idInforme]) }}" role="form" enctype="multipart/form-data">
                         @csrf
 
                         @include('empresa.form')

@@ -81,9 +81,11 @@ Route::group(
         Route::get('empresas', [EmpresaController::class, 'index'])->name('empresas.index');
         Route::get('empresas/create', [EmpresaController::class, 'create'])->name('empresas.create');
         Route::post('empresas/store', [EmpresaController::class, 'store'])->name('empresas.store');
-        Route::get('empresas/show/{id}', [EmpresaController::class, 'show'])->name('empresas.show');
-        Route::get('empresas/edit/{id}', [EmpresaController::class, 'edit'])->name('empresas.edit');
-        Route::put('empresas/update/{id}', [EmpresaController::class, 'update'])->name('empresas.update');
+        Route::get('empresas/show/{id}/{idInforme}', [EmpresaController::class, 'show'])->name('empresas.show');
+        Route::get('empresas/edit/{id}/{idInforme}', [EmpresaController::class, 'edit'])->name('empresas.edit');
+        Route::match(['put', 'patch'], 'empresas/update/{id}/{idInforme}', [EmpresaController::class, 'update'])->name('empresas.update');
+        Route::delete('empresas/{id}/{idInforme}', [EmpresaController::class, 'destroy'])->name('empresas.destroy');
+
 
 
         // RUTA PARA AGENTES PARA SETRETARIOAS O SECRETARIOS DE JUZGADOS

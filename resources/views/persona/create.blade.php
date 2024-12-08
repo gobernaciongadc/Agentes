@@ -14,7 +14,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="titulo-card">Crear Persona</span>
                         <div class="float-right">
-                            <a href="{{ route('personas.index') }}" class="btn btn-info float-right" data-placement="left">
+                            <a href="{{ route('personas.index') }}" class="btn btn-info font-14 float-right" data-placement="left">
                                 <i class="fa fa-chevron-left"></i> Regresar
                             </a>
                         </div>

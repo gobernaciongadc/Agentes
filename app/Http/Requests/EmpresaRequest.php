@@ -22,19 +22,19 @@ class EmpresaRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'nombre_representante_seprec' => 'required|string',
-			'nombre_razon_social' => 'required|string',
-			'numero_matricula_comercio' => 'required|string',
-			'direccion' => 'required|string',
-			'telefono' => 'required|string',
-			'actividad' => 'required|string',
-			'nombre_representante_legal' => 'required|string',
-			'numero_cedula_identidad' => 'required|string',
-			'base_empresarial_empresas_activas' => 'required|string',
-			'transferencia_cuotas_capital' => 'required|string',
-			'transferencia_empresa_unipersonal' => 'required|string',
-			'informe_id' => 'required',
-			'usuario_id' => 'required',
+            'nombre_representante_seprec' => 'required|string',
+            'nombre_razon_social' => 'required|string',
+            'numero_matricula_comercio' => 'required|string',
+            'direccion' => 'required|string',
+            'telefono' => 'required|string',
+            'actividad' => 'required|string',
+            'nombre_representante_legal' => 'required|string',
+            'numero_cedula_identidad' => 'required|string',
+            'base_empresarial_empresas_activas' => 'nullable|file|mimes:pdf|max:10000',
+            'transferencia_cuotas_capital' => 'nullable|file|mimes:pdf|max:10000',
+            'transferencia_empresa_unipersonal' => 'nullable|file|mimes:pdf|max:10000',
+            'informe_id' => 'required',
+            'usuario_id' => 'required',
         ];
     }
 }

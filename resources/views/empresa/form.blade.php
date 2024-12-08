@@ -1,10 +1,19 @@
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <div class="row padding-1 p-1 texto-form">
 
     <!-- Primera fila -->
     <div class="col-md-3">
         <div class="form-group mb-2 mb20">
             <label for="nombre_representante_seprec" class="form-label">{{ __('Nombre Representante Seprec') }}<span class="text-danger">*</span></label>
-            <input type="text" name="nombre_representante_seprec" class="form-control @error('nombre_representante_seprec') is-invalid @enderror" value="{{ old('nombre_representante_seprec', $empresa?->nombre_representante_seprec) }}" id="nombre_representante_seprec">
+            <input type="text" name="nombre_representante_seprec" class="form-control @error('nombre_representante_seprec') is-invalid @enderror" value="{{ old('nombre_representante_seprec', $empresa?->nombre_representante_seprec?: $notario->nombres .' '.$notario->apellidos) }}" id="nombre_representante_seprec">
             {!! $errors->first('nombre_representante_seprec', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
@@ -75,8 +84,16 @@
                 <span>📄 Seleccionar Archivo PDF</span>
                 <input type="file" name="base_empresarial_empresas_activas" id="respaldo-1" accept="application/pdf">
             </label>
-
-            <span id="file-name-1">Ningún archivo seleccionado</span>
+            <br>
+            <span id="file-name-1">
+                @if (old('base_empresarial_empresas_activas') || $empresa?->base_empresarial_empresas_activas)
+                <span>
+                    {{ basename(old('base_empresarial_empresas_activas') ?? $empresa?->base_empresarial_empresas_activas) }}
+                </span>
+                @else
+                Ningún archivo seleccionado
+                @endif
+            </span>
 
             <!-- Mostrar el archivo actual si existe -->
             @if ($respaldoUrl)
@@ -99,8 +116,16 @@
                 <span>📄 Seleccionar Archivo PDF</span>
                 <input type="file" name="transferencia_cuotas_capital" id="respaldo-2" accept="application/pdf">
             </label>
-
-            <span id="file-name-2">Ningún archivo seleccionado</span>
+            <br>
+            <span id="file-name-2">
+                @if (old('transferencia_cuotas_capital') || $empresa?->transferencia_cuotas_capital)
+                <span>
+                    {{ basename(old('transferencia_cuotas_capital') ?? $empresa?->transferencia_cuotas_capital) }}
+                </span>
+                @else
+                Ningún archivo seleccionado
+                @endif
+            </span>
 
             <!-- Mostrar el archivo actual si existe -->
             @if ($respaldoUrl)
@@ -122,8 +147,17 @@
                 <span>📄 Seleccionar Archivo PDF</span>
                 <input type="file" name="transferencia_empresa_unipersonal" id="respaldo-3" accept="application/pdf">
             </label>
+            <br>
 
-            <span id="file-name-3">Ningún archivo seleccionado</span>
+            <span id="file-name-3">
+                @if (old('transferencia_empresa_unipersonal') || $empresa?->transferencia_empresa_unipersonal)
+                <span>
+                    {{ basename(old('transferencia_empresa_unipersonal') ?? $empresa?->transferencia_empresa_unipersonal) }}
+                </span>
+                @else
+                Ningún archivo seleccionado
+                @endif
+            </span>
 
             <!-- Mostrar el archivo actual si existe -->
             @if ($respaldoUrl)
@@ -138,22 +172,11 @@
         </div>
     </div>
 
-    <div class="d-none">
-        <div class="form-group mb-2 mb20">
-            <label for="informe_id" class="form-label">{{ __('Informe Id') }}</label>
-            <input type="text" name="informe_id" class="form-control @error('informe_id') is-invalid @enderror" value="{{ old('informe_id', $empresa?->informe_id) }}" id="informe_id" placeholder="Informe Id">
-            {!! $errors->first('informe_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-    </div>
+    <!-- Id informe -->
+    <input type="hidden" name="informe_id" class="form-control @error('informe_id') is-invalid @enderror" value="{{ old('informe_id', $empresa?->informe_id?: $idInforme) }}" id="informe_id" placeholder="Informe Id">
 
-    <div class="d-none">
-        <div class="form-group mb-2 mb20">
-            <label for="usuario_id" class="form-label">{{ __('Usuario Id') }}</label>
-            <input type="text" name="usuario_id" class="form-control @error('usuario_id') is-invalid @enderror" value="{{ old('usuario_id', $empresa?->usuario_id) }}" id="usuario_id" placeholder="Usuario Id">
-            {!! $errors->first('usuario_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-    </div>
-
+    <!-- Id user -->
+    <input type="hidden" name="usuario_id" class="form-control @error('usuario_id') is-invalid @enderror" value="{{ old('usuario_id', $empresa?->usuario_id?: $idUser) }}" id="usuario_id" placeholder="Usuario Id">
 
 </div>
 
