@@ -10,22 +10,21 @@ Verificar Empresas
     <div class="col-sm-12">
 
         <div class="border" style="width: 45%; border-radius: 8px; padding: 10px;">
-            <span class="font-weight-bold">INFORME NOTARIAL</span> <br> {{ $informe->descripcion }}
+            <span class="font-weight-bold">INFORME SEPREC</span> <br> {{ $informe->descripcion }}
         </div>
 
         <br>
         <div class="d-flex justify-content-between">
-            <a href="{{ route('sancions-bandeja-entrada.indexBandejaEntrada') }}" class="btn btn-danger font-14" data-placement="left">
+            <a href="{{ route('sancions-bandeja-entrada.indexBandejaEntrada',['id'=> $tipo]) }}" class="btn btn-danger font-14" data-placement="left">
                 <i class="fa fa-chevron-left"></i> Regresar a Verificación de SEPREC
             </a>
             <div>
-                <a href="{{ route('sancions-bandeja-entrada.indexBandejaEntrada') }}" class="btn btn-success font-14" data-placement="left">
+                <button type="button" class="btn btn-success font-14" data-placement="left" onclick="openModalVerificar()">
                     <i class="fa fa-check"></i> Verificar
-                </a>
-                <a href="{{ route('sancions-bandeja-entrada.indexBandejaEntrada') }}" class="btn btn-warning font-14" data-placement="left">
+                </button>
+                <button type="button" href="#" class="btn btn-warning font-14 text-dark" data-placement="left" onclick="openModalObservar()">
                     <i class="fa fa-search"></i> Observar Informe
-                </a>
-
+                </button type="button">
             </div>
         </div>
 
@@ -133,6 +132,189 @@ Verificar Empresas
         </div>
     </div>
 </div>
+
+
+<!-- Modal Verificación -->
+<div class="modal fade" id="verificacion-seprec-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="titulo-card">Verificación de Informe</h5>
+                <button type="button" class="close" onclick="closeModalVerificar()" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="verificar-informe-form">
+                    <div class="form-group">
+                        <label for="descripcion-informe-verificar" class="control-label">Descripción de Verificación de Informe:</label>
+                        <textarea class="form-control" id="descripcion-informe-verificar" name="descripcion" rows="6"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="respaldo" class="form-label">Archivo de Verificación <span class="text-danger">*</span></label><br>
+
+                        <label class="custom-file-upload">
+                            <span>📄 Seleccionar Archivo</span>
+                            <input type="file" name="verificacion-seprec" id="respaldo-1" accept="application/pdf" class="form-control">
+                        </label>
+                        <br>
+                        <span id="file-name-1">
+                            Ningún archivo seleccionado
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModalVerificar()">Cerrar</button>
+                <button type="button" id="btn-guardar-verificar" class="btn btn-info" onclick="guardarInformeVerificar()">
+                    <i class="fa fa-save"></i> Verificar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Vrificación -->
+<div class="row">
+    <div class="col-md-4">
+        <!-- sample modal content -->
+        <div id="observacion-seprec-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                        <span class="text-dark">Observación de Informe</span>
+                        <button type="button" class="close" onclick="closeModalObservar()" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Descripción de Observación de Informe:</label>
+                                <textarea class="form-control" id="descripcion-informe-observar" rows="6"></textarea>
+                            </div>
+                            <!-- Tercera fila - sector archivos -->
+
+                            <div class="form-group mb-2 mb20">
+                                <label for="respaldo" class="form-label">Archivo de Observación<span class="text-danger">*</span></label><br>
+                                <label class="custom-file-upload">
+                                    <span>📄 Seleccionar Archivo</span>
+                                    <input type="file" name="verificacion-seprec" id="respaldo-2" accept="application/pdf">
+                                </label>
+                                <br>
+                                <span id="file-name-1">
+                                    Ningún archivo seleccionado
+                                </span>
+                            </div>
+
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default waves-effect" onclick="closeModalObservar()">Cerrar</button>
+                        <button type="button" id="btn-guardar-observar" onclick="guardarInformeObservar()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Observar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>
+<!-- Fin Modal -->
+
+<script>
+    // Abrir modal
+    function openModalVerificar() {
+        $('#verificacion-seprec-modal').modal('show');
+    }
+
+    // Cerrar modal
+    function closeModalVerificar() {
+        $('#verificacion-seprec-modal').modal('hide');
+    }
+
+    // Abrir modal
+    function openModalObservar() {
+        $('#observacion-seprec-modal').modal('show');
+    }
+
+    // Cerrar modal
+    function closeModalObservar() {
+        $('#observacion-seprec-modal').modal('hide');
+    }
+
+    function guardarInformeVerificar() {
+        const formData = new FormData(document.getElementById('verificar-informe-form'));
+        const btnGuardar = document.getElementById('btn-guardar-verificar');
+
+        // Agregar más datos al FormData
+        formData.append('informe_id', '{{$idInforme}}');
+        formData.append('tipo_informacion', '{{$tipo}}');
+
+        btnGuardar.disabled = true;
+
+
+        $.ajax({
+            url: '{{ route("sancions-store-verificar.storeVerificar") }}',
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                btnGuardar.disabled = true;
+            },
+            success: function(response) {
+                btnGuardar.disabled = false;
+
+                if (response.status === 'success') {
+                    alert('Informe guardado correctamente');
+                    closeModalVerificar();
+                    // Puedes actualizar la tabla o la vista según sea necesario.
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function(response) {
+                btnGuardar.disabled = false;
+                alert('Ocurrió un error al guardar el informe');
+            }
+        });
+    }
+
+
+
+    function guardarInformeObservar() {
+        const btnGuardar = document.getElementById('btn-guardar-observar');
+
+        const baseUrl = "{{ url('/') }}"; // Base de la URL
+        // Capturamos los datos del formulario
+        // Obtener la URL actual
+
+        const datos = {
+            descripcion: $('#descripcion-informe').val(),
+            _token: '{{ csrf_token() }}'
+        };
+
+        // Realizamos la petición AJAX
+        $.ajax({
+            url: '{{ route("informe-notarials.store") }}',
+            method: 'POST',
+            data: datos,
+            beforeSend: function() {
+                btnGuardar.disabled = true;
+            },
+            success: function(response) {
+                btnGuardar.disabled = false;
+
+                const {
+                    informe,
+                    agente
+                } = response;
+
+            },
+            error: function(response) {
+                btnGuardar.disabled = false;
+            }
+        });
+    }
+</script>
 
 @vite('resources/css/empresa.css')
 @vite('resources/js/empresa.js')

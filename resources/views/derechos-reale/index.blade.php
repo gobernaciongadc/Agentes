@@ -14,11 +14,11 @@ Derechos Reales
 
         <br>
         <div class="d-flex justify-content-between">
-            <a href="{{ route('derechos-reales.create',['idInforme'=>$id]) }}" class="btn btn-primary font-14 float-right" data-placement="left">
-                <i class="fa fa-plus"></i> Crear Nuevo Registro
-            </a>
-            <a href="{{ route('informe-index-derecho.indexDerecho') }}" class="btn btn-danger font-14 float-left" data-placement="left">
+            <a href="{{ route('informe-index-derecho.indexDerecho') }}" class="btn btn-danger font-14" data-placement="left">
                 <i class="fa fa-chevron-left"></i> Regresar a Información de Derecho Reales
+            </a>
+            <a href="{{ route('derechos-reales.create',['idInforme'=>$id]) }}" class="btn btn-primary font-14" data-placement="left">
+                <i class="fa fa-plus"></i> Crear Nuevo Registro
             </a>
         </div>
 

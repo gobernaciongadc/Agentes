@@ -101,10 +101,12 @@
 
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Sancionador<span
-                              class="label label-rouded label-success pull-right">1</span></span></a>
+                              class="label label-rouded label-success pull-right">4</span></span></a>
                   <ul aria-expanded="false" class="collapse">
-                      <li><a href="{{route('sancions-bandeja-entrada.indexBandejaEntrada')}}">Bandeja de Entrada</a></li>
-                      <!-- <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Recibida</a></li> -->
+                      <li><a href="{{route('sancions-bandeja-entrada.indexBandejaEntrada', ['id'=>'bandeja'])}}">Bandeja de Entrada</a></li>
+                      <li><a href="#">Observaciones</a></li>
+                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="#">Sanciones</a></li>
                   </ul>
               </li>
 

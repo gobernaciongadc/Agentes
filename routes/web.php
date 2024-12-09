@@ -129,8 +129,10 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::get('sancions/show/{id}', [SancionController::class, 'show'])->name('sancions.show');
     Route::get('sancions/edit/{id}', [SancionController::class, 'edit'])->name('sancions.edit');
     Route::put('sancions/update/{id}', [SancionController::class, 'update'])->name('sancions.update');
-    Route::get('sancions-bandeja-entrada', [SancionController::class, 'indexBandejaEntrada'])->name('sancions-bandeja-entrada.indexBandejaEntrada');
-    Route::get('sancions-verificar/{id}/{idUser}', [SancionController::class, 'indexVerificar'])->name('sancions-verificar.indexVerificar');
+    Route::get('sancions-bandeja-entrada/{id}', [SancionController::class, 'indexBandejaEntrada'])->name('sancions-bandeja-entrada.indexBandejaEntrada');
+    Route::get('sancions-verificar/{idInforme}/{idUser}/{tipo}', [SancionController::class, 'indexVerificar'])->name('sancions-verificar.indexVerificar');
+
+    Route::post('sancions-store-verificar', [SancionController::class, 'storeVerificar'])->name('sancions-store-verificar.storeVerificar');
 });
 
 

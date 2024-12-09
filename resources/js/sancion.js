@@ -6,5 +6,6 @@ $('#bandejaTable').DataTable({
     searching: true,    // Desactiva el cuadro de búsqueda
     info: true,         // Oculta la información de cantidad de registros
     lengthChange: false, // Oculta el selector "Mostrar X registros"
-    paging: true       // Desactiva la paginación (oculta "Anterior" y "Siguiente")
+    paging: true,       // Desactiva la paginación (oculta "Anterior" y "Siguiente")
+    order: [[0, 'desc']] // Ordena por la primera columna en orden descendente   
 });

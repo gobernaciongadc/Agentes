@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('descripcion'); // Descripción del informe
             $table->enum('estado', ['Pendiente', 'Verificado', 'No verificado', 'Rechazado'])->default('Pendiente'); // Estado del informe
             $table->timestamp('fecha_envio')->nullable(); // Fecha y hora de envío
+            $table->string('tipo_informe')->nullable(); // Tipo de informe
             $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps(); // Campos created_at y updated_at
         });

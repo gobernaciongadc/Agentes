@@ -74,7 +74,7 @@ Users
                                             <a class="btn btn-sm btn-success" href="{{ route('users.edit', $user->id) }}"><i class="fa fa-fw fa-edit" title="Modificar datos"></i></a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;" title="Dar de baja a usuario"><i class="fa fa-fw fa-trash"></i></button>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Esta seguro de dar de baja?') ? this.closest('form').submit() : false;" title="Dar de baja a usuario"><i class="fa fa-fw fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>

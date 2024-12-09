@@ -151,10 +151,14 @@ class InformeNotarialController extends Controller
                     'errors' => $validate->errors()
                 );
             } else {
+
+                $agente = Agente::where('id', $user->agente_id)->first();
+
                 // Crear el objeto usuario para guardar en la base de datos
                 $informe = new InformeNotarial();
                 $informe->descripcion = $params->descripcion;
                 $informe->usuario_id = $user->id;
+                $informe->tipo_informe = $agente->tipo_agente;
                 try {
                     // Guardar
                     $informe->save();

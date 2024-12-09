@@ -173,7 +173,6 @@ Informe Notarials
             },
             success: function(response) {
                 btnGuardar.disabled = false;
-                º
                 const {
                     informe,
                     agente
