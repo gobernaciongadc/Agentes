@@ -22,12 +22,12 @@ class PersonaRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'nombres' => 'required|string',
-			'apellidos' => 'required|string',
-			'carnet' => 'required|string',
-			'correo_electronico' => 'string',
-			'telefono' => 'string',
-			'direccion' => 'string',
+            'nombres' => 'required|string',
+            'apellidos' => 'required|string',
+            'carnet' => 'required|string|unique:personas',
+            'correo_electronico' => 'string|unique:personas',
+            'telefono' => 'string',
+            'direccion' => 'string',
         ];
     }
 }

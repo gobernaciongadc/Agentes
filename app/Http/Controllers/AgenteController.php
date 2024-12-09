@@ -36,7 +36,7 @@ class AgenteController extends Controller
         $agente = new Agente();
         $personas = Persona::all();
         $municipios = Municipio::all();
-        $tipoAgentes = ['Notarios de Fe Pública', 'Jueces y Secretarios del Tribunal Departamental de Justicia', 'SEPREC', 'Derechos Reales', 'proceso sancionador administrativo'];
+        $tipoAgentes = ['Notarios de Fe Pública', 'Jueces y Secretarios del Tribunal Departamental de Justicia', 'SEPREC', 'Derechos Reales'];
         $respaldoUrl = false;
         return view('agente.create', compact('agente', 'personas', 'municipios', 'tipoAgentes', 'respaldoUrl'), ['currentPage' => 'Agentes de Información', 'titulo' => 'Gestión de Agentes de Información']);
     }

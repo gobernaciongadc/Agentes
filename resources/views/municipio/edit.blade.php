@@ -14,7 +14,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="titulo-card">Modificar Municipio</span>
                         <div class="float-right">
-                            <a class="btn btn-info" href="{{ route('municipios.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
+                            <a class="btn btn-info font-14" href="{{ route('municipios.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
                         </div>
                     </div>
                 </div>

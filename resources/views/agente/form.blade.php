@@ -1,9 +1,20 @@
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <div class="row padding-1 p-1">
     <div class="col-12 col-md-8 col-lg-4">
         <!-- Campo Agente -->
+        <!-- Campo Agente -->
         <div class="form-group mb-2 mb20">
             <label for="persona" class="form-label">Agente<span class="text-danger">*</span></label>
-            <select name="persona_id" class="form-control @error('persona_id') is-invalid @enderror mb-2 mb20" id="persona">
+            <select name="persona_id" class="form-control @error('persona_id') is-invalid @enderror mb-2 mb20" id="persona"
+                @if (Route::currentRouteName()==='agentes.edit' ) disabled @endif>
                 <option value="" disabled selected>Selecciona un agente</option>
                 @foreach($personas as $persona)
                 <option value="{{ $persona->id }}" {{ old('persona_id', $agente?->persona_id) == $persona->id ? 'selected' : '' }}>
@@ -11,6 +22,10 @@
                 </option>
                 @endforeach
             </select>
+            @if (Route::currentRouteName() === 'agentes.edit')
+            <!-- Campo oculto para enviar el valor de persona_id si está deshabilitado -->
+            <input type="hidden" name="persona_id" value="{{ $agente->persona_id }}">
+            @endif
             @error('persona_id')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror

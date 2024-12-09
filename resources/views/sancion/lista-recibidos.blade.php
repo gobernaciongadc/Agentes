@@ -10,11 +10,17 @@ Sancions
     <div class="col-sm-12">
 
         @if ($message = Session::get('success'))
-        <div class="alert alert-success m-4">
-            <p>{{ $message }}</p>
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                toastr.success("{{ $message }}", "Agentes de Información", {
+                    closeButton: true,
+                    progressBar: true,
+                    timeOut: 5000,
+                    positionClass: 'toast-top-right'
+                });
+            });
+        </script>
         @endif
-
 
         <div class="table-responsive">
             <table id="bandejaTable" class="table table-striped table-hover">
@@ -39,10 +45,26 @@ Sancions
                         <td>{{$informe->user->agente->persona->nombres}} {{$informe->user->agente->persona->apellidos}}</td>
                         <td>{{$informe->user->agente->tipo_agente}}</td>
                         <td>{{$informe->fecha_envio}}</td>
-                        <td>Pendiente</td>
                         <td>
-                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down" title="Recibir Informe"></i> Recibir</button>
-                            <button type="button" class="btn btn-info btn-sm"><i class="fa fa-eye" title="Ver Informe"></i> Verificar</button>
+                            @switch($informe->estado)
+
+                            @case('Pendiente')
+                            <span class="badge badge-warning">{{ $informe->estado }}</span>
+                            @break
+
+                            @case('No verificado')
+                            <span class="badge badge-danger">{{ $informe->estado }}</span>
+                            @break
+                            @case('Verificado')
+                            <span class="badge badge-success">{{ $informe->estado }}</span>
+                            @break
+                            @case('Rechazado')
+                            <span class="badge badge-purple">{{ $informe->estado }}</span>
+                            @break
+                            @endswitch
+                        </td>
+                        <td>
+                            <a href="{{ route('sancions-verificar.indexVerificar', ['id' => $informe->id, 'idUser' => $informe->usuario_id]) }}" class="btn btn-info btn-sm"><i class="fa fa-eye" title="Ver Informe"></i> Verificar</a>
                             <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-search" title="Observar Informe"></i> Observación</button>
                             <button type="button" class="btn btn-success btn-sm"><i class="fa fa-check" title="Consolidar Informe"></i> Consolidar</button>
                             <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-money" title="Sancionar Informe"></i> Sancionar</button>

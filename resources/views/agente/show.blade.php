@@ -21,25 +21,24 @@
                 <div class="card-body bg-white">
 
                     <div class="form-group mb-2 mb20">
-                        <strong>Agente:</strong>
+                        <strong style="color:black">Agente:</strong>
                         {{ $agente->persona->nombres }} {{ $agente->persona->apellidos }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Municipio:</strong>
+                        <strong style="color:black">Municipio:</strong>
                         {{ $agente->municipio->nombre }} - {{ $agente->municipio->provincia }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Tipo Agente:</strong>
-                        {{ $agente->tipo_agente }}
+                        <strong style="color:black">Tipo Agente:</strong>{{ $agente->tipo_agente }}
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Respaldo:</strong>
+                        <strong style="color:black">Respaldo:</strong>
                         <a href="{{ asset('storage/respaldos/' . basename($agente->respaldo)) }}" target="_blank">
                             <i class="fa fa-file-pdf-o"></i> Ver PDF
                         </a>
                     </div>
                     <div class="form-group mb-2 mb20">
-                        <strong>Estado:</strong>
+                        <strong style="color:black">Estado:</strong>
                         <td>{{ $agente->estado == 1 ? 'Activo' : 'Inactivo' }}</td>
                     </div>
 

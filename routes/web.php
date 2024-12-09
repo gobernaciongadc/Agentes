@@ -12,11 +12,6 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\SancionController;
 use App\Http\Controllers\SentenciasJudicialeController;
 use App\Http\Controllers\UserController;
-use App\Models\Agente;
-use App\Models\DerechosReale;
-use App\Models\InformeNotarial;
-use App\Models\SentenciasJudiciale;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -134,8 +129,8 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::get('sancions/show/{id}', [SancionController::class, 'show'])->name('sancions.show');
     Route::get('sancions/edit/{id}', [SancionController::class, 'edit'])->name('sancions.edit');
     Route::put('sancions/update/{id}', [SancionController::class, 'update'])->name('sancions.update');
-
     Route::get('sancions-bandeja-entrada', [SancionController::class, 'indexBandejaEntrada'])->name('sancions-bandeja-entrada.indexBandejaEntrada');
+    Route::get('sancions-verificar/{id}/{idUser}', [SancionController::class, 'indexVerificar'])->name('sancions-verificar.indexVerificar');
 });
 
 

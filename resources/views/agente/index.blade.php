@@ -23,10 +23,18 @@ Agentes
                         </div>
                     </div>
                 </div>
+
                 @if ($message = Session::get('success'))
-                <div class="alert alert-success m-4">
-                    <p>{{ $message }}</p>
-                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        toastr.success("{{ $message }}", "Agentes de Información", {
+                            closeButton: true,
+                            progressBar: true,
+                            timeOut: 5000,
+                            positionClass: 'toast-top-right'
+                        });
+                    });
+                </script>
                 @endif
 
                 <div class="card-body bg-white">

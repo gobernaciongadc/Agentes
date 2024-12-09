@@ -25,7 +25,6 @@ class NotaryRecordController extends Controller
         $notaryRecords = NotaryRecord::where('informe_id', $id)->get();
         // Obtener la query string completa
         $informe = InformeNotarial::where('id', $id)->first();
-
         return view('notary-record.index', compact('notaryRecords', 'id', 'informe'), ['titulo' => 'Gestión de Informe Notarios', 'currentPage' => 'Informe']);
     }
 

@@ -7,11 +7,11 @@
                   <a class="has-arrow waves-effect waves-dark mt-3" href="#" aria-expanded="false"><i class="fa fa-user" style="font-size: 1.2rem;"></i> <span class="hide-menu">
 
                           @if(Auth::user()->rol == 'Agente')
-                          {{Auth::user()->agente->persona->nombres}}
+                          {{Auth::user()->agente->persona->nombres}} {{Auth::user()->agente->persona->apellidos}}
                           @endif
 
                           @if(Auth::user()->rol == 'Administrador')
-                          {{Auth::user()->persona->nombres}}
+                          {{Auth::user()->persona->nombres}} {{Auth::user()->persona->apellidos}}
                           @endif
 
                       </span>
@@ -40,9 +40,11 @@
               @if(Auth::user()->agente->tipo_agente == "Notarios de Fe Pública")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Notarial<span
-                              class="label label-rouded label-themecolor pull-right">1</span></span></a>
+                              class="label label-rouded label-themecolor pull-right">3</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-notarials.index','Notarios de Fe Pública')}}">Información Notarial</a></li>
+                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="#">Comunicados</a></li>
                   </ul>
               </li>
               @endif
@@ -50,10 +52,11 @@
               @if(Auth::user()->agente->tipo_agente == "SEPREC")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión SEPREC<span
-                              class="label label-rouded label-themecolor pull-right">1</span></span></a>
+                              class="label label-rouded label-themecolor pull-right">3</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-seprec.indexSeprec')}}">Información SEPREC</a></li>
-                      <!-- <li><a href="#">Lista de envios</a></li> -->
+                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="#">Comunicados</a></li>
                   </ul>
               </li>
               @endif
@@ -61,10 +64,11 @@
               @if(Auth::user()->agente->tipo_agente == "Jueces y Secretarios del Tribunal Departamental de Justicia")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Juzgados<span
-                              class="label label-rouded label-themecolor pull-right">1</span></span></a>
+                              class="label label-rouded label-themecolor pull-right">3</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-juzgado.indexJuzgado')}}">Información Juzgados</a></li>
-                      <!-- <li><a href="#">Lista de envios</a></li> -->
+                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="#">Comunicados</a></li>
                   </ul>
               </li>
               @endif
@@ -72,10 +76,11 @@
               @if(Auth::user()->agente->tipo_agente == "Derechos Reales")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Derechos<span
-                              class="label label-rouded label-themecolor pull-right">1</span></span></a>
+                              class="label label-rouded label-themecolor pull-right">3</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Derechos</a></li>
-                      <!-- <li><a href="#">Lista de envios</a></li> -->
+                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="#">Comunicados</a></li>
                   </ul>
               </li>
               @endif
@@ -85,14 +90,38 @@
               @endrole
 
               @role('Administrador')
+
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                          class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Sancionador<span
-                              class="label label-rouded label-themecolor pull-right">2</span></span></a>
+                          class="mdi mdi-laptop"></i><span class="hide-menu">Dashboard<span
+                              class="label label-rouded label-info pull-right">1</span></span></a>
                   <ul aria-expanded="false" class="collapse">
-                      <li><a href="{{route('sancions-bandeja-entrada.indexBandejaEntrada')}}">Bandeja de Entrada</a></li>
-                      <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Recibida</a></li>
+                      <li><a href="{{route('admin.layaouts.master')}}">Panel de Control</a></li>
                   </ul>
               </li>
+
+              <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
+                          class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Sancionador<span
+                              class="label label-rouded label-success pull-right">1</span></span></a>
+                  <ul aria-expanded="false" class="collapse">
+                      <li><a href="{{route('sancions-bandeja-entrada.indexBandejaEntrada')}}">Bandeja de Entrada</a></li>
+                      <!-- <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Recibida</a></li> -->
+                  </ul>
+              </li>
+
+
+              <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
+                          class="mdi mdi-file-multiple"></i><span class="hide-menu">Reportes<span
+                              class="label label-rouded label-warning pull-right">6</span></span></a>
+                  <ul aria-expanded="false" class="collapse">
+                      <li><a href="#">Tipo de Transmisión</a></li>
+                      <li><a href="#">Reporte Por Usuario</a></li>
+                      <li><a href="#">Reporte Por Municipio</a></li>
+                      <li><a href="#">Reporte Por Plazos</a></li>
+                      <li><a href="#">Reporte Por Sanciones</a></li>
+                      <li><a href="#">Reporte Por Agentes</a></li>
+                  </ul>
+              </li>
+
 
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-account-settings-variant"></i><span class="hide-menu">Configuraciónes<span
@@ -104,6 +133,8 @@
                       <li><a href="{{route('users.index')}}">Usuarios</a></li>
                   </ul>
               </li>
+
+
               @endrole
 
           </ul>
