@@ -390,12 +390,11 @@ Informe Notarials
                         <button type="button" class="close" onclick="closeModal()" aria-label="Close">×</button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="message-text" class="control-label">Detalle del Certificación:</label>
-                                <p id="parrafo-verificar"></p>
-                            </div>
-                        </form>
+
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Detalle del Certificación:</label>
+                            <p id="parrafo-verificar"></p>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default waves-effect" onclick="closeModal()">Cerrar</button>
