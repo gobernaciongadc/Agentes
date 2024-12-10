@@ -128,7 +128,14 @@ Sancions
                         </td>
 
                         <td>
-                            <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-info btn-sm"><i class="fa fa-eye" title="Ver Informe"></i> Verificar</a>
+
+                            @if ($informe->estado == 'No verificado')
+                            <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-info btn-sm" title="Ver Informe"><i class=" fa fa-eye"></i> Verificar</a>
+                            @endif
+                            @if ($informe->estado == 'Verificado')
+                            <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-primary btn-sm" title="Ver Informe">Ver informe <i class=" fa fa-chevron-right"></i></a>
+                            @endif
+
                             <!-- <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-search" title="Observar Informe"></i> Observación</button>
                             <button type="button" class="btn btn-success btn-sm"><i class="fa fa-check" title="Consolidar Informe"></i> Consolidar</button>
                             <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-money" title="Sancionar Informe"></i> Sancionar</button> -->

@@ -40,7 +40,7 @@ Informe Notarials
                     <table id="informesTable" class="table table-striped table-hover">
                         <thead class="thead">
                             <tr>
-                                <th style="width: 10%;">Id</th>
+                                <th style="width: 10%;">ID</th>
 
                                 <th style="width: 30%;">Descripcion</th>
                                 <th style="width: 10%;">Estado</th>
@@ -118,10 +118,12 @@ Informe Notarials
                                     <span class="badge badge-success">Enviado</span>
                                     @break
                                     @case('Verificado')
-                                    <span class="badge badge-info">Consolidado</span>
-                                    @break
-                                    @default
 
+
+                                    <a class="btn btn-info btn-sm text-white" onclick="mostrarVerificacion('{{$informeNotarial->id}}')"><i class="fa fa-certificate"></i> Certificado de Informe</a>
+
+
+                                    @break
                                     @endswitch
                                 </td>
 
@@ -318,6 +320,30 @@ Informe Notarials
             }
         });
     }
+
+    function mostrarVerificacion(idInforme) {
+        $('#mostrar-certificado').modal('show');
+        const datos = {
+            id: idInforme,
+            _token: '{{ csrf_token() }}'
+        };
+
+        console.log(datos);
+
+
+        // Una consulta ajax jquery
+        $.ajax({
+            url: '{{ route("verificar-informe.verificarInforme") }}',
+            method: 'POST',
+            data: datos,
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(response) {
+                console.error('Error:', response);
+            }
+        })
+    }
 </script>
 
 
@@ -348,6 +374,37 @@ Informe Notarials
             </div>
         </div>
         <!-- /.modal -->
+    </div>
+</div>
+<!-- Fin Modal -->
+
+<!-- Modal Mostrar certificado -->
+<div class="row">
+    <div class="col-md-4">
+        <!-- sample modal content -->
+        <div id="mostrar-certificado" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-info">
+                        <span class="titulo-card">Certificación de Informe</span>
+                        <button type="button" class="close" onclick="closeModal()" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Detalle del Certificación:</label>
+                                <p id="parrafo-verificar"></p>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default waves-effect" onclick="closeModal()">Cerrar</button>
+                        <button type="button" onclick="guardarInforme()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Crear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal mostrar certificado -->
     </div>
 </div>
 <!-- Fin Modal -->

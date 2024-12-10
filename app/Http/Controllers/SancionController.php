@@ -42,7 +42,10 @@ class SancionController extends Controller
         $empresas = [];
 
 
-        $informes = InformeNotarial::with('user')->where('estado', 'No verificado')->get();
+        $informes = InformeNotarial::with('user')->where('estado', 'No verificado')
+            ->orWhere('estado', 'Verificado')
+            ->orWhere('estado', 'Rechazado')
+            ->get();
 
         foreach ($informes as $key => $value) {
             $usuarios[$key] = User::where('id', $value->usuario_id)->first();
@@ -206,11 +209,10 @@ class SancionController extends Controller
 
     public function storeVerificar(Request $request)
     {
+        $params = $request->all(); // Convierte a objeto
         $user = Auth::user();
 
-        dd($request->all());
-
-        if ($user->rol != 'Agente') {
+        if ($user->rol == 'Agente') {
             return response()->json([
                 'status' => 'Error',
                 'code' => 403,
@@ -220,7 +222,9 @@ class SancionController extends Controller
 
         $validate = Validator::make($request->all(), [
             'descripcion' => 'required|string',
-            'archivo' => 'required|file|max:9048', // Validar archivo PDF
+            'verificacion-seprec' => 'required|file|max:9048', // Validar archivo PDF
+            'informe_id' => 'required',
+            'tipo_informacion' => 'required'
         ]);
 
         if ($validate->fails()) {
@@ -233,23 +237,34 @@ class SancionController extends Controller
         }
 
         try {
-            $agente = Agente::findOrFail($user->agente_id);
 
-            // Guardar archivo
-            $path = $request->file('archivo')->store('verificaciones', 'public');
+            // Obtener el nombre original y generar un nombre único
+            $originalName = $request->file('verificacion-seprec')->getClientOriginalName();
+            $uniqueName = uniqid() . '_' . $originalName;
 
-            $informe = new Verificar();
-            $informe->descripcion = $request->descripcion;
-            $informe->usuario_id = $user->id;
-            $informe->tipo_informe = $agente->tipo_agente;
-            $informe->archivo = $path; // Ruta del archivo
+            // Mover el archivo a la carpeta "verificaciones" dentro de public/
+            $request->file('verificacion-seprec')->move(public_path('verificaciones'), $uniqueName);
+
+            $verificar = new Verificar();
+            $verificar->descripcion = $params['descripcion'];
+            $verificar->usuario_id = $user->id; // ID del usuario autenticado
+            $verificar->tipo_informe = $params['tipo_informacion'];
+            $verificar->certificado = $uniqueName; // Nombre del archivo
+            $verificar->informe_id = $params['informe_id'];
+            $verificar->save();
+
+
+            $informe = InformeNotarial::find($params['informe_id']);
+            $informe->estado = 'Verificado';
             $informe->save();
+
+
 
             return response()->json([
                 'status' => 'success',
                 'code' => 200,
-                'message' => 'El informe notarial se ha creado correctamente',
-                'informe' => $informe
+                'message' => 'El informe se verifico correctamente',
+                'informe' => $verificar
             ]);
         } catch (Exception $e) {
             return response()->json([

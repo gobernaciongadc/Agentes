@@ -14,18 +14,21 @@ Verificar Empresas
         </div>
 
         <br>
+
         <div class="d-flex justify-content-between">
             <a href="{{ route('sancions-bandeja-entrada.indexBandejaEntrada',['id'=> $tipo]) }}" class="btn btn-danger font-14" data-placement="left">
                 <i class="fa fa-chevron-left"></i> Regresar a Verificación de SEPREC
             </a>
+            @if ($informe->estado == 'No verificado')
             <div>
-                <button type="button" class="btn btn-success font-14" data-placement="left" onclick="openModalVerificar()">
+                <button id="btn-verificar" type="button" class="btn btn-success font-14" data-placement="left" onclick="openModalVerificar()">
                     <i class="fa fa-check"></i> Verificar
                 </button>
-                <button type="button" href="#" class="btn btn-warning font-14 text-dark" data-placement="left" onclick="openModalObservar()">
+                <button id="btn-observar" type="button" href="#" class="btn btn-warning font-14 text-dark" data-placement="left" onclick="openModalObservar()">
                     <i class="fa fa-search"></i> Observar Informe
                 </button type="button">
             </div>
+            @endif
         </div>
 
 
@@ -244,12 +247,19 @@ Verificar Empresas
         const formData = new FormData(document.getElementById('verificar-informe-form'));
         const btnGuardar = document.getElementById('btn-guardar-verificar');
 
-        // Agregar más datos al FormData
+        const btnVerificar = document.getElementById('btn-verificar');
+        const btnObservar = document.getElementById('btn-observar');
+
+        if (!formData.get('descripcion') || !formData.get('verificacion-seprec')) {
+            alert('Por favor complete todos los campos obligatorios');
+            return;
+        }
+
         formData.append('informe_id', '{{$idInforme}}');
         formData.append('tipo_informacion', '{{$tipo}}');
+        formData.append('_token', '{{ csrf_token() }}');
 
         btnGuardar.disabled = true;
-
 
         $.ajax({
             url: '{{ route("sancions-store-verificar.storeVerificar") }}',
@@ -257,16 +267,15 @@ Verificar Empresas
             data: formData,
             contentType: false,
             processData: false,
-            beforeSend: function() {
-                btnGuardar.disabled = true;
-            },
             success: function(response) {
                 btnGuardar.disabled = false;
+                console.log(response);
 
                 if (response.status === 'success') {
-                    alert('Informe guardado correctamente');
+                    btnVerificar.classList.add('d-none');
+                    btnObservar.classList.add('d-none');
+                    toastr.success('Informe verificado exitosamente', 'Agentes de Información');
                     closeModalVerificar();
-                    // Puedes actualizar la tabla o la vista según sea necesario.
                 } else {
                     alert('Error: ' + response.message);
                 }
@@ -277,7 +286,6 @@ Verificar Empresas
             }
         });
     }
-
 
 
     function guardarInformeObservar() {

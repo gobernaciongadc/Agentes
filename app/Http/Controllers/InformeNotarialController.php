@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\InformeNotarialRequest;
 use App\Models\Agente;
+use App\Models\Verificar;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -272,5 +273,34 @@ class InformeNotarialController extends Controller
                     ->with('success', 'El informe se envio correctamente');
                 break;
         }
+    }
+
+    // Metodo verificar informe
+    function verificarInforme(Request $request)
+    {
+
+
+        $params = (object) $request->all(); // Devulve un obejto
+        $verificar = Verificar::where('informe_id', $params->id)->first(); // Cargar manualmente el registro
+
+        try {
+            $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'El informe se verifico correctamente',
+                'verificar' => $verificar
+            );
+        } catch (Exception $e) {
+            $data = array(
+                'status' => 'Error',
+                'code' => 404,
+                'message' => $e
+            );
+        }
+
+
+
+        // Devuelve en json con laravel
+        return response()->json($data, $data['code']);
     }
 }

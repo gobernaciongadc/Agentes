@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Verificar extends Model
 {
-    protected $table = 'verificar';
+    protected $table = 'verificars';
 }

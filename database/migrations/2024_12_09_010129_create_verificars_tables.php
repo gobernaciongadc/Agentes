@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verificars_tables', function (Blueprint $table) {
+        Schema::create('verificars', function (Blueprint $table) {
             $table->id();
             $table->text('descripcion');
             $table->string('certificado');
+            $table->string('tipo_informe');
             $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('informe_id')->constrained('informe_notarials')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('notarial_id')->constrained('notary_records')->onUpdate('cascade')->onDelete('restrict');
+
+
 
             $table->timestamps();
         });

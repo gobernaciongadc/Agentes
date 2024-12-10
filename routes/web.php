@@ -41,6 +41,7 @@ Route::group(
         Route::get('informe-index-juzgado', [InformeNotarialController::class, 'indexJuzgado'])->name('informe-index-juzgado.indexJuzgado');
         Route::get('informe-index-derecho', [InformeNotarialController::class, 'indexDerecho'])->name('informe-index-derecho.indexDerecho');
         Route::get('enviar-informe', [InformeNotarialController::class, 'enviarInforme'])->name('enviar-informe.enviarInforme'); // Enviar informe
+        Route::post('verificar-informe', [InformeNotarialController::class, 'verificarInforme'])->name('verificar-informe.verificarInforme'); // Enviar informe
 
         // RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
         Route::get('notary-records', [NotaryRecordController::class, 'index'])->name('notary-records.index');

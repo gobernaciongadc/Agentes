@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function index(Request $request): View
     {
-        $users = User::with('agente')->get();
+        $users = User::with('agente')->orderBy('id', 'desc')->get();
         return view('user.index', compact('users'), ['titulo' => 'Gestión de Usuarios', 'currentPage' => 'Usuarios']);
     }
 
