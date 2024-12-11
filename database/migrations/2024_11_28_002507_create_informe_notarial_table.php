@@ -14,8 +14,8 @@ return new class extends Migration
 
         Schema::create('informe_notarials', function (Blueprint $table) {
             $table->id(); // ID autoincremental
-            $table->text('descripcion'); // Descripción del informe
-            $table->enum('estado', ['Pendiente', 'Verificado', 'No verificado', 'Rechazado'])->default('Pendiente'); // Estado del informe
+            $table->text('descripcion', 800); // Descripción del informe
+            $table->enum('estado', ['Pendiente', 'Verificado', 'No verificado', 'Rechazado', 'Corregido'])->default('Pendiente'); // Estado del informe
             $table->timestamp('fecha_envio')->nullable(); // Fecha y hora de envío
             $table->string('tipo_informe')->nullable(); // Tipo de informe
             $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');

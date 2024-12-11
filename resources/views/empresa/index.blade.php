@@ -9,9 +9,12 @@ Empresas
 <div class="row">
     <div class="col-sm-12">
 
-        <div style="width: 45%;">
-            <span class="font-weight-bold">INFORME NOTARIAL</span> <br> {{ $informe->descripcion }}
+        <div class="border" style="width: 45%; border-radius: 8px; padding: 10px;">
+            <span class="font-weight-bold">INFORME SEPREC</span> <br> {{ $informe->descripcion }}
         </div>
+
+
+
 
         <br>
         <div class="d-flex justify-content-between">

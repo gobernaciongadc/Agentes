@@ -42,6 +42,7 @@ Route::group(
         Route::get('informe-index-derecho', [InformeNotarialController::class, 'indexDerecho'])->name('informe-index-derecho.indexDerecho');
         Route::get('enviar-informe', [InformeNotarialController::class, 'enviarInforme'])->name('enviar-informe.enviarInforme'); // Enviar informe
         Route::post('verificar-informe', [InformeNotarialController::class, 'verificarInforme'])->name('verificar-informe.verificarInforme'); // Enviar informe
+        Route::post('observar-informe', [InformeNotarialController::class, 'observarInforme'])->name('observar-informe.observarInforme'); // Enviar informe
 
         // RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
         Route::get('notary-records', [NotaryRecordController::class, 'index'])->name('notary-records.index');
@@ -103,6 +104,7 @@ Route::get(
 )->name('admin.perfilusuario');
 Route::get('viewpassword', [UserController::class, 'viewPassword'])->name('admin.viewpassword');
 Route::post('changespassword', [UserController::class, 'changesPassword'])->name('admin.changespassword');
+Route::post('sancions-index-observacion', [SancionController::class, 'indexObservacion'])->name('sancions-index-observacion.indexObservacion');
 
 
 // Agrupamos las rutas que solo los administradores pueden ver
@@ -134,6 +136,7 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::get('sancions-verificar/{idInforme}/{idUser}/{tipo}', [SancionController::class, 'indexVerificar'])->name('sancions-verificar.indexVerificar');
 
     Route::post('sancions-store-verificar', [SancionController::class, 'storeVerificar'])->name('sancions-store-verificar.storeVerificar');
+    Route::post('sancions-store-observacion', [SancionController::class, 'storeObservacion'])->name('sancions-store-observacion.storeObservacion');
 });
 
 

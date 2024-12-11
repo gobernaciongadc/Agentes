@@ -95,7 +95,7 @@ Sancions
                         <th>Tipo Agente</th>
                         <th>Fecha Emitida</th>
                         <th>Estado Recibido</th>
-                        <th style="width: 8%;">Acciones</th>
+                        <th style="width: 16%;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -122,7 +122,10 @@ Sancions
                             <span class="badge badge-success">{{ $informe->estado }}</span>
                             @break
                             @case('Rechazado')
-                            <span class="badge badge-purple">{{ $informe->estado }}</span>
+                            <span class="badge badge-dark">{{ $informe->estado }}</span>
+                            @break
+                            @case('Corregido')
+                            <span class="badge badge-primary">{{ $informe->estado }}</span>
                             @break
                             @endswitch
                         </td>
@@ -133,6 +136,16 @@ Sancions
                             <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-info btn-sm" title="Ver Informe"><i class=" fa fa-eye"></i> Verificar</a>
                             @endif
                             @if ($informe->estado == 'Verificado')
+                            <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-primary btn-sm" title="Ver Informe">Ver informe <i class=" fa fa-chevron-right"></i></a>
+                            @endif
+
+                            @if ($informe->estado == 'Rechazado')
+                            <a onclick="openModalObservar('{{$informe->id}}','{{$informe->usuario_id}}','{{$informe->tipo_informe}}')" class="btn btn-warning text-white btn-sm" title="Ver observaciones"><i class=" fa fa-eye"></i> Con Observaciones</a>
+                            <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-primary btn-sm" title="Ver Informe">Ver informe <i class=" fa fa-chevron-right"></i></a>
+                            @endif
+
+                            @if ($informe->estado == 'Corregido')
+                            <a onclick="openModalObservar('{{$informe->id}}','{{$informe->usuario_id}}','{{$informe->tipo_informe}}')" class="btn btn-warning text-white btn-sm" title="Ver observaciones"><i class=" fa fa-eye"></i> Con Observaciones</a>
                             <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-primary btn-sm" title="Ver Informe">Ver informe <i class=" fa fa-chevron-right"></i></a>
                             @endif
 
@@ -152,6 +165,110 @@ Sancions
         </div>
     </div>
 </div>
+
+
+<!-- Lista de observaciones por informe -->
+<div class="row">
+    <div class="col-md-4">
+        <!-- sample modal content -->
+        <div id="observacion-informe-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 1200px !important;">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                        <span class="text-dark">Lista de Observaciones a Informe</span>
+                        <button type="button" class="close" onclick="closeModalObservar()" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+
+                        <table class="table table-striped table-bordered">
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th style="width: 40%;">Observación</th>
+                                    <th>Fecha Observación</th>
+                                    <th>Ver Archivo</th>
+                                </tr>
+
+                            </thead>
+                            <tbody id="tbody-observacion-informe">
+
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger waves-effect" onclick="closeModalObservar()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>
+<!-- Fin Modal -->
+
+<script>
+    // Abrir modal
+    function openModalObservar(IdInforme, IdUser, TipoInforme) {
+        $('#observacion-informe-modal').modal('show');
+        console.log(IdInforme, IdUser, TipoInforme);
+
+        const tbody = document.getElementById('tbody-observacion-informe');
+        tbody.innerHTML = '';
+        const data = {
+            informe_id: IdInforme,
+            user_id: IdUser,
+            tipo_informacion: TipoInforme,
+            _token: '{{ csrf_token() }}'
+        };
+
+        // Extraer la lista de observaciones del informe en especifico
+        $.ajax({
+            url: '{{ route("sancions-index-observacion.indexObservacion") }}',
+            method: 'POST',
+            data: data,
+            success: function(response) {
+
+                console.log(response);
+                const {
+                    observacion
+                } = response
+
+                observacion.forEach(element => {
+                    // Convertir la fecha al formato deseado
+                    const createdAt = new Date(element.created_at);
+                    const formattedDate = createdAt.toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${element.id}</td>
+                            <td>${element.descripcion}</td>
+                            <td>${formattedDate}</td>
+                            <td><a href="{{ url('/observaciones') }}/${element.archivo_observacion}" target="_blank" class="btn btn-twitter btn-sm"><i class="fa fa-file"></i> Ver Archivo</a></td>
+                        </tr>
+                    `;
+                });
+
+            },
+            error: function(response) {
+
+                toastr.error('Ocurrio un error al obtener la lista de observaciones', 'Agentes de Información');
+            }
+        });
+    }
+
+    // Cerrar modal
+    function closeModalObservar() {
+        $('#observacion-informe-modal').modal('hide');
+    }
+</script>
 
 @vite('resources/css/sancion.css')
 @vite('resources/js/sancion.js')

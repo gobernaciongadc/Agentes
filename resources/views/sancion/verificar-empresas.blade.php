@@ -25,7 +25,17 @@ Verificar Empresas
                     <i class="fa fa-check"></i> Verificar
                 </button>
                 <button id="btn-observar" type="button" href="#" class="btn btn-warning font-14 text-dark" data-placement="left" onclick="openModalObservar()">
-                    <i class="fa fa-search"></i> Observar Informe
+                    <i class="fa fa-eye"></i> Observar Informe
+                </button type="button">
+            </div>
+            @endif
+            @if ($informe->estado == 'Corregido')
+            <div>
+                <button id="btn-verificar" type="button" class="btn btn-success font-14" data-placement="left" onclick="openModalVerificar()">
+                    <i class="fa fa-check"></i> Verificar
+                </button>
+                <button id="btn-observar" type="button" href="#" class="btn btn-warning font-14 text-dark" data-placement="left" onclick="openModalObservar()">
+                    <i class="fa fa-eye"></i> Observar Informe
                 </button type="button">
             </div>
             @endif
@@ -176,7 +186,7 @@ Verificar Empresas
 </div>
 
 
-<!-- Modal Vrificación -->
+<!-- Modal Observacion -->
 <div class="row">
     <div class="col-md-4">
         <!-- sample modal content -->
@@ -188,31 +198,29 @@ Verificar Empresas
                         <button type="button" class="close" onclick="closeModalObservar()" aria-label="Close">×</button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form id="observar-informe-form">
                             <div class="form-group">
-                                <label for="message-text" class="control-label">Descripción de Observación de Informe:</label>
-                                <textarea class="form-control" id="descripcion-informe-observar" rows="6"></textarea>
+                                <label for="descripcion-informe-observar" class="control-label">Descripción de Observación de Informe:</label>
+                                <textarea class="form-control" name="descripcion-informe-observar" id="descripcion-informe-observar" rows="6"></textarea>
                             </div>
                             <!-- Tercera fila - sector archivos -->
 
                             <div class="form-group mb-2 mb20">
-                                <label for="respaldo" class="form-label">Archivo de Observación<span class="text-danger">*</span></label><br>
+                                <label for="respaldo-2" class="form-label">Archivo de Observación<span class="text-danger">*</span></label><br>
                                 <label class="custom-file-upload">
                                     <span>📄 Seleccionar Archivo</span>
-                                    <input type="file" name="verificacion-seprec" id="respaldo-2" accept="application/pdf">
+                                    <input type="file" name="observacion-seprec" id="respaldo-2">
                                 </label>
                                 <br>
-                                <span id="file-name-1">
+                                <span id="file-name-2">
                                     Ningún archivo seleccionado
                                 </span>
                             </div>
-
-
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default waves-effect" onclick="closeModalObservar()">Cerrar</button>
-                        <button type="button" id="btn-guardar-observar" onclick="guardarInformeObservar()" class="btn btn-info waves-effect waves-light"><i class="fa fa-save"></i> Observar</button>
+                        <button type="button" id="btn-guardar-observar" onclick="guardarInformeObservar()" class="btn btn-info waves-effect waves-light"><i class="fa fa-eye"></i> Observar</button>
                     </div>
                 </div>
             </div>
@@ -289,36 +297,46 @@ Verificar Empresas
 
 
     function guardarInformeObservar() {
+        const formData = new FormData(document.getElementById('observar-informe-form'));
         const btnGuardar = document.getElementById('btn-guardar-observar');
 
-        const baseUrl = "{{ url('/') }}"; // Base de la URL
-        // Capturamos los datos del formulario
-        // Obtener la URL actual
+        // Botones superiores
+        const btnVerificar = document.getElementById('btn-verificar');
+        const btnObservar = document.getElementById('btn-observar');
 
-        const datos = {
-            descripcion: $('#descripcion-informe').val(),
-            _token: '{{ csrf_token() }}'
-        };
+        if (!formData.get('descripcion-informe-observar') || !formData.get('observacion-seprec')) {
+            toastr.error('Por favor complete todos los campos obligatorios', 'Agentes de Información');
+            return;
+        }
 
-        // Realizamos la petición AJAX
+        formData.append('informe_id', '{{$idInforme}}');
+        formData.append('tipo_informacion', '{{$tipo}}');
+        formData.append('_token', '{{ csrf_token() }}');
+
+        btnGuardar.disabled = true;
+
         $.ajax({
-            url: '{{ route("informe-notarials.store") }}',
+            url: '{{ route("sancions-store-observacion.storeObservacion") }}',
             method: 'POST',
-            data: datos,
-            beforeSend: function() {
-                btnGuardar.disabled = true;
-            },
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function(response) {
                 btnGuardar.disabled = false;
+                console.log(response);
 
-                const {
-                    informe,
-                    agente
-                } = response;
-
+                if (response.status === 'success') {
+                    btnVerificar.classList.add('d-none');
+                    btnObservar.classList.add('d-none');
+                    toastr.success('Informe verificado exitosamente', 'Agentes de Información');
+                    closeModalObservar();
+                } else {
+                    alert('Error: ' + response.message);
+                }
             },
             error: function(response) {
                 btnGuardar.disabled = false;
+                alert('Ocurrió un error al guardar el informe');
             }
         });
     }

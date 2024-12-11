@@ -11,6 +11,7 @@ use App\Models\DerechosReale;
 use App\Models\Empresa;
 use App\Models\InformeNotarial;
 use App\Models\NotaryRecord;
+use App\Models\Observacion;
 use App\Models\SentenciasJudiciale;
 use App\Models\User;
 use App\Models\Verificar;
@@ -45,31 +46,35 @@ class SancionController extends Controller
         $informes = InformeNotarial::with('user')->where('estado', 'No verificado')
             ->orWhere('estado', 'Verificado')
             ->orWhere('estado', 'Rechazado')
+            ->orWhere('estado', 'Corregido')
             ->get();
 
-        foreach ($informes as $key => $value) {
-            $usuarios[$key] = User::where('id', $value->usuario_id)->first();
-        }
+        if ($id != 'bandeja' && $informes->count() > 0) {
 
-        foreach ($usuarios as $key => $value) {
-            $agentes[$key] = Agente::where('id', $value->agente_id)->first();
-        }
 
-        foreach ($informes as $key => $value) {
-            if ($agentes[$key]->tipo_agente == 'SEPREC') {
-                array_push($empresas, $value);
+            foreach ($informes as $key => $value) {
+                $usuarios[$key] = User::where('id', $value->usuario_id)->first();
             }
-            if ($agentes[$key]->tipo_agente == 'Notarios de Fe Pública') {
-                array_push($notarial, $value);
+
+            foreach ($usuarios as $key => $value) {
+                $agentes[$key] = Agente::where('id', $value->agente_id)->first();
             }
-            if ($agentes[$key]->tipo_agente == 'Derechos Reales') {
-                array_push($derechosReales, $value);
-            }
-            if ($agentes[$key]->tipo_agente == 'Jueces y Secretarios del Tribunal Departamental de Justicia') {
-                array_push($sentenciasJudiciales, $value);
+
+            foreach ($informes as $key => $value) {
+                if ($agentes[$key]->tipo_agente == 'SEPREC') {
+                    array_push($empresas, $value);
+                }
+                if ($agentes[$key]->tipo_agente == 'Notarios de Fe Pública') {
+                    array_push($notarial, $value);
+                }
+                if ($agentes[$key]->tipo_agente == 'Derechos Reales') {
+                    array_push($derechosReales, $value);
+                }
+                if ($agentes[$key]->tipo_agente == 'Jueces y Secretarios del Tribunal Departamental de Justicia') {
+                    array_push($sentenciasJudiciales, $value);
+                }
             }
         }
-
 
 
         switch ($id) {
@@ -265,6 +270,101 @@ class SancionController extends Controller
                 'code' => 200,
                 'message' => 'El informe se verifico correctamente',
                 'informe' => $verificar
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'Error',
+                'code' => 500,
+                'message' => 'Error interno del servidor',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function storeObservacion(Request $request)
+    {
+        $params = $request->all(); // Convierte a objeto
+        $user = Auth::user();
+
+        if ($user->rol == 'Agente') {
+            return response()->json([
+                'status' => 'Error',
+                'code' => 403,
+                'message' => 'El usuario no tiene permiso para realizar esta acción'
+            ], 403);
+        }
+
+        $validate = Validator::make($request->all(), [
+            'descripcion-informe-observar' => 'required|string',
+            'observacion-seprec' => 'required|file|max:9048', // Validar archivo PDF
+            'informe_id' => 'required',
+            'tipo_informacion' => 'required'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => 'Error',
+                'code' => 400,
+                'message' => 'Los datos enviados no son correctos',
+                'errors' => $validate->errors()
+            ], 400);
+        }
+
+        try {
+
+            // Obtener el nombre original y generar un nombre único
+            $originalName = $request->file('observacion-seprec')->getClientOriginalName();
+            $uniqueName = uniqid() . '_' . $originalName;
+
+            // Mover el archivo a la carpeta "verificaciones" dentro de public/
+            $request->file('observacion-seprec')->move(public_path('observaciones'), $uniqueName);
+
+            $observacion = new Observacion();
+            $observacion->descripcion = $params['descripcion-informe-observar'];
+            $observacion->usuario_id = $user->id; // ID del usuario autenticado
+            $observacion->tipo_informe = $params['tipo_informacion'];
+            $observacion->archivo_observacion = $uniqueName; // Nombre del archivo
+            $observacion->informe_id = $params['informe_id'];
+            $observacion->save();
+
+
+            $informe = InformeNotarial::find($params['informe_id']);
+            $informe->estado = 'Rechazado';
+            $informe->save();
+
+
+
+            return response()->json([
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'La observación fue enviada correctamente',
+                'informe' => $observacion
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'Error',
+                'code' => 500,
+                'message' => 'Error interno del servidor',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function indexObservacion(Request $request)
+    {
+        $params = $request->all(); // devuelve un array
+        $user = Auth::user();
+
+
+        try {
+
+            $observacion = Observacion::where('informe_id', $params['informe_id'])->orderBy('id', 'desc')->get();
+
+            return response()->json([
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Lista de observaciones cargada correctamente',
+                'observacion' => $observacion
             ]);
         } catch (Exception $e) {
             return response()->json([

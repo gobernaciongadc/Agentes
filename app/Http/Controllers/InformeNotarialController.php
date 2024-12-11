@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\InformeNotarialRequest;
 use App\Models\Agente;
+use App\Models\Observacion;
 use App\Models\Verificar;
 use Carbon\Carbon;
 use Exception;
@@ -248,11 +249,18 @@ class InformeNotarialController extends Controller
         // Cargar manualmente el registro
         $informeNotarial = InformeNotarial::findOrFail($idInforme);
 
-        // Actualizar con los datos validados
-        $informeNotarial->update([
-            'estado' => 'No verificado',
-            'fecha_envio' => Carbon::now()
-        ]);
+        if ($informeNotarial->estado == 'Rechazado') {
+            // Actualizar con los datos validados
+            $informeNotarial->update([
+                'estado' => 'Corregido'
+            ]);
+        } else {
+            // Actualizar con los datos validados
+            $informeNotarial->update([
+                'estado' => 'No verificado',
+                'fecha_envio' => Carbon::now()
+            ]);
+        }
 
         switch ($agente->tipo_agente) {
             case 'Notarios de Fe Pública':
@@ -294,7 +302,35 @@ class InformeNotarialController extends Controller
             $data = array(
                 'status' => 'Error',
                 'code' => 404,
-                'message' => $e
+                'message' => $e->getMessage()
+            );
+        }
+
+
+
+        // Devuelve en json con laravel
+        return response()->json($data, $data['code']);
+    }
+
+    function observarInforme(Request $request)
+    {
+
+
+        $params = (object) $request->all(); // Devulve un obejto
+        $observacion = Observacion::where('informe_id', $params->id)->first(); // Cargar manualmente el registro
+
+        try {
+            $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'La observación se verifico correctamente',
+                'observacion' => $observacion
+            );
+        } catch (Exception $e) {
+            $data = array(
+                'status' => 'Error',
+                'code' => 404,
+                'message' =>  $e
             );
         }
 
