@@ -78,7 +78,6 @@ Informe Notarials
 
                                     @endswitch
 
-
                                 </td>
                                 <td>
                                     @if ($informeNotarial->fecha_envio)
@@ -123,12 +122,9 @@ Informe Notarials
                                     @case('No verificado')
                                     <span class="badge badge-success">Enviado</span>
                                     @break
+
                                     @case('Verificado')
-
-
                                     <a class="btn btn-twitter btn-sm text-white" onclick="mostrarVerificacion('{{$informeNotarial->id}}')"><i class="fa fa-certificate"></i> Certificado de Informe</a>
-
-
                                     @break
 
                                     @case('Rechazado')
@@ -497,12 +493,12 @@ Informe Notarials
 </script>
 
 
-<!-- Modal -->
+<!-- Modal crear informe -->
 <div class="row">
     <div class="col-md-4">
         <!-- sample modal content -->
         <div id="informe-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-info">
                         <span class="titulo-card">Crear Informe Notarial</span>

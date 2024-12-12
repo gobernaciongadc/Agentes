@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgenteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\DerechosRealeController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InformeNotarialController;
@@ -60,7 +61,10 @@ Route::group(
         Route::get('notary-records/edit/{id}/{idInforme}', [NotaryRecordController::class, 'edit'])->name('notary-records.edit');
 
         // Actualizar un registro existente
-        Route::match(['put', 'patch'], 'notary-records/update/{id}/{idInforme}', [NotaryRecordController::class, 'update'])->name('notary-records.update');
+        // Route::match(['put', 'patch'], 'notary-records/update/{id}/{idInforme}', [NotaryRecordController::class, 'update'])->name('notary-records.update');
+        Route::match(['put', 'patch'], 'notary-records/{id}/{idInforme}', [NotaryRecordController::class, 'update'])->name('notary-records.update');
+
+
         Route::delete('notary-records/{id}/{idInforme}', [NotaryRecordController::class, 'destroy'])->name('notary-records.destroy');
 
         // RUTA PARA AGENTES DE DERECHOS REALES
@@ -137,6 +141,13 @@ Route::group(['middleware' => ['role:Administrador']], function () {
 
     Route::post('sancions-store-verificar', [SancionController::class, 'storeVerificar'])->name('sancions-store-verificar.storeVerificar');
     Route::post('sancions-store-observacion', [SancionController::class, 'storeObservacion'])->name('sancions-store-observacion.storeObservacion');
+
+    // COMUNICADOS
+    Route::get('comunicados', [ComunicadoController::class, 'index'])->name('comunicados.index');
+    Route::get('comunicados/create', [ComunicadoController::class, 'create'])->name('comunicados.create');
+    Route::get('comunicados/store', [ComunicadoController::class, 'store'])->name('comunicados.store');
+    Route::get('comunicados/show/{id}', [ComunicadoController::class, 'show'])->name('comunicados.show');
+    Route::get('comunicados/update/{id}', [ComunicadoController::class, 'edit'])->name('comunicados.edit');
 });
 
 

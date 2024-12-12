@@ -109,6 +109,7 @@
     </div>
 
 
+
     <div class="col-md-4">
         <div class="form-group mb-2 mb20">
             <label for="respaldo" class="form-label">Transferencia de Cuotas Capital<span class="text-danger">*</span></label><br>
@@ -171,6 +172,34 @@
             @endif
         </div>
     </div>
+
+    @if($eliminar)
+    <div class="col-12" style="margin-top: 1rem;">
+
+        <span class="font-18 mb-2"> Elimina los archivos que no se deseen conservar</span>
+
+        <div class="form-check mb-2">
+            <input type="checkbox" name="eliminar_base_empresarial_empresas_activas" id="eliminar_base_empresarial_empresas_activas" class="form-check-input">
+            <label for="eliminar_base_empresarial_empresas_activas" class="form-check-label">
+                Eliminar archivo de Base Empresarial de Empresas Activas
+            </label>
+        </div>
+
+        <div class="form-check mb-2">
+            <input type="checkbox" name="eliminar_transferencia_cuotas_capital" id="eliminar_transferencia_cuotas_capital" class="form-check-input">
+            <label for="eliminar_transferencia_cuotas_capital" class="form-check-label">
+                Eliminar archivo de Transferencia de Cuotas Capital
+            </label>
+        </div>
+
+        <div class="form-check mb-2">
+            <input type="checkbox" name="eliminar_transferencia_empresa_unipersonal" id="eliminar_transferencia_empresa_unipersonal" class="form-check-input">
+            <label for="eliminar_transferencia_empresa_unipersonal" class="form-check-label">
+                Eliminar archivo de Transferencia de Empresa Unipersonal
+            </label>
+        </div>
+    </div>
+    @endif
 
     <!-- Id informe -->
     <input type="hidden" name="informe_id" class="form-control @error('informe_id') is-invalid @enderror" value="{{ old('informe_id', $empresa?->informe_id?: $idInforme) }}" id="informe_id" placeholder="Informe Id">

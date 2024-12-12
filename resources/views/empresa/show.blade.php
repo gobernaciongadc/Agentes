@@ -57,21 +57,48 @@
                     <!-- Sector archivos -->
                     <div class="form-group mb-2 mb20">
                         <strong style="color:black">Base Empresarial Empresas Activas:</strong>
-                        <a href="{{ asset('storage/uploads/empresas/' . basename($empresa->base_empresarial_empresas_activas)) }}" target="_blank">
+
+                        @php
+                        $rutaArchivo = 'uploads/empresas/' . basename($empresa->base_empresarial_empresas_activas);
+                        @endphp
+
+                        @if ($empresa->base_empresarial_empresas_activas && Storage::disk('public')->exists($rutaArchivo))
+                        <a href="{{ asset('storage/' . $rutaArchivo) }}" target="_blank">
                             <i class="fa fa-file-pdf-o"></i> Ver PDF
                         </a>
+                        @else
+                        <span>Sin Archivo</span>
+                        @endif
+
+
                     </div>
                     <div class="form-group mb-2 mb20">
                         <strong style="color:black">Transferencia Cuotas Capital:</strong>
-                        <a href="{{ asset('storage/uploads/empresas/' . basename($empresa->transferencia_cuotas_capital)) }}" target="_blank">
+                        @php
+                        $rutaArchivo_2 = 'uploads/empresas/' . basename($empresa->transferencia_cuotas_capital);
+                        @endphp
+
+                        @if ($empresa->transferencia_cuotas_capital && Storage::disk('public')->exists($rutaArchivo))
+                        <a href="{{ asset('storage/' . $rutaArchivo_2) }}" target="_blank">
                             <i class="fa fa-file-pdf-o"></i> Ver PDF
                         </a>
+                        @else
+                        <span>Sin Archivo</span>
+                        @endif
                     </div>
                     <div class="form-group mb-2 mb20">
                         <strong style="color:black">Transferencia Empresa Unipersonal:</strong>
-                        <a href="{{ asset('storage/uploads/empresas/' . basename($empresa->transferencia_empresa_unipersonal)) }}" target="_blank">
+                        @php
+                        $rutaArchivo_3 = 'uploads/empresas/' . basename($empresa->transferencia_empresa_unipersonal);
+                        @endphp
+
+                        @if ($empresa->transferencia_empresa_unipersonal && Storage::disk('public')->exists($rutaArchivo))
+                        <a href="{{ asset('storage/' . $rutaArchivo_3) }}" target="_blank">
                             <i class="fa fa-file-pdf-o"></i> Ver PDF
                         </a>
+                        @else
+                        <span>Sin Archivo</span>
+                        @endif
                     </div>
 
                 </div>

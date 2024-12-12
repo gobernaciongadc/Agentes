@@ -27,7 +27,9 @@ export default defineConfig({
                 'resources/css/derechos.css',     // estilos específicos de persona
                 'resources/js/derechos.js',
                 'resources/css/sancion.css',     // estilos específicos de persona
-                'resources/js/sancion.js'         // scripts específicos de persona
+                'resources/js/sancion.js',         // scripts específicos de persona
+                'resources/css/comunicados.css',     // estilos específicos de persona
+                'resources/js/comunicados.js'         // scripts específicos de persona
             ],
             refresh: true,
         }),

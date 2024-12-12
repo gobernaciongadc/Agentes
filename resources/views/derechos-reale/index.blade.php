@@ -9,7 +9,7 @@ Derechos Reales
 <div class="row">
     <div class="col-sm-12">
         <div style="width: 45%;">
-            <span class="font-weight-bold">INFORME NOTARIAL</span> <br> {{ $informe->descripcion }}
+            <span class="font-weight-bold">INFORME DERECHOS REALES</span> <br> {{ $informe->descripcion }}
         </div>
 
         <br>

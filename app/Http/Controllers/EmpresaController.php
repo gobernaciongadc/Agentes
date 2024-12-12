@@ -52,9 +52,11 @@ class EmpresaController extends Controller
         // Obtener la query string completa
         $idInforme = $request->query('idInforme');
 
+        $eliminar = false;
+
         // dd($idInforme);
 
-        return view('empresa.create', compact('empresa', 'respaldoUrl', 'notario', 'municipio', 'idInforme', 'idUser'), ['titulo' => 'Gestión de registro de información SEPREC', 'currentPage' => 'Empresa']);
+        return view('empresa.create', compact('empresa', 'respaldoUrl', 'notario', 'municipio', 'idInforme', 'idUser', 'eliminar'), ['titulo' => 'Gestión de registro de información SEPREC', 'currentPage' => 'Empresa']);
     }
 
     /**
@@ -111,12 +113,11 @@ class EmpresaController extends Controller
     {
 
         $empresa = Empresa::find($id);
-        // echo '<pre>';
-        // dd(print_r($empresa));
-        // echo '</pre>';
+
+        $eliminar = true;
 
         $respaldoUrl = false;
-        return view('empresa.edit', compact('empresa', 'respaldoUrl', 'idInforme'), ['titulo' => 'Gestión de registro de información SEPREC', 'currentPage' => 'Empresa']);
+        return view('empresa.edit', compact('empresa', 'respaldoUrl', 'idInforme', 'eliminar'), ['titulo' => 'Gestión de registro de información SEPREC', 'currentPage' => 'Empresa']);
     }
 
     /**
@@ -126,7 +127,23 @@ class EmpresaController extends Controller
     {
         $empresa = Empresa::find($id);
 
-        // $data = $request->validated();
+        $data = $request->all();
+
+        // Eliminar archivos si el usuario lo solicita
+        if ($request->has('eliminar_base_empresarial_empresas_activas') && $empresa->base_empresarial_empresas_activas) {
+            Storage::disk('public')->delete('uploads/empresas/' . $empresa->base_empresarial_empresas_activas);
+            $data['base_empresarial_empresas_activas'] = null;
+        }
+
+        if ($request->has('eliminar_transferencia_cuotas_capital') && $empresa->transferencia_cuotas_capital) {
+            Storage::disk('public')->delete('uploads/empresas/' . $empresa->transferencia_cuotas_capital);
+            $data['transferencia_cuotas_capital'] = null;
+        }
+
+        if ($request->has('eliminar_transferencia_empresa_unipersonal') && $empresa->transferencia_empresa_unipersonal) {
+            Storage::disk('public')->delete('uploads/empresas/' . $empresa->transferencia_empresa_unipersonal);
+            $data['transferencia_empresa_unipersonal'] = null;
+        }
 
         // Manejo de archivos para 'base_empresarial_empresas_activas'
         if ($request->hasFile('base_empresarial_empresas_activas')) {
@@ -134,7 +151,6 @@ class EmpresaController extends Controller
             $fileName = time() . '_activas_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads/empresas', $fileName, 'public');
 
-            // Eliminar el archivo anterior si existe
             if ($empresa->base_empresarial_empresas_activas) {
                 Storage::disk('public')->delete('uploads/empresas/' . $empresa->base_empresarial_empresas_activas);
             }
@@ -148,7 +164,6 @@ class EmpresaController extends Controller
             $fileName = time() . '_cuotas_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads/empresas', $fileName, 'public');
 
-            // Eliminar el archivo anterior si existe
             if ($empresa->transferencia_cuotas_capital) {
                 Storage::disk('public')->delete('uploads/empresas/' . $empresa->transferencia_cuotas_capital);
             }
@@ -162,7 +177,6 @@ class EmpresaController extends Controller
             $fileName = time() . '_unipersonal_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads/empresas', $fileName, 'public');
 
-            // Eliminar el archivo anterior si existe
             if ($empresa->transferencia_empresa_unipersonal) {
                 Storage::disk('public')->delete('uploads/empresas/' . $empresa->transferencia_empresa_unipersonal);
             }
@@ -170,11 +184,12 @@ class EmpresaController extends Controller
             $data['transferencia_empresa_unipersonal'] = $fileName;
         }
 
+        // Actualizar la empresa con los nuevos datos
         $empresa->update($data);
 
-        return Redirect::route('empresas.index', ['id' => $idInforme])
-            ->with('success', 'Información actualizada correctamente.');
+        return redirect()->route('empresas.index', ['id' => $idInforme])->with('success', 'Empresa actualizada correctamente.');
     }
+
 
     public function destroy($id, $idInforme): RedirectResponse
     {

@@ -28,7 +28,11 @@ class AdminController extends Controller
         $totalNotarial = 0;
         $totalEmpresas = 0;
 
-        $informeNotarial = InformeNotarial::all();
+        $informeNotarial = InformeNotarial::where('estado', 'Verificado')
+            ->orwhere('estado', 'No verificado')
+            ->orwhere('estado', 'Rechazado')
+            ->orwhere('estado', 'Corregido')
+            ->get();
 
         foreach ($informeNotarial as $key => $value) {
             $usuarios[$key] = User::where('id', $value->usuario_id)->first();

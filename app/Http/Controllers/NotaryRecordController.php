@@ -85,6 +85,7 @@ class NotaryRecordController extends Controller
     public function edit($id, $idInforme): View
     {
         $notaryRecord = NotaryRecord::find($id);
+        // dd($notaryRecord);
 
         return view('notary-record.edit', compact('notaryRecord', 'idInforme'), ['titulo' => 'Gestión de Informe Notarios', 'currentPage' => 'Informe']);
     }

@@ -104,7 +104,7 @@
                               class="label label-rouded label-success pull-right">4</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('sancions-bandeja-entrada.indexBandejaEntrada', ['id'=>'bandeja'])}}">Bandeja de Entrada</a></li>
-                      <li><a href="#">Observaciones</a></li>
+                      <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                       <li><a href="#">Notificaciones</a></li>
                       <li><a href="#">Sanciones</a></li>
                   </ul>

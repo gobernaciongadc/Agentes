@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('template_title')
-Notary Records
+Notarios de fe publica
 @endsection
 
 @section('content')
@@ -11,17 +11,17 @@ Notary Records
     <div class="col-sm-12">
 
         <div style="width: 45%;">
-            <span class="font-weight-bold">INFORME NOTARIAL</span> <br> {{ $informe->descripcion }}
+            <span class="font-weight-bold">INFORME NOTARIO DE FÉ PUBLICA</span> <br> {{ $informe->descripcion }}
         </div>
 
         <br>
 
         <div class="d-flex justify-content-between">
-            <a href="{{ route('notary-records.create', ['idInforme'=>$id]) }}" class="btn btn-primary font-14 float-right" data-placement="left">
-                <i class="fa fa-plus"></i> Crear Nuevo Registro
-            </a>
-            <a href="{{ route('informe-notarials.index') }}" class="btn btn-info font-14 float-left" data-placement="left">
+            <a href="{{ route('informe-notarials.index') }}" class="btn btn-danger font-14" data-placement="left">
                 <i class="fa fa-chevron-left"></i> Regresar a Información Notarios
+            </a>
+            <a href="{{ route('notary-records.create', ['idInforme'=>$id]) }}" class="btn btn-primary font-14" data-placement="left">
+                <i class="fa fa-plus"></i> Crear Nuevo Registro
             </a>
         </div>
 
@@ -43,7 +43,7 @@ Notary Records
             <table id="notarialesTable" class="table table-striped table-hover">
                 <thead class="thead small bg-cabecera">
                     <tr>
-                        <th>#</th>
+                        <th>ID</th>
                         <th>Municipio</th>
                         <th>Número Notaria</th>
                         <th>Nombre Notario(a)</th>
@@ -67,7 +67,6 @@ Notary Records
                     @foreach ($notaryRecords as $notaryRecord)
                     <tr>
                         <td>{{ $notaryRecord->id }}</td>
-
                         <td>{{ $notaryRecord->municipio }}</td>
                         <td>{{ $notaryRecord->numero_notaria }}</td>
                         <td>{{ $notaryRecord->nombre_notaria }}</td>

@@ -69,7 +69,13 @@ Informe Notarials
                                     @case('Verificado')
                                     <span class="badge badge-success">{{ $informeNotarial->estado }}</span>
                                     @break
-                                    @default
+                                    <!-- ojo Nuevos datos -->
+                                    @case('Rechazado')
+                                    <span class="badge badge-dark">{{ $informeNotarial->estado }}</span>
+                                    @break
+                                    @case('Corregido')
+                                    <span class="badge badge-primary">{{ $informeNotarial->estado }}</span>
+                                    @break
 
                                     @endswitch
 
@@ -117,18 +123,27 @@ Informe Notarials
                                     @case('No verificado')
                                     <span class="badge badge-success">Enviado</span>
                                     @break
+
                                     @case('Verificado')
-                                    <span class="badge badge-info">Consolidado</span>
+                                    <a class="btn btn-twitter btn-sm text-white" onclick="mostrarVerificacion('{{$informeNotarial->id}}')"><i class="fa fa-certificate"></i> Certificado de Informe</a>
                                     @break
-                                    @default
 
+                                    <!-- ojo -->
+                                    @case('Rechazado')
+
+                                    <a class="btn btn-sm btn-dark" href="{{ route('notary-records.index', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-file"></i> Corregir Informe</a>
+                                    <a class="btn btn-warning btn-sm text-white" onclick="openModalObservar('{{$informeNotarial->id}}','{{$informeNotarial->usuario_id}}','{{$informeNotarial->tipo_informe}}')"><i class="fa fa-eye"></i> Ver Observaciones</a>
+                                    <a class="btn btn-sm btn-success text-white" onclick="confirmarEnvio(event, 'enviar-informe?id={{ $informeNotarial->id }}' )">
+                                        <i class="fa fa-upload"></i> Enviar informe
+                                    </a>
+
+                                    @break
+
+                                    @case('Corregido')
+                                    <span class="badge badge-success">Corrección Realizada y Enviada</span>
+                                    @break
                                     @endswitch
-
-
-
-
                                 </td>
-
                             </tr>
                             @endforeach
                         </tbody>
@@ -140,6 +155,48 @@ Informe Notarials
     </div>
 </div>
 
+<!-- Lista de observaciones por informe -->
+<div class="row">
+    <div class="col-md-4">
+        <!-- sample modal content -->
+        <div id="observacion-informe-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 1200px !important;">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                        <span class="text-dark">Lista de Observaciones a Informe</span>
+                        <button type="button" class="close" onclick="closeModalObservar()" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+
+                        <table class="table table-striped table-bordered">
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th style="width: 40%;">Observación</th>
+                                    <th>Fecha Observación</th>
+                                    <th>Ver Archivo</th>
+                                </tr>
+
+                            </thead>
+                            <tbody id="tbody-observacion-informe">
+
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger waves-effect" onclick="closeModalObservar()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>
+<!-- Fin Modal -->
+
 <script>
     // Abrir modal
     function openModal() {
@@ -150,6 +207,14 @@ Informe Notarials
     function closeModal() {
         $('#informe-modal').modal('hide');
     }
+
+
+    // ojo
+    // Cerrar modal
+    function closeModalVerificar() {
+        $('#mostrar-certificado').modal('hide');
+    }
+
 
     function guardarInforme() {
         const btnGuardar = document.getElementById('btn-guardar');
@@ -328,15 +393,125 @@ Informe Notarials
             }
         });
     }
+
+    // ojo
+    function mostrarVerificacion(idInforme) {
+
+        const baseUrl = "{{ url('/') }}"; // Base de la URL
+        $('#mostrar-certificado').modal('show');
+
+        const descripcion = document.getElementById('parrafo-verificar');
+        const certificado = document.getElementById('file-certificado');
+
+
+        const datos = {
+            id: idInforme,
+            _token: '{{ csrf_token() }}'
+        };
+
+        console.log(datos);
+
+
+        // Una consulta ajax jquery
+        $.ajax({
+            url: '{{ route("verificar-informe.verificarInforme") }}',
+            method: 'POST',
+            data: datos,
+            success: function(response) {
+
+                console.log(response);
+
+                const {
+                    verificar
+                } = response;
+
+
+                descripcion.innerHTML = verificar.descripcion;
+
+                certificado.innerHTML = ` 
+                            <a class="btn btn-twitter font-14" href="{{ asset('verificaciones/') }}/${verificar.certificado}" target="_blank">
+                                <i class="fa fa-file-pdf-o"></i> Descargar certificado
+                            </a>`;
+
+            },
+            error: function(response) {
+                console.error('Error:', response);
+            }
+        })
+    }
+
+    // ojo Abrir modal
+    function openModalObservar(IdInforme, IdUser, TipoInforme) {
+        console.log(IdInforme, IdUser, TipoInforme);
+
+        $('#observacion-informe-modal').modal('show');
+        // console.log(IdInforme, IdUser, TipoInforme);
+
+        const tbody = document.getElementById('tbody-observacion-informe');
+        tbody.innerHTML = '';
+        const data = {
+            informe_id: IdInforme,
+            user_id: IdUser,
+            tipo_informacion: TipoInforme,
+            _token: '{{ csrf_token() }}'
+        };
+
+        console.log(data);
+
+
+        // Extraer la lista de observaciones del informe en especifico
+        $.ajax({
+            url: '{{ route("sancions-index-observacion.indexObservacion") }}',
+            method: 'POST',
+            data: data,
+            success: function(response) {
+
+                // console.log(response);
+                const {
+                    observacion
+                } = response
+
+                observacion.forEach(element => {
+                    // Convertir la fecha al formato deseado
+                    const createdAt = new Date(element.created_at);
+                    const formattedDate = createdAt.toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${element.id}</td>
+                            <td>${element.descripcion}</td>
+                            <td>${formattedDate}</td>
+                            <td><a href="{{ url('/observaciones') }}/${element.archivo_observacion}" target="_blank" class="btn btn-twitter btn-sm"><i class="fa fa-file"></i> Ver Archivo</a></td>
+                        </tr>
+                    `;
+                });
+
+            },
+            error: function(response) {
+
+                toastr.error('Ocurrio un error al obtener la lista de observaciones', 'Agentes de Información');
+            }
+        });
+    }
+
+    // ojo  crear informeCerrar modal
+    function closeModalObservar() {
+        $('#observacion-informe-modal').modal('hide');
+    }
 </script>
 
 
-<!-- Modal -->
+<!-- Modal crear informe -->
 <div class="row">
     <div class="col-md-4">
         <!-- sample modal content -->
         <div id="informe-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-info">
                         <span class="titulo-card">Crear Informe Notarial</span>
@@ -358,6 +533,37 @@ Informe Notarials
             </div>
         </div>
         <!-- /.modal -->
+    </div>
+</div>
+<!-- Fin Modal -->
+
+<!-- Modal Mostrar certificado -->
+<div class="row">
+    <div class="col-md-4">
+        <!-- sample modal content -->
+        <div id="mostrar-certificado" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #55acee;">
+                        <span class="titulo-card">Certificación de Informe</span>
+                        <button type="button" class="close" onclick="closeModalVerificar()" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <p id="parrafo-verificar"></p>
+                            <br>
+                            <div id="file-certificado">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger waves-effect" onclick="closeModalVerificar()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal mostrar certificado -->
     </div>
 </div>
 <!-- Fin Modal -->

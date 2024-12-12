@@ -10,13 +10,13 @@ Sentencias Judiciales
     <div class="col-sm-12">
 
         <div style="width: 45%;">
-            <span class="font-weight-bold">INFORME NOTARIAL</span> <br> {{ $informe->descripcion }}
+            <span class="font-weight-bold">INFORME DE JUEZES O SECRETARIOS</span> <br> {{ $informe->descripcion }}
         </div>
         <br>
 
         <div class="d-flex justify-content-between">
             <a href="{{ route('informe-index-juzgado.indexJuzgado') }}" class="btn btn-danger font-14" data-placement="left">
-                <i class="fa fa-chevron-left"></i> Regresar a Información de Derecho Reales
+                <i class="fa fa-chevron-left"></i> Regresar a Información de Jueces o Secretarios
             </a>
             <a href="{{ route('sentencias-judiciales.create',['idInforme'=>$id]) }}" class="btn btn-info font-14" data-placement="left">
                 <i class="fa fa-plus"></i> Crear Nuevo Registro
