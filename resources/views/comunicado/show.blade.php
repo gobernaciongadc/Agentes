@@ -5,55 +5,59 @@
 @endsection
 
 @section('content')
-<section class="content container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div class="float-left">
-                        <span class="card-title">{{ __('Show') }} Comunicado</span>
-                    </div>
-                    <div class="float-right">
-                        <a class="btn btn-primary btn-sm" href="{{ route('comunicados.index') }}"> {{ __('Back') }}</a>
-                    </div>
-                </div>
 
-                <div class="card-body bg-white">
-
-                    <div class="form-group mb-2 mb20">
-                        <strong>Titulo:</strong>
-                        {{ $comunicado->titulo }}
-                    </div>
-                    <div class="form-group mb-2 mb20">
-                        <strong>Fecha Emision:</strong>
-                        {{ $comunicado->fecha_emision }}
-                    </div>
-                    <div class="form-group mb-2 mb20">
-                        <strong>Destinatario:</strong>
-                        {{ $comunicado->destinatario }}
-                    </div>
-                    <div class="form-group mb-2 mb20">
-                        <strong>Asunto:</strong>
-                        {{ $comunicado->asunto }}
-                    </div>
-                    <div class="form-group mb-2 mb20">
-                        <strong>Cuerpo Mensaje:</strong>
-                        {{ $comunicado->cuerpo_mensaje }}
-                    </div>
-                    <div class="form-group mb-2 mb20">
-                        <strong>Adjuntos:</strong>
-                        {{ $comunicado->adjuntos }}
-                    </div>
-                    <div class="form-group mb-2 mb20">
-                        <strong>Usuario Id:</strong>
-                        {{ $comunicado->usuario_id }}
-                    </div>
-
-                </div>
-            </div>
+<div class="card border">
+    <div class="card-header card-bg" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="float-left">
+            <span class="card-title titulo-card">Comunicado</span>
+        </div>
+        <div class="float-right">
+            <a class="btn btn-info font-14" href="{{ route('comunicados.index') }}"><i class="fa fa-chevron-left"></i> Regresar</a>
         </div>
     </div>
-</section>
+
+    <div class="card-body bg-white">
+
+        <div class="form-group mb-3 mb20" style="max-width: 40%;">
+            <strong class="text-uppercase font-14" style="color: black;">Titulo:</strong><br>
+            {{ $comunicado->titulo }}
+        </div>
+        <div class="form-group mb-2 mb20">
+            <strong class="text-uppercase font-14" style="color: black;">Fecha Emision:</strong><br>
+            {{ $comunicado->fecha_emision }}
+        </div>
+        <div class="form-group mb-2 mb20">
+            <strong class="text-uppercase font-14" style="color: black;">Destinatario:</strong><br>
+            {{ $comunicado->destinatario }}
+        </div>
+        <div class="form-group mb-3 mb20" style="max-width: 40%;">
+            <strong class="text-uppercase font-14" style="color: black;">Asunto:</strong><br>
+            {{ $comunicado->asunto }}
+        </div>
+        <div class="form-group mb-4 mb20" style="max-width: 45%;">
+            <strong class="text-uppercase font-14" style="color: black;">Mensaje:</strong><br>
+            {{ $comunicado->cuerpo_mensaje }}
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi, quia porro odio consequuntur fuga cum dolore repellat eius harum voluptatibus vel. Nam dolor cupiditate minima, repellendus perferendis eum iure saepe.
+        </div>
+        <div class="form-group mb-2 mb20">
+            <strong class="text-uppercase font-14" style="color: black;">Adjuntos:</strong><br>
+
+            @php
+            $rutaArchivo = 'comunicados/' . basename($comunicado->adjuntos);
+            @endphp
+
+            @if ($comunicado->adjuntos && Storage::disk('public')->exists($rutaArchivo))
+            <a class="btn btn-link" href="{{ asset('storage/' . $rutaArchivo) }}" target="_blank">
+                <i class="fa fa-file"></i> Ver Archivo
+            </a>
+            @else
+            <span>Sin archivo</span>
+            @endif
+        </div>
+
+    </div>
+</div>
+
 @vite('resources/css/comunicados.css')
 @vite('resources/js/comunicados.js')
 @endsection

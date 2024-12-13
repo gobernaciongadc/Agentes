@@ -38,15 +38,18 @@
     </div>
     <div class="col-md-6 form-group mb-3">
         <label for="adjuntos" class="form-label">Archivo adjunto<span class="text-danger font-10">(Opcional)</span></label><br>
-
         <label class="custom-file-upload">
             <span>📄 Seleccionar Archivo</span>
-            <input type="file" name="adjuntos" id="respaldo-1">
+            <input type="file" name="adjuntos" id="respaldo-1" onchange="updateFileName(this)">
         </label>
         <br>
-        <span id="file-name-1">
-            Ningún archivo seleccionado
-        </span>
+        <span id="file-name-1">Ningún archivo seleccionado</span>
+        <script>
+            function updateFileName(input) {
+                const fileNameSpan = document.getElementById('file-name-1');
+                fileNameSpan.textContent = input.files.length > 0 ? input.files[0].name : 'Ningún archivo seleccionado';
+            }
+        </script>
     </div>
     <div class="col-md-8 form-group mb-2 mb20">
         <label for="cuerpo_mensaje" class="form-label">Mensaje<span class="text-danger">*</span></label>

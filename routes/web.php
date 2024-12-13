@@ -143,14 +143,16 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::post('sancions-store-observacion', [SancionController::class, 'storeObservacion'])->name('sancions-store-observacion.storeObservacion');
 
     // COMUNICADOS
-    Route::get('comunicados', [ComunicadoController::class, 'index'])->name('comunicados.index');
     Route::get('comunicados/create', [ComunicadoController::class, 'create'])->name('comunicados.create');
     Route::post('comunicados/store', [ComunicadoController::class, 'store'])->name('comunicados.store');
-    Route::get('comunicados/show/{id}', [ComunicadoController::class, 'show'])->name('comunicados.show');
+
     Route::get('comunicados/update/{id}', [ComunicadoController::class, 'edit'])->name('comunicados.edit');
     Route::delete('comunicados/{id}', [ComunicadoController::class, 'destroy'])->name('comunicados.destroy');
 });
 
+// RUTAS SIN RESTRICCIONES
+Route::get('comunicados', [ComunicadoController::class, 'index'])->name('comunicados.index');
+Route::get('comunicados/show/{id}', [ComunicadoController::class, 'show'])->name('comunicados.show');
 
 
 

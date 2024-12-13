@@ -25,7 +25,7 @@ class AgenteRequest extends FormRequest
             'persona_id' => 'required',
             'municipio_id' => 'required',
             'tipoAgente' => 'required|string',
-            'respaldo' => 'required|file|mimes:pdf|max:2048', // Cambiado a `file` y solo acepta PDFs de hasta 2 MB
+            'respaldo' => 'required|file|mimes:pdf|max:9048', // Cambiado a `file` y solo acepta PDFs de hasta 2 MB
             // 'estado' => 'required',
         ];
     }

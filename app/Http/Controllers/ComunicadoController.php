@@ -6,6 +6,7 @@ use App\Models\Comunicado;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\ComunicadoRequest;
+use App\Models\Agente;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -17,10 +18,22 @@ class ComunicadoController extends Controller
      */
     public function index(Request $request): View
     {
-        $comunicados = Comunicado::paginate();
+        $tipoAgente = "";
 
-        return view('comunicado.index', compact('comunicados'), ['titulo' => 'Gestión de Comunicados', 'currentPage' => 'Comunicados'])
-            ->with('i', ($request->input('page', 1) - 1) * $comunicados->perPage());
+        // Usuario autenticado
+        $user = Auth::user();
+
+        if ($user->rol === 'Agente') {
+            $agente = Agente::where('id', $user->agente_id)->first();
+            $tipoAgente = 'Agente';
+            $comunicados = Comunicado::where('destinatario', $agente->tipo_agente)->get();
+        } else {
+
+            $tipoAgente = 'Administrador';
+            $comunicados = Comunicado::all();
+        }
+
+        return view('comunicado.index', compact('comunicados', 'tipoAgente'), ['titulo' => 'Gestión de Comunicados', 'currentPage' => 'Comunicados']);
     }
 
     /**
@@ -63,7 +76,7 @@ class ComunicadoController extends Controller
         Comunicado::create($data);
 
         return Redirect::route('comunicados.index')
-            ->with('success', 'Comunicado created successfully.');
+            ->with('success', 'Comunicado creado correctamente.');
     }
 
     /**

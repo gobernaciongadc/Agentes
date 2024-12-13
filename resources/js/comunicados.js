@@ -5,3 +5,4 @@ $('#comunicadosTable').DataTable({
     },
     order: [[0, 'desc']] // Ordena por la primera columna en orden descendente   
 });
+

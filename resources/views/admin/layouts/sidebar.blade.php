@@ -44,7 +44,7 @@
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-notarials.index','Notarios de Fe Pública')}}">Información Notarial</a></li>
                       <li><a href="#">Notificaciones</a></li>
-                      <li><a href="#">Comunicados</a></li>
+                      <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                   </ul>
               </li>
               @endif
@@ -56,7 +56,7 @@
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-seprec.indexSeprec')}}">Información SEPREC</a></li>
                       <li><a href="#">Notificaciones</a></li>
-                      <li><a href="#">Comunicados</a></li>
+                      <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                   </ul>
               </li>
               @endif
@@ -68,7 +68,7 @@
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-juzgado.indexJuzgado')}}">Información Juzgados</a></li>
                       <li><a href="#">Notificaciones</a></li>
-                      <li><a href="#">Comunicados</a></li>
+                      <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                   </ul>
               </li>
               @endif
@@ -80,7 +80,7 @@
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Derechos</a></li>
                       <li><a href="#">Notificaciones</a></li>
-                      <li><a href="#">Comunicados</a></li>
+                      <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                   </ul>
               </li>
               @endif

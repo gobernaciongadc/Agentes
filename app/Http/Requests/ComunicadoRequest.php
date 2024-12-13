@@ -26,7 +26,7 @@ class ComunicadoRequest extends FormRequest
             'destinatario' => 'required|string',
             'asunto' => 'required|string',
             'cuerpo_mensaje' => 'required|string',
-            'adjuntos' => 'string',
+            'adjuntos' => 'file|max:9048',
         ];
     }
 }
