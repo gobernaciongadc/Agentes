@@ -8,28 +8,30 @@ export default defineConfig({
                 'resources/sass/app.scss',
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/css/agente.css',     // estilos específicos de persona
+                'resources/css/agente.css',
                 'resources/js/agente.js',
-                'resources/css/persona.css',     // estilos específicos de persona
+                'resources/css/persona.css',
                 'resources/js/persona.js',
-                'resources/css/municipio.css',     // estilos específicos de persona
+                'resources/css/municipio.css',
                 'resources/js/municipio.js',
-                'resources/css/usuarios.css',     // estilos específicos de persona
+                'resources/css/usuarios.css',
                 'resources/js/usuarios.js',
-                'resources/css/informe.css',     // estilos específicos de persona
+                'resources/css/informe.css',
                 'resources/js/informe.js',
-                'resources/css/notarial.css',     // estilos específicos de persona
+                'resources/css/notarial.css',
                 'resources/js/notarial.js',
-                'resources/css/empresa.css',     // estilos específicos de persona
+                'resources/css/empresa.css',
                 'resources/js/empresa.js',
-                'resources/css/juzgado.css',     // estilos específicos de persona
+                'resources/css/juzgado.css',
                 'resources/js/juzgado.js',
-                'resources/css/derechos.css',     // estilos específicos de persona
+                'resources/css/derechos.css',
                 'resources/js/derechos.js',
-                'resources/css/sancion.css',     // estilos específicos de persona
-                'resources/js/sancion.js',         // scripts específicos de persona
-                'resources/css/comunicados.css',     // estilos específicos de persona
-                'resources/js/comunicados.js'         // scripts específicos de persona
+                'resources/css/sancion.css',
+                'resources/js/sancion.js',
+                'resources/css/comunicados.css',
+                'resources/js/comunicados.js',
+                'resources/css/notificaciones.css',
+                'resources/js/notificaciones.js'
             ],
             refresh: true,
         }),

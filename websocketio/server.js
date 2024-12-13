@@ -15,25 +15,44 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
-// Rutas de la API
-app.post('/message', (req, res) => {
-    const message = req.body.message;
-
-    // Emitir mensaje a todos los clientes conectados
-    io.emit('chat message', message);
-
-    res.status(200).send({ status: 'Mensaje recibido por el servidor de Node.js' });
-});
+// Estructura para almacenar usuarios conectados
+const connectedUsers = {};
 
 io.on('connection', (socket) => {
-    console.log('Un usuario se ha conectado');
+    console.log('Un usuario se ha conectado:', socket.id);
 
+    // Escuchar evento de identificación del usuario
+    socket.on('register', (userId) => {
+        connectedUsers[userId] = socket.id;
+        console.log(`Usuario registrado: ${userId} con socket ID: ${socket.id}`);
+    });
+
+    // Manejar desconexión
     socket.on('disconnect', () => {
-        console.log('Un usuario se ha desconectado');
+        for (const userId in connectedUsers) {
+            if (connectedUsers[userId] === socket.id) {
+                delete connectedUsers[userId];
+                console.log(`Usuario desconectado: ${userId}`);
+                break;
+            }
+        }
     });
 });
 
-// Levantar el servidor en el puerto 3001
+// Ruta para enviar mensajes a usuarios específicos
+app.post('/notify-user', (req, res) => {
+    const { userId, message } = req.body;
+
+    if (connectedUsers[userId]) {
+        const socketId = connectedUsers[userId];
+        io.to(socketId).emit('notification', message);
+        res.status(200).send({ status: 'Mensaje enviado al usuario.' });
+    } else {
+        res.status(404).send({ status: 'Usuario no está conectado.' });
+    }
+});
+
+// Levantar el servidor
 server.listen(3001, () => {
     console.log('Servidor de Socket.io escuchando en el puerto 3001');
 });

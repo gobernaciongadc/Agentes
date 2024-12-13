@@ -43,7 +43,7 @@
                               class="label label-rouded label-themecolor pull-right">3</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-notarials.index','Notarios de Fe Pública')}}">Información Notarial</a></li>
-                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                   </ul>
               </li>
@@ -55,7 +55,7 @@
                               class="label label-rouded label-themecolor pull-right">3</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-seprec.indexSeprec')}}">Información SEPREC</a></li>
-                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                   </ul>
               </li>
@@ -67,7 +67,7 @@
                               class="label label-rouded label-themecolor pull-right">3</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-juzgado.indexJuzgado')}}">Información Juzgados</a></li>
-                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                   </ul>
               </li>
@@ -79,7 +79,7 @@
                               class="label label-rouded label-themecolor pull-right">3</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Derechos</a></li>
-                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                   </ul>
               </li>
@@ -105,7 +105,7 @@
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('sancions-bandeja-entrada.indexBandejaEntrada', ['id'=>'bandeja'])}}">Bandeja de Entrada</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
-                      <li><a href="#">Notificaciones</a></li>
+                      <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="#">Sanciones</a></li>
                   </ul>
               </li>

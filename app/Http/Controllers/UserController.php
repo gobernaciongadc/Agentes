@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -103,6 +104,8 @@ class UserController extends Controller
 
             // Confirmar transacción
             DB::commit();
+
+
 
             return Redirect::route('users.index')
                 ->with('success', 'Usuario creado exitosamente.');

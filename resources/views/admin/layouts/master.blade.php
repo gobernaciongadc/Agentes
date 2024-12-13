@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="user-id" content="{{ Auth::user()->id }}">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicon.ico')}}">
     <title>Agentes de información</title>
@@ -137,7 +138,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="{{ asset('js/socket.js') }}"></script>
 
     <!-- Script general -->
     @vite('resources/js/app.js')

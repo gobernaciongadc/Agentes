@@ -9,10 +9,12 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InformeNotarialController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\NotaryRecordController;
+use App\Http\Controllers\NotificacioneController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\SancionController;
 use App\Http\Controllers\SentenciasJudicialeController;
 use App\Http\Controllers\UserController;
+use App\Models\Notificacione;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -20,8 +22,10 @@ Route::get('/', function () {
 });
 
 
+// Elemplo chat
 Route::get('/chat', [ChatController::class, 'chatView'])->name('chat');
 Route::post('/send-message', [ChatController::class, 'sendMessage']);
+
 
 Auth::routes();
 
@@ -148,11 +152,21 @@ Route::group(['middleware' => ['role:Administrador']], function () {
 
     Route::get('comunicados/update/{id}', [ComunicadoController::class, 'edit'])->name('comunicados.edit');
     Route::delete('comunicados/{id}', [ComunicadoController::class, 'destroy'])->name('comunicados.destroy');
+
+    // NOTIFICACIONES
+    Route::get('notificaciones/create', [NotificacioneController::class, 'create'])->name('notificaciones.create');
+    Route::post('notificaciones/store', [NotificacioneController::class, 'store'])->name('notificaciones.store');
+
+    Route::get('notificaciones/update/{id}', [NotificacioneController::class, 'edit'])->name('notificaciones.edit');
+    Route::delete('notificaciones/{id}', [NotificacioneController::class, 'destroy'])->name('notificaciones.destroy');
 });
 
-// RUTAS SIN RESTRICCIONES
+// RUTAS SIN RESTRICCIONES COMUNICADOS
 Route::get('comunicados', [ComunicadoController::class, 'index'])->name('comunicados.index');
 Route::get('comunicados/show/{id}', [ComunicadoController::class, 'show'])->name('comunicados.show');
+// RUTAS SIN RESTRICCIONES NOTIFICACIONES
+Route::get('notificaciones', [NotificacioneController::class, 'index'])->name('notificaciones.index');
+Route::get('notificaciones/show/{id}', [NotificacioneController::class, 'show'])->name('notificaciones.show');
 
 
 

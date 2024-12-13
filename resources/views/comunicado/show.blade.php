@@ -37,7 +37,6 @@
         <div class="form-group mb-4 mb20" style="max-width: 45%;">
             <strong class="text-uppercase font-14" style="color: black;">Mensaje:</strong><br>
             {{ $comunicado->cuerpo_mensaje }}
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi, quia porro odio consequuntur fuga cum dolore repellat eius harum voluptatibus vel. Nam dolor cupiditate minima, repellendus perferendis eum iure saepe.
         </div>
         <div class="form-group mb-2 mb20">
             <strong class="text-uppercase font-14" style="color: black;">Adjuntos:</strong><br>
