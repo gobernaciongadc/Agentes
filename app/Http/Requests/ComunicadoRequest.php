@@ -22,13 +22,11 @@ class ComunicadoRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'titulo' => 'required|string',
-			'fecha_emision' => 'required',
-			'destinatario' => 'required|string',
-			'asunto' => 'required|string',
-			'cuerpo_mensaje' => 'required|string',
-			'adjuntos' => 'string',
-			'usuario_id' => 'required',
+            'titulo' => 'required|string',
+            'destinatario' => 'required|string',
+            'asunto' => 'required|string',
+            'cuerpo_mensaje' => 'required|string',
+            'adjuntos' => 'string',
         ];
     }
 }

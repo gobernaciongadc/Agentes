@@ -145,9 +145,10 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     // COMUNICADOS
     Route::get('comunicados', [ComunicadoController::class, 'index'])->name('comunicados.index');
     Route::get('comunicados/create', [ComunicadoController::class, 'create'])->name('comunicados.create');
-    Route::get('comunicados/store', [ComunicadoController::class, 'store'])->name('comunicados.store');
+    Route::post('comunicados/store', [ComunicadoController::class, 'store'])->name('comunicados.store');
     Route::get('comunicados/show/{id}', [ComunicadoController::class, 'show'])->name('comunicados.show');
     Route::get('comunicados/update/{id}', [ComunicadoController::class, 'edit'])->name('comunicados.edit');
+    Route::delete('comunicados/{id}', [ComunicadoController::class, 'destroy'])->name('comunicados.destroy');
 });
 
 

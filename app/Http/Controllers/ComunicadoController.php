@@ -6,6 +6,7 @@ use App\Models\Comunicado;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\ComunicadoRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -28,8 +29,9 @@ class ComunicadoController extends Controller
     public function create(): View
     {
         $comunicado = new Comunicado();
+        $tipoAgentes = ['Notarios de Fe Pública', 'Jueces y Secretarios del Tribunal Departamental de Justicia', 'SEPREC', 'Derechos Reales'];
 
-        return view('comunicado.create', compact('comunicado'), ['titulo' => 'Gestión de Comunicados', 'currentPage' => 'Comunicados']);
+        return view('comunicado.create', compact('comunicado', 'tipoAgentes'), ['titulo' => 'Gestión de Comunicados', 'currentPage' => 'Comunicados']);
     }
 
     /**
@@ -37,7 +39,28 @@ class ComunicadoController extends Controller
      */
     public function store(ComunicadoRequest $request): RedirectResponse
     {
-        Comunicado::create($request->validated());
+
+        // Usuario autenticado
+        $user = Auth::user();
+
+        $data = $request->validated(); // Obtiene los datos validados
+        $data['fecha_emision'] = now(); // Agrega la fecha actual
+        $data['usuario_id'] = $user->id; // Agrega la fecha actual
+
+        // Verificar si se subió un archivo
+        if ($request->hasFile('adjuntos')) {
+            $archivo = $request->file('adjuntos');
+
+            // Generar un nombre único para el archivo
+            $nombreArchivo = time() . '_' . uniqid() . '.' . $archivo->getClientOriginalExtension();
+            // Guardar el archivo en el almacenamiento (puedes usar 'public' o cualquier disk configurado)
+            $rutaArchivo = $archivo->storeAs('comunicados', $nombreArchivo, 'public');
+
+            // Guardar el nombre del archivo en los datos
+            $data['adjuntos'] = $nombreArchivo;
+        }
+
+        Comunicado::create($data);
 
         return Redirect::route('comunicados.index')
             ->with('success', 'Comunicado created successfully.');

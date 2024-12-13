@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('asunto'); // Resumen del propósito
             $table->text('cuerpo_mensaje'); // Cuerpo del mensaje
             $table->string('adjuntos')->nullable(); // Archivos adjuntos (ruta de almacenamiento)
-            $table->timestamps(); // Timestamps (created_at, updated_at)
             $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->timestamps(); // Timestamps (created_at, updated_at)
         });
     }
 

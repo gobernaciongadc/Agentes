@@ -33,7 +33,7 @@ Comunicados
             <div class="card-body bg-white">
                 <div class="table-responsive">
                     <table id="comunicadosTable" class="table table-striped table-hover">
-                        <thead class="thead">
+                        <thead class="thead small">
                             <tr>
                                 <th>ID</th>
 
@@ -43,15 +43,14 @@ Comunicados
                                 <th>Asunto</th>
                                 <th>Cuerpo Mensaje</th>
                                 <th>Adjuntos</th>
-                                <th>Usuario Id</th>
 
-                                <th>Acciones</th>
+                                <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($comunicados as $comunicado)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ $comunicado->id }}</td>
 
                                 <td>{{ $comunicado->titulo }}</td>
                                 <td>{{ $comunicado->fecha_emision }}</td>
@@ -59,16 +58,9 @@ Comunicados
                                 <td>{{ $comunicado->asunto }}</td>
                                 <td>{{ $comunicado->cuerpo_mensaje }}</td>
                                 <td>{{ $comunicado->adjuntos }}</td>
-                                <td>{{ $comunicado->usuario_id }}</td>
 
                                 <td>
-                                    <form action="{{ route('comunicados.destroy', $comunicado->id) }}" method="POST">
-                                        <a class="btn btn-sm btn-primary " href="{{ route('comunicados.show', $comunicado->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                        <a class="btn btn-sm btn-success" href="{{ route('comunicados.edit', $comunicado->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
-                                    </form>
+                                    <span class="badge badge-success">Comunicado enviado</span>
                                 </td>
                             </tr>
                             @endforeach
