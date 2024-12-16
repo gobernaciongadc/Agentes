@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('mensaje'); // Cuerpo del mensaje
             $table->date('fecha_emision'); // Fecha de emisión
             $table->string('adjuntos')->nullable(); // Archivos adjuntos (ruta de almacenamiento)
+            $table->enum('estado', ['Revizado', 'No revizado'])->default('No revizado'); // Estado Notificacion
             $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps(); // Timestamps (created_at, updated_at)
         });

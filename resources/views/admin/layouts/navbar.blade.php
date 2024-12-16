@@ -46,53 +46,98 @@
               <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
                       aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-message"></i>
-                      <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                      <div class="notify" id="point-notificacion"> <span class="heartbit"></span> <span class="point"></span> </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-right mailbox animated fallInDown">
                       <ul>
                           <li>
-                              <div class="drop-title">Notifications</div>
+                              <div class="drop-title">Notificaciones</div>
                           </li>
                           <li>
                               <div class="message-center">
-                                  <!-- Message -->
-                                  <a href="#">
-                                      <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
-                                      <div class="mail-contnet">
-                                          <h5>Luanch Admin</h5> <span class="mail-desc">Just see the my new
-                                              admin!</span> <span class="time">9:30 AM</span>
-                                      </div>
-                                  </a>
-                                  <!-- Message -->
-                                  <a href="#">
-                                      <div class="btn btn-success btn-circle"><i class="ti-calendar"></i>
-                                      </div>
-                                      <div class="mail-contnet">
-                                          <h5>Event today</h5> <span class="mail-desc">Just a reminder that
-                                              you have event</span> <span class="time">9:10 AM</span>
-                                      </div>
-                                  </a>
-                                  <!-- Message -->
-                                  <a href="#">
-                                      <div class="btn btn-info btn-circle"><i class="ti-settings"></i></div>
-                                      <div class="mail-contnet">
-                                          <h5>Settings</h5> <span class="mail-desc">You can customize this
-                                              template as you want</span> <span class="time">9:08 AM</span>
-                                      </div>
-                                  </a>
-                                  <!-- Message -->
-                                  <a href="#">
-                                      <div class="btn btn-primary btn-circle"><i class="ti-user"></i></div>
-                                      <div class="mail-contnet">
-                                          <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my
-                                              admin!</span> <span class="time">9:02 AM</span>
-                                      </div>
-                                  </a>
+
                               </div>
+                              <script>
+                                  document.addEventListener('DOMContentLoaded', function() {
+                                      const mensaje = document.querySelector('.message-center');
+                                      const punto = document.querySelector('#point-notificacion');
+                                      const baseUrl = "{{ url('/') }}"; // Base de la URL
+
+                                      if (!mensaje) {
+                                          console.error("Elemento '.message-center' no encontrado");
+                                          return;
+                                      }
+
+                                      fetch("{{ route('notificacion-real.notificacionReal') }}", {
+                                              method: "GET",
+                                              headers: {
+                                                  "Content-Type": "application/json"
+                                              }
+                                          })
+                                          .then(response => {
+                                              if (!response.ok) {
+                                                  throw new Error('Error al obtener las notificaciones');
+                                              }
+                                              return response.json();
+                                          })
+                                          .then(data => {
+                                              if (!data.notificaciones) {
+                                                  console.warn("El servidor no devolvió 'notificaciones'");
+                                                  return;
+                                              }
+
+                                              let contenidoHTML = '';
+
+                                              //   console.log(data.totalNotificaciones);
+
+                                              if (data.totalNotificaciones > 0) {
+                                                  punto.style.display = 'block';
+                                              } else {
+                                                  punto.style.display = 'none';
+                                              }
+
+
+                                              data.notificaciones.forEach(element => {
+                                                  contenidoHTML += `
+                                                        <a href="${baseUrl}/notificaciones/show/${element.id}">
+                                                        <div class="btn btn-danger btn-circle"><i class="ti-bell"></i></div>
+                                                        <div class="mail-contnet">
+                                                            <h5>Notificaciones sin leer</h5>
+                                                            <span class="mail-desc">
+                                                                <p class="mb-0">Remitente: ${element.user.persona.nombres || 'Nombre no disponible'} ${element.user.persona.apellidos || 'Apellido no disponible'}</p>
+                                                                <p>Asunto: ${element.asunto || 'Asunto no disponible'}</p>
+                                                            </span>
+                                                            <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
+                                                        </div>
+                                                    </a>`;
+                                              });
+
+                                              mensaje.innerHTML = contenidoHTML;
+                                          })
+                                          .catch(error => {
+                                              console.error("Error al procesar las notificaciones:", error);
+                                          });
+
+                                      // Función para formatear la fecha y hora
+                                      function formatFechaHora(fechaIso) {
+                                          if (!fechaIso) return null;
+
+                                          const fecha = new Date(fechaIso);
+                                          const fechaFormateada = fecha.toLocaleDateString('es-ES'); // Ejemplo: 16/12/2024
+                                          const horaFormateada = fecha.toLocaleTimeString('es-ES', {
+                                              hour: '2-digit',
+                                              minute: '2-digit',
+                                              second: '2-digit'
+                                          }); // Ejemplo: 14:59:15
+                                          return `${fechaFormateada} ${horaFormateada}`;
+                                      }
+                                  });
+                              </script>
+
+
                           </li>
                           <li>
-                              <a class="nav-link text-center" href="javascript:void(0);"> <strong>Check all
-                                      notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                              <a class="nav-link text-center" href="{{route('notificaciones.index')}}"> <strong>Todas las Notitificaciones</strong> <i class="fa fa-angle-right"></i> </a>
                           </li>
                       </ul>
                   </div>
@@ -100,75 +145,7 @@
               <!-- ============================================================== -->
               <!-- End Comment -->
               <!-- ============================================================== -->
-              <!-- ============================================================== -->
-              <!-- Messages -->
-              <!-- ============================================================== -->
-              <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i
-                          class="mdi mdi-email"></i>
-                      <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
-                  </a>
-                  <div class="dropdown-menu mailbox dropdown-menu-right animated fall-in-down"
-                      aria-labelledby="2">
-                      <ul>
-                          <li>
-                              <div class="drop-title">You have 4 new messages</div>
-                          </li>
-                          <li>
-                              <div class="message-center">
-                                  <!-- Message -->
-                                  <a href="#">
-                                      <div class="user-img"> <img src="../assets/images/users/1.jpg"
-                                              alt="user" class="img-circle"> <span
-                                              class="profile-status online pull-right"></span> </div>
-                                      <div class="mail-contnet">
-                                          <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my
-                                              admin!</span> <span class="time">9:30 AM</span>
-                                      </div>
-                                  </a>
-                                  <!-- Message -->
-                                  <a href="#">
-                                      <div class="user-img"> <img src="../assets/images/users/2.jpg"
-                                              alt="user" class="img-circle"> <span
-                                              class="profile-status busy pull-right"></span> </div>
-                                      <div class="mail-contnet">
-                                          <h5>Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See
-                                              you at</span> <span class="time">9:10 AM</span>
-                                      </div>
-                                  </a>
-                                  <!-- Message -->
-                                  <a href="#">
-                                      <div class="user-img"> <img src="../assets/images/users/3.jpg"
-                                              alt="user" class="img-circle"> <span
-                                              class="profile-status away pull-right"></span> </div>
-                                      <div class="mail-contnet">
-                                          <h5>Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span>
-                                          <span class="time">9:08 AM</span>
-                                      </div>
-                                  </a>
-                                  <!-- Message -->
-                                  <a href="#">
-                                      <div class="user-img"> <img src="../assets/images/users/4.jpg"
-                                              alt="user" class="img-circle"> <span
-                                              class="profile-status offline pull-right"></span> </div>
-                                      <div class="mail-contnet">
-                                          <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my
-                                              admin!</span> <span class="time">9:02 AM</span>
-                                      </div>
-                                  </a>
-                              </div>
-                          </li>
-                          <li>
-                              <a class="nav-link text-center" href="javascript:void(0);"> <strong>See all
-                                      e-Mails</strong> <i class="fa fa-angle-right"></i> </a>
-                          </li>
-                      </ul>
-                  </div>
-              </li>
-              <!-- ============================================================== -->
-              <!-- End Messages -->
-              <!-- ============================================================== -->
+
 
 
               <!-- ============================================================== -->

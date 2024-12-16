@@ -31,6 +31,7 @@ Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/admin/layouts/master', [App\Http\Controllers\AdminController::class, 'master'])->name('admin.layaouts.master');
+Route::get('notificacion-real', [App\Http\Controllers\AdminController::class, 'notificacionReal'])->name('notificacion-real.notificacionReal');
 
 
 

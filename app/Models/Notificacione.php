@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Notificacione extends Model
 {
-    
+
     protected $perPage = 20;
 
     /**
@@ -31,7 +31,7 @@ class Notificacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['asunto', 'destinatario', 'mensaje', 'fecha_emision', 'adjuntos', 'usuario_id'];
+    protected $fillable = ['asunto', 'destinatario', 'mensaje', 'fecha_emision', 'adjuntos', 'usuario_id', 'estado'];
 
 
     /**
@@ -41,5 +41,15 @@ class Notificacione extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'usuario_id', 'id');
     }
-    
+
+
+    public function agente()
+    {
+        return $this->belongsTo(\App\Models\Agente::class, 'agente_id', 'id');
+    }
+
+    public function persona()
+    {
+        return $this->belongsTo(\App\Models\Persona::class, 'persona_id', 'id');
+    }
 }

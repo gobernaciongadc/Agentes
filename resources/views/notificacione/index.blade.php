@@ -56,6 +56,7 @@ Notificaciones
                         @endif
                         @if ($tipoAgente == 'Agente')
 
+                        <th>Estado</th>
                         <th>Acciones</th>
 
                         @endif
@@ -94,6 +95,13 @@ Notificaciones
                         @endif
 
                         @if ($tipoAgente == 'Agente')
+                        <td>
+                            @if($notificacione->estado == 'Revizado')
+                            <span class="badge badge-success">{{ $notificacione->estado }}</span>
+                            @else
+                            <span class="badge badge-danger">{{ $notificacione->estado }}</span>
+                            @endif
+                        </td>
                         <td>
                             <a class="btn btn-sm btn-primary " href="{{ route('notificaciones.show',$notificacione->id) }}"><i class="fa fa-fw fa-eye"></i> Ver Notificacion</a>
                         </td>

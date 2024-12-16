@@ -7,8 +7,10 @@ use App\Models\DerechosReale;
 use App\Models\Empresa;
 use App\Models\InformeNotarial;
 use App\Models\NotaryRecord;
+use App\Models\Notificacione;
 use App\Models\SentenciasJudiciale;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -66,7 +68,60 @@ class AdminController extends Controller
                 'sentenciasJudiciales' => $totalSentenciasJudiciales,
                 'informeNotarial' => $totalNotarial,
                 'empresas' => $totalEmpresas,
-            ],
+            ]
         ]);
+    }
+
+    function notificacionReal()
+    {
+        // Logica para sacar las notificaciones
+        $tipoAgente = "";
+
+        $agentesNotificados = [];
+
+        // Usuario autenticado
+        $user = Auth::user();
+
+        if ($user->rol === 'Agente') {
+
+            $notificaciones = Notificacione::with('user.persona')->where('estado', 'No revizado')
+                ->orderBy('id', 'desc')->get();
+
+            foreach ($notificaciones as $notificacion) {
+
+                if (json_decode($notificacion->destinatario)->idUsuario == $user->id) {
+
+                    $agentesNotificados[] = $notificacion;
+                }
+            }
+            $tipoAgente = 'Agente';
+
+            $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Lista de notificaciones cargada correctamente',
+                'notificaciones' => $agentesNotificados,
+                'tipoAgente' => $tipoAgente,
+                'totalNotificaciones' => count($agentesNotificados)
+
+            );
+        } else {
+
+            $tipoAgente = 'Administrador';
+            $notificaciones = Notificacione::all();
+
+            $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Lista de notificaciones cargada correctamente',
+                'notificaciones' => $agentesNotificados,
+                'tipoAgente' => $tipoAgente
+
+
+            );
+        }
+
+        // Devuelve en json con laravel
+        return response()->json($data, $data['code']);
     }
 }

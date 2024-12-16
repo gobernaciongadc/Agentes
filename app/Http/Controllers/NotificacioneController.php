@@ -7,9 +7,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\NotificacioneRequest;
 use App\Models\Agente;
+use App\Models\Persona;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -72,7 +76,8 @@ class NotificacioneController extends Controller
 
         $data = $request->validated(); // Obtiene los datos validados
         $data['fecha_emision'] = now(); // Agrega la fecha actual
-        $data['usuario_id'] = $user->id; // Agrega la fecha actual
+        $data['usuario_id'] = $user->id; // Agregar al usuario autenticado
+
 
         // Verificar si se subió un archivo
         if ($request->hasFile('adjuntos')) {
@@ -87,18 +92,48 @@ class NotificacioneController extends Controller
             $data['adjuntos'] = $nombreArchivo;
         }
 
-        Notificacione::create($data);
-        return Redirect::route('notificaciones.index')
-            ->with('success', 'Notificación creado correctamente');
-    }
+        $destinatario = json_decode($data['destinatario']);
 
+        $persona = Persona::find($user->persona_id);
+
+        $destinatarioID = $destinatario->idUsuario;
+
+
+
+        // Envía la solicitud POST al servidor de WebSocket
+        try {
+            $notificacione = Notificacione::create($data);
+            $mensaje = [
+                'remitente' => $persona->nombres . " " . $persona->apellidos,
+                'asunto' => $data['asunto'],
+                'idNotificacion' => $notificacione->id
+            ];
+            $jsonMensaje = json_encode($mensaje);
+            Http::post('http://localhost:3001/notify-user', [
+                'userId' => $destinatarioID,  // ID del usuario destinatario
+                'message' => $jsonMensaje,        // Mensaje que recibirá el cliente
+            ]);
+        } catch (Exception $e) {
+            // Maneja errores en la conexión
+            Log::error("Error al enviar la notificación: {$e->getMessage()}");
+        }
+
+        return Redirect::route('notificaciones.index')
+            ->with('success', 'Notificación creada y enviada correctamente');
+    }
 
     /**
      * Display the specified resource.
      */
     public function show($id): View
     {
+
         $notificacione = Notificacione::find($id);
+
+
+        $notificacione->update(
+            ['estado' => 'Revizado']
+        );
         return view('notificacione.show', compact('notificacione'), ['titulo' => 'Gestión de Notificaciones', 'currentPage' => 'Notificaciones']);
     }
 
