@@ -8,7 +8,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Agentes de información</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicondsp.png')}}">
+    <title>Agentes de Información</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">

@@ -12,8 +12,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicon.ico')}}">
-    <title>Agentes de información</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicondsp.png')}}">
+    <title>Agentes de Información</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{asset('backend/assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
 

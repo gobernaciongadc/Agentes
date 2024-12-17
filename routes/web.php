@@ -10,6 +10,7 @@ use App\Http\Controllers\InformeNotarialController;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\NotaryRecordController;
 use App\Http\Controllers\NotificacioneController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\SancionController;
@@ -174,6 +175,16 @@ Route::group(['middleware' => ['role:Administrador']], function () {
 
     Route::get('reportes-plazos', [ReportesController::class, 'indexPlazos'])->name('reportes-plazos.indexPlazos');
     Route::get('reportes-sanciones', [ReportesController::class, 'indexSanciones'])->name('reportes-sanciones.indexSanciones');
+
+    // RUTAS PARA SANCIONES
+    Route::get('sanciones', [SancionController::class, 'indexSancion'])->name('sanciones.indexSancion');
+    Route::get('sanciones/crear', [SancionController::class, 'createSancion'])->name('sanciones.createSancion');
+    Route::post('sanciones', [SancionController::class, 'storeSancion'])->name('sanciones.storeSancion');
+    Route::get('sanciones/{sancion}/editar', [SancionController::class, 'editSancion'])->name('sanciones.editSancion');
+    Route::put('sanciones/{sancion}', [SancionController::class, 'updateSancion'])->name('sanciones.updateSancion');
+    Route::delete('sanciones/{sancion}', [SancionController::class, 'destroySancion'])->name('sanciones.destroySancion');
+    Route::get('sanciones/{sancion}/pago', [PagoController::class, 'show'])->name('sanciones.pago');
+    Route::post('pagos/{sancion}', [PagoController::class, 'store'])->name('pagos.store');
 });
 
 // RUTAS SIN RESTRICCIONES COMUNICADOS

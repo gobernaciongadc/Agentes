@@ -106,7 +106,7 @@
                       <li><a href="{{route('sancions-bandeja-entrada.indexBandejaEntrada', ['id'=>'bandeja'])}}">Bandeja de Entrada</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
                       <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
-                      <li><a href="#">Sanciones</a></li>
+                      <li><a href="{{ route('sanciones.indexSancion')}}">Sanciones</a></li>
                   </ul>
               </li>
 
