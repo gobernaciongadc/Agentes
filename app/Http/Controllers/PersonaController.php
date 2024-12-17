@@ -38,6 +38,7 @@ class PersonaController extends Controller
      */
     public function store(PersonaRequest $request): RedirectResponse
     {
+
         try {
             // Intentar crear la persona
             Persona::create($request->validated());

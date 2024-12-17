@@ -11,6 +11,7 @@ use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\NotaryRecordController;
 use App\Http\Controllers\NotificacioneController;
 use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\SancionController;
 use App\Http\Controllers\SentenciasJudicialeController;
 use App\Http\Controllers\UserController;
@@ -160,6 +161,19 @@ Route::group(['middleware' => ['role:Administrador']], function () {
 
     Route::get('notificaciones/update/{id}', [NotificacioneController::class, 'edit'])->name('notificaciones.edit');
     Route::delete('notificaciones/{id}', [NotificacioneController::class, 'destroy'])->name('notificaciones.destroy');
+
+    // REPORTES
+    Route::get('reportes-transmision', [ReportesController::class, 'reporteTransmision'])->name('reportes-transmision.reporteTransmision');
+    Route::post('reportes-transmision', [ReportesController::class, 'reporteTransmisionPost'])->name('reportes-transmision.reporteTransmisionPost');
+
+    Route::get('reportes-agentes', [ReportesController::class, 'reporteAgentes'])->name('reportes-agentes.reporteAgentes');
+    Route::post('reportes-agentes', [ReportesController::class, 'reporteAgentesPost'])->name('reportes-agentes.reporteAgentesPost');
+
+    Route::get('reportes-municipio', [ReportesController::class, 'reporteMunicipio'])->name('reportes-municipio.reporteMunicipio');
+    Route::post('reportes-municipio', [ReportesController::class, 'reporteMunicipioPost'])->name('reportes-municipio.reporteMunicipioPost');
+
+    Route::get('reportes-plazos', [ReportesController::class, 'indexPlazos'])->name('reportes-plazos.indexPlazos');
+    Route::get('reportes-sanciones', [ReportesController::class, 'indexSanciones'])->name('reportes-sanciones.indexSanciones');
 });
 
 // RUTAS SIN RESTRICCIONES COMUNICADOS

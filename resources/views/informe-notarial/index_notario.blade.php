@@ -62,7 +62,6 @@ Informe Notarials
                                     @case('Pendiente')
                                     <span class="badge badge-warning">{{ $informeNotarial->estado }}</span>
                                     @break
-
                                     @case('No verificado')
                                     <span class="badge badge-danger">{{ $informeNotarial->estado }}</span>
                                     @break

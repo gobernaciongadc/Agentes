@@ -10,7 +10,6 @@
 <div class="row padding-1 p-1">
     <div class="col-12 col-md-8 col-lg-4">
         <!-- Campo Agente -->
-        <!-- Campo Agente -->
         <div class="form-group mb-2 mb20">
             <label for="persona" class="form-label">Agente<span class="text-danger">*</span></label>
             <select name="persona_id" class="form-control @error('persona_id') is-invalid @enderror mb-2 mb20" id="persona"

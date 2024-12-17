@@ -115,12 +115,12 @@
                           class="mdi mdi-file-multiple"></i><span class="hide-menu">Reportes<span
                               class="label label-rouded label-warning pull-right">6</span></span></a>
                   <ul aria-expanded="false" class="collapse">
-                      <li><a href="#">Tipo de Transmisión</a></li>
-                      <li><a href="#">Reporte Por Usuario</a></li>
-                      <li><a href="#">Reporte Por Municipio</a></li>
+                      <li><a href="{{ route('reportes-transmision.reporteTransmision') }}">Tipo de Transmisión</a></li>
+                      <!-- Los agentes son los usuarios -->
+                      <li><a href="{{ route('reportes-agentes.reporteAgentes')}}">Reporte Por Agentes</a></li>
+                      <li><a href="{{ route('reportes-municipio.reporteMunicipio')}}">Reporte Por Municipio</a></li>
                       <li><a href="#">Reporte Por Plazos</a></li>
                       <li><a href="#">Reporte Por Sanciones</a></li>
-                      <li><a href="#">Reporte Por Agentes</a></li>
                   </ul>
               </li>
 

@@ -13,7 +13,7 @@
     <div class="col-md-3">
         <div class="form-group mb-2 mb20">
             <label for="nombre_representante_seprec" class="form-label">{{ __('Nombre Representante Seprec') }}<span class="text-danger">*</span></label>
-            <input type="text" name="nombre_representante_seprec" class="form-control @error('nombre_representante_seprec') is-invalid @enderror" value="{{ old('nombre_representante_seprec', $empresa?->nombre_representante_seprec?: $notario->nombres .' '.$notario->apellidos) }}" id="nombre_representante_seprec">
+            <input type="text" name="nombre_representante_seprec" class="form-control @error('nombre_representante_seprec') is-invalid @enderror" value="{{ old('nombre_representante_seprec', $empresa?->nombre_representante_seprec?: $notario->nombres .' '.$notario->apellidos) }}" id="nombre_representante_seprec" readonly>
             {!! $errors->first('nombre_representante_seprec', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
