@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
 
     <div style="display: flex; justify-content: space-between; align-items: center;">
 
@@ -14,6 +14,7 @@
                 <i class="fa fa-plus"></i> Crear Sanción
             </a>
         </div>
+
     </div>
 
 
@@ -34,9 +35,10 @@
         <thead class="thead small">
             <tr>
                 <th>ID</th>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Monto (Bs)</th>
+                <th style="width: 35%;">Tipo Sanción</th>
+                <th>Agente</th>
+                <th style="width: 10%;">Monto (UFV)</th>
+                <th>Fecha Creada</th>
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
@@ -46,17 +48,25 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $sancion->nombre }}</td>
-                <td>{{ $sancion->tipoSancion->nombre }}</td>
-                <td>{{ number_format($sancion->monto, 2) }}</td>
-                <td>{{ $sancion->estado ? 'Pagado' : 'Pendiente' }}</td>
+                <td>{{ $sancion->agente->persona->nombres }} {{ $sancion->agente->persona->apellidos }}</td>
+                <td>{{ $sancion->monto }}</td>
+                <td>{{ $sancion->updated_at }}</td>
                 <td>
-                    <a href="{{ route('sanciones.edit', $sancion->id) }}" class="btn btn-sm btn-warning">Editar</a>
+                    @if ($sancion->estado == 'Pendiente')
+                    <span class="badge badge-danger">Pendiente de Pago</span>
+                    @else
+                    <span class="badge badge-success">Pagado</span>
+                    @endif
+                </td>
+                <td>
+                    <a href="{{ route('sanciones.edit', $sancion->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Editar</a>
                     <form action="{{ route('sanciones.destroy', $sancion->id) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Eliminar</button>
                     </form>
-                    <a href="{{ route('sanciones.pago', $sancion->id) }}" class="btn btn-sm btn-info">Ver Pago</a>
+                    <!-- <a href="{{ route('sanciones.pago', $sancion->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i> Ver Pago</a> -->
+                    <a href="{{ route('sanciones-envio.enviarSancion', ['sancion' => $sancion->id, 'idAgente' => $sancion->agente_id]) }}" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Consolidar Sanción</a>
                 </td>
             </tr>
             @endforeach

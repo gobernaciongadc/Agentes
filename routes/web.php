@@ -186,6 +186,10 @@ Route::group(['middleware' => ['role:Administrador']], function () {
         Route::put('/{sancion}', [SancionarController::class, 'updateSancion'])->name('update'); // Actualizar sanción
         Route::delete('/{sancion}', [SancionarController::class, 'destroySancion'])->name('destroy'); // Eliminar sanción
     });
+
+    // Ruta para enviar sanción a Agentes de Información
+    Route::get('sanciones-envio/{sancion}/{idAgente}', [SancionarController::class, 'enviarSancion'])->name('sanciones-envio.enviarSancion');
+
     Route::get('sanciones/{sancion}/pago', [PagoController::class, 'show'])->name('sanciones.pago');
     Route::post('pagos/{sancion}', [PagoController::class, 'store'])->name('pagos.store');
 });

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tipos_sancion', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 100)->unique();
-            $table->text('descripcion')->nullable();
+            $table->text('tipo')->nullable();
             $table->timestamps();
         });
     }
