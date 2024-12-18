@@ -2,17 +2,38 @@
 
 @section('content')
 <div class="container">
-    <h1 class="mb-3">Gestión de Sanciones</h1>
-    <a href="{{ route('sanciones.create') }}" class="btn btn-primary mb-3">Nueva Sanción</a>
 
-    @if (session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+
+        <span id="card_title" class="text-info font-weight-bold">
+            Lista de sanciones
+        </span>
+
+        <div class="float-right">
+            <a href="{{ route('sanciones.create') }}" class="btn btn-info font-14 float-right" data-placement="left">
+                <i class="fa fa-plus"></i> Crear Sanción
+            </a>
+        </div>
+    </div>
+
+
+    @if ($message = Session::get('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            toastr.success("{{ $message }}", "Agentes de Información", {
+                closeButton: true,
+                progressBar: true,
+                timeOut: 5000,
+                positionClass: 'toast-top-right'
+            });
+        });
+    </script>
     @endif
 
-    <table class="table table-striped">
-        <thead>
+    <table id="sancionesTable" class="table table-striped">
+        <thead class="thead small">
             <tr>
-                <th>#</th>
+                <th>ID</th>
                 <th>Nombre</th>
                 <th>Tipo</th>
                 <th>Monto (Bs)</th>
@@ -42,4 +63,7 @@
         </tbody>
     </table>
 </div>
+
+@vite('resources/css/sanciones.css')
+@vite('resources/js/sanciones.js')
 @endsection

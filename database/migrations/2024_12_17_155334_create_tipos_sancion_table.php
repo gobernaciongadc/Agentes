@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tipos_sancions', function (Blueprint $table) {
+        Schema::create('tipos_sancion', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 100)->unique();
             $table->text('descripcion')->nullable();

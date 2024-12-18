@@ -33,7 +33,9 @@ export default defineConfig({
                 'resources/css/notificaciones.css',
                 'resources/js/notificaciones.js',
                 'resources/css/reportes.css',
-                'resources/js/reportes.js'
+                'resources/js/reportes.js',
+                'resources/css/sanciones.css',
+                'resources/js/sanciones.js'
             ],
             refresh: true,
         }),

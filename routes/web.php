@@ -13,6 +13,7 @@ use App\Http\Controllers\NotificacioneController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\SancionarController;
 use App\Http\Controllers\SancionController;
 use App\Http\Controllers\SentenciasJudicialeController;
 use App\Http\Controllers\UserController;
@@ -177,12 +178,14 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::get('reportes-sanciones', [ReportesController::class, 'indexSanciones'])->name('reportes-sanciones.indexSanciones');
 
     // RUTAS PARA SANCIONES
-    Route::get('sanciones', [SancionController::class, 'indexSancion'])->name('sanciones.indexSancion');
-    Route::get('sanciones/crear', [SancionController::class, 'createSancion'])->name('sanciones.createSancion');
-    Route::post('sanciones', [SancionController::class, 'storeSancion'])->name('sanciones.storeSancion');
-    Route::get('sanciones/{sancion}/editar', [SancionController::class, 'editSancion'])->name('sanciones.editSancion');
-    Route::put('sanciones/{sancion}', [SancionController::class, 'updateSancion'])->name('sanciones.updateSancion');
-    Route::delete('sanciones/{sancion}', [SancionController::class, 'destroySancion'])->name('sanciones.destroySancion');
+    Route::prefix('sanciones')->name('sanciones.')->group(function () {
+        Route::get('/', [SancionarController::class, 'indexSancion'])->name('index'); // Listar sanciones
+        Route::get('/crear', [SancionarController::class, 'createSancion'])->name('create'); // Formulario para crear sanción
+        Route::post('/', [SancionarController::class, 'storeSancion'])->name('store'); // Guardar sanción
+        Route::get('/{sancion}/editar', [SancionarController::class, 'editSancion'])->name('edit'); // Formulario para editar sanción
+        Route::put('/{sancion}', [SancionarController::class, 'updateSancion'])->name('update'); // Actualizar sanción
+        Route::delete('/{sancion}', [SancionarController::class, 'destroySancion'])->name('destroy'); // Eliminar sanción
+    });
     Route::get('sanciones/{sancion}/pago', [PagoController::class, 'show'])->name('sanciones.pago');
     Route::post('pagos/{sancion}', [PagoController::class, 'store'])->name('pagos.store');
 });
