@@ -11,7 +11,7 @@ class Sancion_2 extends Model
 
     protected $table = 'sanciones';
 
-    protected $fillable = ['nombre', 'agente_id', 'monto', 'estado'];
+    protected $fillable = ['nombre', 'agente_id', 'monto', 'estado', 'estado_vista', 'usuario_id', 'estado_envio'];
 
     public function tipoSancion()
     {
@@ -26,5 +26,9 @@ class Sancion_2 extends Model
     public function agente()
     {
         return $this->belongsTo(\App\Models\Agente::class, 'agente_id', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'usuario_id', 'id');
     }
 }

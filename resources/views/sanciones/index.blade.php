@@ -35,18 +35,29 @@
         <thead class="thead small">
             <tr>
                 <th>ID</th>
-                <th style="width: 35%;">Tipo Sanción</th>
+                <th style="width: 28%;">Tipo Sanción</th>
                 <th>Agente</th>
                 <th style="width: 10%;">Monto (UFV)</th>
                 <th>Fecha Creada</th>
-                <th>Estado</th>
+                <th>Estado Pago</th>
+
+                @if ($tipoAgente == 'Administrador')
+                <th>Estado Envio</th>
+                @endif
+
+                @if ($tipoAgente == 'Agente')
+                <th>Estado Revisión</th>
+                @endif
+
                 <th>Acciones</th>
+
+
             </tr>
         </thead>
         <tbody>
             @foreach ($sanciones as $sancion)
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td>{{ $sancion->id }}</td>
                 <td>{{ $sancion->nombre }}</td>
                 <td>{{ $sancion->agente->persona->nombres }} {{ $sancion->agente->persona->apellidos }}</td>
                 <td>{{ $sancion->monto }}</td>
@@ -55,10 +66,35 @@
                     @if ($sancion->estado == 'Pendiente')
                     <span class="badge badge-danger">Pendiente de Pago</span>
                     @else
-                    <span class="badge badge-success">Pagado</span>
+                    <span class="badge badge-primary">Pagado</span>
                     @endif
                 </td>
+
+                @if ($tipoAgente == 'Administrador')
                 <td>
+                    @if ($sancion->estado_envio == 'No enviado')
+                    <span class="badge badge-warning">No Enviado</span>
+                    @else
+                    <span class="badge badge-success">Enviado</span>
+                    @endif
+                </td>
+                @endif
+
+                @if ($tipoAgente == 'Agente')
+                <td>
+                    @if ($sancion->estado_vista == 'No revizado')
+                    <span class="badge badge-danger">No Revizado</span>
+                    @else
+                    <span class="badge badge-primary">Revizado</span>
+                    @endif
+                </td>
+                @endif
+
+
+
+                <td>
+                    @if ($tipoAgente == 'Administrador')
+                    @if ($sancion->estado_envio == 'No enviado')
                     <a href="{{ route('sanciones.edit', $sancion->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Editar</a>
                     <form action="{{ route('sanciones.destroy', $sancion->id) }}" method="POST" style="display:inline-block;">
                         @csrf
@@ -66,11 +102,18 @@
                         <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Eliminar</button>
                     </form>
                     <!-- <a href="{{ route('sanciones.pago', $sancion->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i> Ver Pago</a> -->
+
+
                     <a href="{{ route('sanciones-envio.enviarSancion', ['sancion' => $sancion->id, 'idAgente' => $sancion->agente_id]) }}"
                         id="consolidar-sancion-{{ $sancion->id }}"
                         class="btn btn-sm btn-primary">
                         <i class="fa fa-check"></i> Consolidar Sanción
                     </a>
+                    @else
+                    <a href="{{ route('sanciones.edit', $sancion->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Editar</a>
+                    @endif
+
+
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Selecciona todos los enlaces con la clase consolidar-sancion
@@ -103,6 +146,13 @@
                             });
                         });
                     </script>
+                    @endif
+
+                    @if ($tipoAgente == 'Agente')
+                    <a class="btn btn-sm btn-primary " href="{{ route('sanciones.show',$sancion->id) }}"><i class="fa fa-fw fa-eye"></i> Ver Sanción</a>
+                    @endif
+
+
 
                 </td>
             </tr>

@@ -8,6 +8,7 @@ use App\Models\Empresa;
 use App\Models\InformeNotarial;
 use App\Models\NotaryRecord;
 use App\Models\Notificacione;
+use App\Models\Sancion_2;
 use App\Models\SentenciasJudiciale;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -78,12 +79,15 @@ class AdminController extends Controller
         $tipoAgente = "";
 
         $agentesNotificados = [];
+        $sancionesNotificados = [];
 
         // Usuario autenticado
         $user = Auth::user();
 
         if ($user->rol === 'Agente') {
 
+            $tipoAgente = 'Agente';
+            // Sacar las notificaciones
             $notificaciones = Notificacione::with('user.persona')->where('estado', 'No revizado')
                 ->orderBy('id', 'desc')->get();
 
@@ -94,16 +98,30 @@ class AdminController extends Controller
                     $agentesNotificados[] = $notificacion;
                 }
             }
-            $tipoAgente = 'Agente';
+
+            // Sacar las sanciones
+            $sanciones = Sancion_2::with('user.persona')->where('estado_vista', 'No revizado')
+                ->where('estado_envio', 'Enviado')
+                ->orderBy('id', 'desc')->get();
+
+            foreach ($sanciones as $notificacion) {
+
+                if ($notificacion->agente_id == $user->id) {
+
+                    $sancionesNotificados[] = $notificacion;
+                }
+            }
+
 
             $data = array(
                 'status' => 'success',
                 'code' => 200,
                 'message' => 'Lista de notificaciones cargada correctamente',
                 'notificaciones' => $agentesNotificados,
+                'sanciones' => $sancionesNotificados,
                 'tipoAgente' => $tipoAgente,
-                'totalNotificaciones' => count($agentesNotificados)
-
+                'totalNotificaciones' => count($agentesNotificados),
+                'totalSanciones' => count($sancionesNotificados)
             );
         } else {
 
@@ -116,8 +134,6 @@ class AdminController extends Controller
                 'message' => 'Lista de notificaciones cargada correctamente',
                 'notificaciones' => $agentesNotificados,
                 'tipoAgente' => $tipoAgente
-
-
             );
         }
 

@@ -42,7 +42,6 @@
           <!-- ============================================================== -->
           <ul class="navbar-nav my-lg-0">
 
-
               <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
                       aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-message"></i>
@@ -68,6 +67,7 @@
                                           return;
                                       }
 
+                                      //   AdminController
                                       fetch("{{ route('notificacion-real.notificacionReal') }}", {
                                               method: "GET",
                                               headers: {
@@ -81,16 +81,27 @@
                                               return response.json();
                                           })
                                           .then(data => {
+
+                                              // Aqui llega las notificaciones
+                                              console.log(data);
+
+
                                               if (!data.notificaciones) {
                                                   console.warn("El servidor no devolvió 'notificaciones'");
                                                   return;
                                               }
 
+                                              if (!data.sanciones) {
+                                                  console.warn("El servidor no devolvió 'Sanciones'");
+                                                  return;
+                                              }
+
+
                                               let contenidoHTML = '';
 
                                               //   console.log(data.totalNotificaciones);
 
-                                              if (data.totalNotificaciones > 0) {
+                                              if (data.totalNotificaciones > 0 || data.totalSanciones > 0) {
                                                   punto.style.display = 'block';
                                               } else {
                                                   punto.style.display = 'none';
@@ -102,7 +113,6 @@
                                                         <a href="${baseUrl}/notificaciones/show/${element.id}">
                                                         <div class="btn btn-danger btn-circle"><i class="ti-bell"></i></div>
                                                         <div class="mail-contnet">
-                                                            <h5>Notificaciones sin leer</h5>
                                                             <span class="mail-desc">
                                                                 <p class="mb-0">Remitente: ${element.user.persona.nombres || 'Nombre no disponible'} ${element.user.persona.apellidos || 'Apellido no disponible'}</p>
                                                                 <p>Asunto: ${element.asunto || 'Asunto no disponible'}</p>
@@ -111,6 +121,22 @@
                                                         </div>
                                                     </a>`;
                                               });
+
+                                              // Armado de sanciones
+                                              data.sanciones.forEach(element => {
+                                                  contenidoHTML += `
+                                                        <a href="${baseUrl}/notificaciones/show/${element.id}">
+                                                       <div class="btn btn-warning btn-circle"><i class="ti-alert"></i></div>
+                                                        <div class="mail-contnet">
+                                                            <span class="mail-desc">
+                                                                <p class="mb-0">Remitente: ${element.user.persona.nombres || 'Nombre no disponible'} ${element.user.persona.apellidos || 'Apellido no disponible'}</p>
+                                                                <p>Asunto: Sanción por incumplimiento de deberes</p>
+                                                            </span>
+                                                            <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
+                                                        </div>
+                                                    </a>`;
+                                              });
+
 
                                               mensaje.innerHTML = contenidoHTML;
                                           })
@@ -136,9 +162,7 @@
 
 
                           </li>
-                          <li>
-                              <a class="nav-link text-center" href="{{route('notificaciones.index')}}"> <strong>Todas las Notitificaciones</strong> <i class="fa fa-angle-right"></i> </a>
-                          </li>
+
                       </ul>
                   </div>
               </li>

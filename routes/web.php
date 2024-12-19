@@ -179,7 +179,7 @@ Route::group(['middleware' => ['role:Administrador']], function () {
 
     // RUTAS PARA SANCIONES
     Route::prefix('sanciones')->name('sanciones.')->group(function () {
-        Route::get('/', [SancionarController::class, 'indexSancion'])->name('index'); // Listar sanciones
+
         Route::get('/crear', [SancionarController::class, 'createSancion'])->name('create'); // Formulario para crear sanción
         Route::post('/', [SancionarController::class, 'storeSancion'])->name('store'); // Guardar sanción
         Route::get('/{sancion}/editar', [SancionarController::class, 'editSancion'])->name('edit'); // Formulario para editar sanción
@@ -197,11 +197,14 @@ Route::group(['middleware' => ['role:Administrador']], function () {
 // RUTAS SIN RESTRICCIONES COMUNICADOS
 Route::get('comunicados', [ComunicadoController::class, 'index'])->name('comunicados.index');
 Route::get('comunicados/show/{id}', [ComunicadoController::class, 'show'])->name('comunicados.show');
+
 // RUTAS SIN RESTRICCIONES NOTIFICACIONES
 Route::get('notificaciones', [NotificacioneController::class, 'index'])->name('notificaciones.index');
 Route::get('notificaciones/show/{id}', [NotificacioneController::class, 'show'])->name('notificaciones.show');
 
-
+// RUTAS SIN RESTRICCIONES SANCIONES
+Route::get('sanciones', [SancionarController::class, 'indexSancion'])->name('sanciones.index'); // Listar sanciones
+Route::get('sanciones/show/{id}', [ComunicadoController::class, 'show'])->name('sanciones.show');
 
 
 

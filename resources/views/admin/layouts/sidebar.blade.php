@@ -45,7 +45,7 @@
                       <li><a href="{{route('informe-notarials.index','Notarios de Fe Pública')}}">Información Notarial</a></li>
                       <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
-                      <li><a href="{{ route('comunicados.index')}}">Sanciones</a></li>
+                      <li><a href="{{ route('sanciones.index')}}">Sanciones</a></li>
                   </ul>
               </li>
               @endif
@@ -58,7 +58,7 @@
                       <li><a href="{{route('informe-index-seprec.indexSeprec')}}">Información SEPREC</a></li>
                       <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
-                      <li><a href="{{ route('comunicados.index')}}">Sanciones</a></li>
+                      <li><a href="{{ route('sanciones.index')}}">Sanciones</a></li>
                   </ul>
               </li>
               @endif
@@ -71,7 +71,7 @@
                       <li><a href="{{route('informe-index-juzgado.indexJuzgado')}}">Información Juzgados</a></li>
                       <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
-                      <li><a href="{{ route('comunicados.index')}}">Sanciones</a></li>
+                      <li><a href="{{ route('sanciones.index')}}">Sanciones</a></li>
                   </ul>
               </li>
               @endif
@@ -84,7 +84,7 @@
                       <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Derechos</a></li>
                       <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
-                      <li><a href="{{ route('comunicados.index')}}">Sanciones</a></li>
+                      <li><a href="{{ route('sanciones.index')}}">Sanciones</a></li>
                   </ul>
               </li>
               @endif

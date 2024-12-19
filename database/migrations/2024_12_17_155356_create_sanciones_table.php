@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('nombre', 255);
             $table->string('monto', 255);
             $table->enum('estado', ['Pendiente', 'Pagado'])->default('Pendiente'); // Estado del pago
+            $table->enum('estado_vista', ['Revizado', 'No revizado'])->default('No revizado'); // Estado del pago
+            $table->enum('estado_envio', ['Enviado', 'No enviado'])->default('No enviado'); // Estado del pago
             $table->foreignId('agente_id')->constrained('agentes')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict'); // Quien esta creando la sancion
             $table->timestamps();
         });
     }

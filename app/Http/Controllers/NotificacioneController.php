@@ -106,7 +106,9 @@ class NotificacioneController extends Controller
             $mensaje = [
                 'remitente' => $persona->nombres . " " . $persona->apellidos,
                 'asunto' => $data['asunto'],
-                'idNotificacion' => $notificacione->id
+                'idNotificacion' => $notificacione->id,
+                'tipoNotificacion' => 'notificacion',
+
             ];
             $jsonMensaje = json_encode($mensaje);
             Http::post('http://localhost:3001/notify-user', [

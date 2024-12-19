@@ -19,9 +19,33 @@ class SancionarController extends Controller
     // SECTOR SANCION COMPLETADA
     public function indexSancion()
     {
-        $sanciones = Sancion_2::with('agente.persona')->get();
+        $tipoAgente = "";
 
-        return view('sanciones.index', compact('sanciones'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
+        $agentesNotificados = [];
+
+        // Usuario autenticado
+        $user = Auth::user();
+
+        if ($user->rol === 'Agente') {
+
+            $sanciones = Sancion_2::with('agente.persona')->get();
+
+            foreach ($sanciones as $sancion) {
+
+                if ($sancion->agente_id == $user->id) {
+
+                    $agentesNotificados[] = $sancion;
+                }
+            }
+
+            $tipoAgente = 'Agente';
+        } else {
+
+            $tipoAgente = 'Administrador';
+            $sanciones = Sancion_2::with('agente.persona')->get();
+        }
+
+        return view('sanciones.index', compact('sanciones', 'agentesNotificados', 'tipoAgente'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
     }
 
     public function createSancion()
@@ -36,13 +60,23 @@ class SancionarController extends Controller
 
     public function storeSancion(Request $request)
     {
+        $user = Auth::user();
+
+        // Validar los datos del request
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'agente_id' => 'required',
             'monto' => 'required',
+            // Nota: Ya no validamos 'usuario_id' porque se asignará automáticamente
         ]);
 
+        // Agregar el usuario autenticado al arreglo de datos
+        $validated['usuario_id'] = $user->id;
+
+        // Crear la sanción
         Sancion_2::create($validated);
+
+        // Redirigir con un mensaje de éxito
         return redirect()->route('sanciones.index')->with('success', 'Sanción creada correctamente.');
     }
 
@@ -88,17 +122,27 @@ class SancionarController extends Controller
         $user = Auth::user();
         $persona = Persona::where('id', $user->persona_id)->first();
 
+
+
         $sancionDatos = Sancion_2::find($sancion);
 
+        $sancionDatos->update([
+            'estado_envio' => 'Enviado',
+        ]);
+
+        // Usuario a quien se le envia la sancion Osea al usuario agente
         $agenteUsuario = User::with('agente.persona')
-            ->where('agente_id', $idAgente)->first();
+            ->where('id', $idAgente)->first();
+
 
         $mensaje = [
             'remitente' => $persona->nombres . " " . $persona->apellidos,
-            'asunto' => $sancionDatos->nombre,
+            'asunto' => 'Sanción por incumplimiento de deberes',
+            'tipoSancion' => $sancionDatos->nombre,
             'multa' => $sancionDatos->multa,
             'idSancion' => $sancion,
-            'message' => 'Usted ha sido sancionado por ' . $sancionDatos->nombre . ' por un monto de ' . $agenteUsuario->multa,
+            'message' => 'Usted ha sido sancionado por ' . $sancionDatos->nombre . ' por un monto de ' . $sancionDatos->multa,
+            'tipoNotificacion' => 'sancion',
         ];
 
         // Convertir el mensaje a JSON

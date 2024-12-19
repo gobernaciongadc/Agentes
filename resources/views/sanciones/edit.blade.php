@@ -37,7 +37,7 @@
         </div>
 
         <!-- Agentes de información -->
-        <div class="mb-3">
+        <div class="mb-3 d-none">
             <div class="form-group mb-2 mb20">
                 <label for="agente_id" class="form-label text-dark">Agente de Información<span class="text-danger">*</span></label>
                 <select name="agente_id" class="form-control mb-2 mb20" id="agente_id">
