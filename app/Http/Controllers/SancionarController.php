@@ -83,6 +83,33 @@ class SancionarController extends Controller
     // Metodo que envia la sancion
     public function enviarSancion($sancion, $idAgente)
     {
-        dd($sancion, $idAgente);
+
+        // Usuario Autenticado
+        $user = Auth::user();
+        $persona = Persona::where('id', $user->persona_id)->first();
+
+        $sancionDatos = Sancion_2::find($sancion);
+
+        $agenteUsuario = User::with('agente.persona')
+            ->where('agente_id', $idAgente)->first();
+
+        $mensaje = [
+            'remitente' => $persona->nombres . " " . $persona->apellidos,
+            'asunto' => $sancionDatos->nombre,
+            'multa' => $sancionDatos->multa,
+            'idSancion' => $sancion,
+            'message' => 'Usted ha sido sancionado por ' . $sancionDatos->nombre . ' por un monto de ' . $agenteUsuario->multa,
+        ];
+
+        // Convertir el mensaje a JSON
+        $jsonMensaje = json_encode($mensaje);
+
+        Http::post('http://localhost:3001/notify-user', [
+            'userId' => $agenteUsuario->id,  // ID del usuario destinatario
+            'message' => $jsonMensaje,        // Mensaje que recibirá el cliente
+        ]);
+
+        return Redirect::route('sanciones.index')
+            ->with('success', 'Sanción Enviada Correctamente');
     }
 }

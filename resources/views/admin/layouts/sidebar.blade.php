@@ -40,11 +40,12 @@
               @if(Auth::user()->agente->tipo_agente == "Notarios de Fe Pública")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Notarial<span
-                              class="label label-rouded label-themecolor pull-right">3</span></span></a>
+                              class="label label-rouded label-themecolor pull-right">4</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-notarials.index','Notarios de Fe Pública')}}">Información Notarial</a></li>
                       <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
+                      <li><a href="{{ route('comunicados.index')}}">Sanciones</a></li>
                   </ul>
               </li>
               @endif
@@ -52,11 +53,12 @@
               @if(Auth::user()->agente->tipo_agente == "SEPREC")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión SEPREC<span
-                              class="label label-rouded label-themecolor pull-right">3</span></span></a>
+                              class="label label-rouded label-themecolor pull-right">4</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-seprec.indexSeprec')}}">Información SEPREC</a></li>
                       <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
+                      <li><a href="{{ route('comunicados.index')}}">Sanciones</a></li>
                   </ul>
               </li>
               @endif
@@ -64,11 +66,12 @@
               @if(Auth::user()->agente->tipo_agente == "Jueces y Secretarios del Tribunal Departamental de Justicia")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Juzgados<span
-                              class="label label-rouded label-themecolor pull-right">3</span></span></a>
+                              class="label label-rouded label-themecolor pull-right">4</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-juzgado.indexJuzgado')}}">Información Juzgados</a></li>
                       <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
+                      <li><a href="{{ route('comunicados.index')}}">Sanciones</a></li>
                   </ul>
               </li>
               @endif
@@ -76,16 +79,15 @@
               @if(Auth::user()->agente->tipo_agente == "Derechos Reales")
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                           class="mdi mdi-file-document"></i><span class="hide-menu">Gestión Derechos<span
-                              class="label label-rouded label-themecolor pull-right">3</span></span></a>
+                              class="label label-rouded label-themecolor pull-right">4</span></span></a>
                   <ul aria-expanded="false" class="collapse">
                       <li><a href="{{route('informe-index-derecho.indexDerecho')}}">Información Derechos</a></li>
                       <li><a href="{{ route('notificaciones.index')}}">Notificaciones</a></li>
                       <li><a href="{{ route('comunicados.index')}}">Comunicados</a></li>
+                      <li><a href="{{ route('comunicados.index')}}">Sanciones</a></li>
                   </ul>
               </li>
               @endif
-
-
 
               @endrole
 

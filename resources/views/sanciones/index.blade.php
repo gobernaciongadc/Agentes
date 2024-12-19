@@ -66,7 +66,44 @@
                         <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Eliminar</button>
                     </form>
                     <!-- <a href="{{ route('sanciones.pago', $sancion->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i> Ver Pago</a> -->
-                    <a href="{{ route('sanciones-envio.enviarSancion', ['sancion' => $sancion->id, 'idAgente' => $sancion->agente_id]) }}" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Consolidar Sanción</a>
+                    <a href="{{ route('sanciones-envio.enviarSancion', ['sancion' => $sancion->id, 'idAgente' => $sancion->agente_id]) }}"
+                        id="consolidar-sancion-{{ $sancion->id }}"
+                        class="btn btn-sm btn-primary">
+                        <i class="fa fa-check"></i> Consolidar Sanción
+                    </a>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Selecciona todos los enlaces con la clase consolidar-sancion
+                            document.querySelectorAll('[id^="consolidar-sancion-"]').forEach(function(link) {
+                                link.addEventListener('click', function(event) {
+                                    event.preventDefault(); // Previene la redirección inmediata
+
+                                    const url = this.getAttribute('href'); // Obtiene la URL del enlace
+
+                                    swal({
+                                        title: '¿Estás seguro?',
+                                        text: "Esta acción consolidará la sanción. No podrás revertirla.",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#0984e3",
+                                        confirmButtonText: "Si, Enviar!",
+                                        cancelButtonText: "No, cancelar",
+                                        closeOnConfirm: false,
+                                        closeOnCancel: false
+                                    }, function(isConfirm) {
+                                        if (isConfirm) {
+                                            swal("Enviado", "La sanción ha sido consolidada.", "success");
+                                            // Redirige a la URL si se confirma
+                                            window.location.href = url;
+                                        } else {
+                                            swal("Cancelado", "El envio ha sido cancelado :)", "error");
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                    </script>
+
                 </td>
             </tr>
             @endforeach
