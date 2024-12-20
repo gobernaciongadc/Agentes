@@ -175,7 +175,8 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::post('reportes-municipio', [ReportesController::class, 'reporteMunicipioPost'])->name('reportes-municipio.reporteMunicipioPost');
 
     Route::get('reportes-plazos', [ReportesController::class, 'indexPlazos'])->name('reportes-plazos.indexPlazos');
-    Route::get('reportes-sanciones', [ReportesController::class, 'indexSanciones'])->name('reportes-sanciones.indexSanciones');
+
+    Route::get('reportes-sanciones', [ReportesController::class, 'reporteSanciones'])->name('reportes-sanciones.reporteSanciones');
 
     // RUTAS PARA SANCIONES
     Route::prefix('sanciones')->name('sanciones.')->group(function () {
@@ -204,19 +205,7 @@ Route::get('notificaciones/show/{id}', [NotificacioneController::class, 'show'])
 
 // RUTAS SIN RESTRICCIONES SANCIONES
 Route::get('sanciones', [SancionarController::class, 'indexSancion'])->name('sanciones.index'); // Listar sanciones
-Route::get('sanciones/show/{id}', [ComunicadoController::class, 'show'])->name('sanciones.show');
-
-
-
-
-
-
-
-
-
-
-
-
+Route::get('sanciones/show/{id}', [SancionarController::class, 'showSancion'])->name('sanciones.show');
 
 /*
 Si deseas redirigir solo a los usuarios no autenticados, puedes hacer algo como esto:

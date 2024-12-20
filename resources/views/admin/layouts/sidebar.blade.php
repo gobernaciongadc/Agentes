@@ -122,7 +122,7 @@
                       <li><a href="{{ route('reportes-agentes.reporteAgentes')}}">Reporte Por Agentes</a></li>
                       <li><a href="{{ route('reportes-municipio.reporteMunicipio')}}">Reporte Por Municipio</a></li>
                       <li><a href="#">Reporte Por Plazos</a></li>
-                      <li><a href="#">Reporte Por Sanciones</a></li>
+                      <li><a href="{{ route('reportes-sanciones.reporteSanciones')}}">Reporte Por Sanciones</a></li>
                   </ul>
               </li>
 

@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('template_title')
-Sancions
+Reportes
 @endsection
 
 @section('content')
@@ -25,69 +25,25 @@ Sancions
         <div class="row">
 
             <div class=" col-12 mb-3">
-                <h2 class="text-uppercase">{{$lista}}</h2>
+                <!-- Campo Tipo Agente -->
+                <div class="form-group mb-2 mb20">
+                    <label for="por-agente" class="form-label text-info">Agente de Información<span class="text-danger">*</span></label>
+                    <select name="por-agente" class="form-control mb-2 mb20" id="por-agente">
+                        <option value="" disabled selected>Selecciona un Agente</option>
+                        @foreach($agentes as $agente)
+                        <option value="{{ $agente->id }}">
+                            {{ $agente->agente->persona->nombres }} {{ $agente->agente->persona->apellidos }}
+                        </option>
+                        @endforeach
+                    </select>
+
+                </div>
             </div>
-
-            <a class="col-lg-3" href="{{route('sancions-bandeja-entrada.indexBandejaEntrada', ['id'=>'Derechos Reales'])}}">
-                <div class="card border bg-info" style="border-radius: 5px;">
-                    <div class="card-body">
-                        <div class="d-flex no-block">
-                            <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="{{ asset('backend/assets/images/icon/expense-w.png') }}" alt="Income"></div>
-                            <div class="align-self-center">
-                                <h6 class="text-white m-t-10 m-b-0">Derechos Reales</h6>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a class="col-lg-3" href="{{route('sancions-bandeja-entrada.indexBandejaEntrada', ['id'=>'Jueces y Secretarios del Tribunal Departamental de Justicia'])}}">
-                <div class="card border bg-success" style="border-radius: 5px;">
-                    <div class="card-body">
-                        <div class="d-flex no-block">
-                            <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="{{ asset('backend/assets/images/icon/expense-w.png') }}" alt="Income"></div>
-                            <div class="align-self-center">
-                                <h6 class="text-white m-t-10 m-b-0">Jueces y Secretarios</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a class="col-lg-3" href="{{route('sancions-bandeja-entrada.indexBandejaEntrada', ['id'=>'Notarios de Fe Pública'])}}">
-                <div class="card border bg-primary" style="border-radius: 5px;">
-                    <div class="card-body">
-                        <div class="d-flex no-block">
-                            <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="{{ asset('backend/assets/images/icon/expense-w.png') }}" alt="Income"></div>
-                            <div class="align-self-center">
-                                <h6 class="text-white m-t-10 m-b-0">Notarios de Fe Pública</h6>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a class="col-lg-3" href="{{route('sancions-bandeja-entrada.indexBandejaEntrada', ['id'=>'SEPREC'])}}">
-                <div class="card border bg-danger" style="border-radius: 5px;">
-                    <div class="card-body">
-                        <div class="d-flex no-block">
-                            <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="{{ asset('backend/assets/images/icon/expense-w.png') }}" alt="Income"></div>
-                            <div class="align-self-center">
-                                <h6 class="text-white m-t-10 m-b-0">SEPREC</h6>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
         </div>
 
         <div class="table-responsive">
-            <table id="bandejaTable" class="table table-striped table-hover">
-                <thead class="thead">
+            <table id="transmisionTable" class="table table-striped table-hover">
+                <thead class="thead small">
                     <tr>
                         <th>ID</th>
                         <th style="width: 20%">Descripción de Informe</th>
@@ -95,76 +51,133 @@ Sancions
                         <th>Tipo Agente</th>
                         <th>Fecha Emitida</th>
                         <th>Estado Recibido</th>
-                        <th style="width: 16%;">Acciones</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-
-                    @foreach ($informes as $informe)
-
-                    <tr>
-                        <td>{{$informe->id}}</td>
-                        <td>{{$informe->descripcion}}</td>
-                        <td>{{$informe->user->agente->persona->nombres}} {{$informe->user->agente->persona->apellidos}}</td>
-                        <td>{{$informe->user->agente->tipo_agente}}</td>
-                        <td>{{$informe->fecha_envio}}</td>
-                        <td>
-                            @switch($informe->estado)
-
-                            @case('Pendiente')
-                            <span class="badge badge-warning">{{ $informe->estado }}</span>
-                            @break
-
-                            @case('No verificado')
-                            <span class="badge badge-danger">{{ $informe->estado }}</span>
-                            @break
-                            @case('Verificado')
-                            <span class="badge badge-success">{{ $informe->estado }}</span>
-                            @break
-                            @case('Rechazado')
-                            <span class="badge badge-dark">{{ $informe->estado }}</span>
-                            @break
-                            @case('Corregido')
-                            <span class="badge badge-primary">{{ $informe->estado }}</span>
-                            @break
-                            @endswitch
-                        </td>
-
-                        <td>
-
-                            @if ($informe->estado == 'No verificado')
-                            <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-info btn-sm" title="Ver Informe"><i class=" fa fa-eye"></i> Verificar</a>
-                            @endif
-                            @if ($informe->estado == 'Verificado')
-                            <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-primary btn-sm" title="Ver Informe">Ver informe <i class=" fa fa-chevron-right"></i></a>
-                            @endif
-
-                            @if ($informe->estado == 'Rechazado')
-                            <a onclick="openModalObservar('{{$informe->id}}','{{$informe->usuario_id}}','{{$informe->tipo_informe}}')" class="btn btn-warning text-white btn-sm" title="Ver observaciones"><i class=" fa fa-eye"></i> Con Observaciones</a>
-                            <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-primary btn-sm" title="Ver Informe">Ver informe <i class=" fa fa-chevron-right"></i></a>
-                            @endif
-
-                            @if ($informe->estado == 'Corregido')
-                            <a onclick="openModalObservar('{{$informe->id}}','{{$informe->usuario_id}}','{{$informe->tipo_informe}}')" class="btn btn-warning text-white btn-sm" title="Ver observaciones"><i class=" fa fa-eye"></i> Con Observaciones</a>
-                            <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-primary btn-sm" title="Ver Informe">Ver informe <i class=" fa fa-chevron-right"></i></a>
-                            @endif
-
-                            <!-- <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-search" title="Observar Informe"></i> Observación</button>
-                            <button type="button" class="btn btn-success btn-sm"><i class="fa fa-check" title="Consolidar Informe"></i> Consolidar</button>
-                            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-money" title="Sancionar Informe"></i> Sancionar</button> -->
-                        </td>
-
-
-                    </tr>
-
-                    @endforeach
-
+                <tbody id="tbody-transmision">
 
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<!-- Carga de jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- JavaScript -->
+<script>
+    $(document).ready(function() {
+        // Inicializa Select2 para los selects
+        $('#por-agente').select2({
+            placeholder: "Selecciona un Agente",
+            allowClear: true,
+            width: '100%'
+        });
+
+
+        // Agentes
+        // Agregar un evento "change" para detectar cambios en el valor seleccionado
+        $('#por-agente').on('change', function() {
+
+            console.log("entro");
+
+
+            const selectedValue = $(this).val(); // Obtener el valor seleccionado
+            console.log(`Agente seleccionado: ${selectedValue}`);
+
+            // Aquí puedes agregar la lógica que necesitas al cambiar el valor
+            // Por ejemplo, puedes llamar a una función o disparar una solicitud AJAX
+            // ejemplo:
+            handleTipoTransmisionChange(selectedValue);
+        });
+
+        // Función para manejar el cambio en el valor del select    
+
+        function handleTipoTransmisionChange(value) {
+
+            let datosHtml = '';
+
+            $.ajax({
+                url: "{{ route('reportes-agentes.reporteAgentesPost') }}",
+                method: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    usuario_id: value
+                },
+                success: function(response) {
+                    console.log(response); // Verifica el contenido de la respuesta
+                    const {
+                        informes
+                    } = response;
+
+                    if (!informes || informes.length === 0) {
+                        console.log('No hay informes disponibles.');
+                        return;
+                    }
+
+                    // Determina el valor del estado con un switch
+                    let datosHtml = '';
+                    informes.forEach(element => {
+                        let estadoTexto = '';
+                        switch (element.estado) {
+                            case 'Pendiente':
+                                estadoTexto = '<span class="badge badge-warning">Pendiente</span>';
+                                break;
+                            case 'No verificado':
+                                estadoTexto = '<span class="badge badge-danger">No verificado</span>';
+                                break;
+                            case 'Verificado':
+                                estadoTexto = '<span class="badge badge-success">Verificado</span>';
+                                break;
+                            case 'Rechazado':
+                                estadoTexto = '<span class="badge badge-dark">Rechazado</span>';
+                                break;
+                            case 'Corregido':
+                                estadoTexto = '<span class="badge badge-primary">Corregido</span>';
+                                break;
+                            default:
+                                estadoTexto = '<span class="badge badge-secondary">Desconocido</span>';
+                                break;
+                        }
+
+                        // formateando la fecha
+                        const fechaOriginal = element.created_at
+                        const fecha = new Date(fechaOriginal);
+
+                        const anio = fecha.getUTCFullYear();
+                        const mes = ("0" + (fecha.getUTCMonth() + 1)).slice(-2); // Los meses empiezan en 0
+                        const dia = ("0" + fecha.getUTCDate()).slice(-2);
+                        const hora = ("0" + fecha.getUTCHours()).slice(-2);
+                        const minutos = ("0" + fecha.getUTCMinutes()).slice(-2);
+
+                        // Formatear como quieras
+                        const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
+
+                        const btnVerificar = `<a href="/sancions-verificar/${element.id}/${element.user.id}/${element.tipo_informe}" class="btn btn-info btn-sm" title="Ver Informe"><i class="fa fa-eye"></i> Verificar</a>`;
+
+
+                        datosHtml += '<tr>';
+                        datosHtml += '<td>' + element.id + '</td>';
+                        datosHtml += '<td>' + element.descripcion + '</td>';
+                        datosHtml += '<td>' + element.user.agente.persona.nombres + ' ' + element.user.agente.persona.apellidos + '</td>';
+                        datosHtml += '<td>' + element.tipo_informe + '</td>';
+                        datosHtml += '<td>' + fechaFormateada + '</td>';
+                        datosHtml += '<td>' + estadoTexto + '</td>';
+                        datosHtml += '<td>' + btnVerificar + '</td>';
+                        datosHtml += '</tr>';
+                    });
+                    $('#tbody-transmision').html(datosHtml);
+                },
+                error: function(xhr, status, error) {
+
+                }
+            })
+
+
+        }
+    });
+</script>
 
 
 <!-- Lista de observaciones por informe -->
@@ -270,6 +283,6 @@ Sancions
     }
 </script>
 
-@vite('resources/css/sancion.css')
-@vite('resources/js/sancion.js')
+@vite('resources/css/reportes.css')
+@vite('resources/js/reportes.js')
 @endsection

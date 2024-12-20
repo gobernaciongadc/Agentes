@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InformeNotarial;
 use App\Models\Municipio;
+use App\Models\Sancion_2;
 use App\Models\User;
 use Exception;
 use Illuminate\View\View;
@@ -128,5 +129,33 @@ class ReportesController extends Controller
         }
 
         return response()->json($data, $data['code']);
+    }
+
+    function reporteSanciones()
+    {
+
+        // 1.-Agentes sancionados
+
+        $informesSancionados = [];
+
+        $sancionados = Sancion_2::all();
+        $informes = InformeNotarial::all();
+
+        foreach ($sancionados as $key => $sancionado) {
+
+            foreach ($informes as $key => $informe) {
+
+                // Verificar si el agente es sancionado
+                if ($sancionado->agente_id == $informe->usuario_id) {
+                    array_push($informesSancionados, $informe);
+                }
+            }
+        }
+
+        $sanciones = $informesSancionados;
+        dd($sanciones);
+
+        // 2.- Cargar tipos de transmision
+        return view('reportes.tipo-sanciones', compact('agentes'), ['titulo' => 'Reporte Por Sanciones', 'currentPage' => 'Reportes por sanciones']);
     }
 }

@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
                 const newNotification_sancion = `
-                        <a href="/notificaciones/show/${mensaje.idNotificacion}">
+                         <a href="/sanciones/show/${mensaje.idNotificacion}">
                             <div class="btn btn-warning btn-circle"><i class="ti-alert"></i></div>
                             <div class="mail-contnet">
                                 <h5>Nueva Notificación</h5>

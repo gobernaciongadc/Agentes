@@ -154,4 +154,13 @@ class SancionarController extends Controller
         return Redirect::route('sanciones.index')
             ->with('success', 'Sanción Enviada Correctamente');
     }
+
+    public function showSancion($id)
+    {
+        $sancion = Sancion_2::find($id);
+        $sancion->update(
+            ['estado_vista' => 'Revizado']
+        );
+        return view('sanciones.show', compact('sancion'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
+    }
 }

@@ -124,7 +124,7 @@
                                               // Armado de sanciones
                                               data.sanciones.forEach(element => {
                                                   contenidoHTML += `
-                                                        <a href="${baseUrl}/notificaciones/show/${element.id}">
+                                                        <a href="${baseUrl}/sanciones/show/${element.id}">
                                                        <div class="btn btn-warning btn-circle"><i class="ti-alert"></i></div>
                                                         <div class="mail-contnet">
                                                             <span class="mail-desc">

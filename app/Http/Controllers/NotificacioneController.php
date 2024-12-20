@@ -132,7 +132,6 @@ class NotificacioneController extends Controller
 
         $notificacione = Notificacione::find($id);
 
-
         $notificacione->update(
             ['estado' => 'Revizado']
         );
