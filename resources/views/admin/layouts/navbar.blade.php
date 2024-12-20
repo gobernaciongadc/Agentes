@@ -59,7 +59,10 @@
                               <script>
                                   document.addEventListener('DOMContentLoaded', function() {
                                       const mensaje = document.querySelector('.message-center');
+
+                                      // Punto de notificacion 
                                       const punto = document.querySelector('#point-notificacion');
+
                                       const baseUrl = "{{ url('/') }}"; // Base de la URL
 
                                       if (!mensaje) {
@@ -83,7 +86,15 @@
                                           .then(data => {
 
                                               // Aqui llega las notificaciones
-                                              console.log(data);
+
+
+                                              let contenidoHTML = '';
+
+                                              if (data.totalNotificaciones > 0 || data.totalSanciones > 0) {
+                                                  punto.style.display = 'block';
+                                              } else {
+                                                  punto.style.display = 'none';
+                                              }
 
 
                                               if (!data.notificaciones) {
@@ -95,18 +106,6 @@
                                                   console.warn("El servidor no devolvió 'Sanciones'");
                                                   return;
                                               }
-
-
-                                              let contenidoHTML = '';
-
-                                              //   console.log(data.totalNotificaciones);
-
-                                              if (data.totalNotificaciones > 0 || data.totalSanciones > 0) {
-                                                  punto.style.display = 'block';
-                                              } else {
-                                                  punto.style.display = 'none';
-                                              }
-
 
                                               data.notificaciones.forEach(element => {
                                                   contenidoHTML += `

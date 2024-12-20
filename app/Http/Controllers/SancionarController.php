@@ -28,7 +28,7 @@ class SancionarController extends Controller
 
         if ($user->rol === 'Agente') {
 
-            $sanciones = Sancion_2::with('agente.persona')->get();
+            $sanciones = Sancion_2::where('estado_envio', 'Enviado')->get();
 
             foreach ($sanciones as $sancion) {
 
@@ -37,14 +37,12 @@ class SancionarController extends Controller
                     $agentesNotificados[] = $sancion;
                 }
             }
-
             $tipoAgente = 'Agente';
+            $sanciones = $agentesNotificados;
         } else {
-
             $tipoAgente = 'Administrador';
-            $sanciones = Sancion_2::with('agente.persona')->get();
+            $sanciones = Sancion_2::all();
         }
-
         return view('sanciones.index', compact('sanciones', 'agentesNotificados', 'tipoAgente'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
     }
 

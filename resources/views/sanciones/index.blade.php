@@ -54,12 +54,21 @@
 
             </tr>
         </thead>
+        <?php
+
+        use App\Models\User;
+        ?>
         <tbody>
             @foreach ($sanciones as $sancion)
             <tr>
                 <td>{{ $sancion->id }}</td>
                 <td>{{ $sancion->nombre }}</td>
-                <td>{{ $sancion->agente->persona->nombres }} {{ $sancion->agente->persona->apellidos }}</td>
+                <td>
+                    @php
+                    $usuario = User::with('agente.persona')->where('id', $sancion->agente_id)->first();
+                    echo $usuario->agente->persona->nombres . ' ' . $usuario->agente->persona->apellidos;
+                    @endphp
+                </td>
                 <td>{{ $sancion->monto }}</td>
                 <td>{{ $sancion->updated_at }}</td>
                 <td>
