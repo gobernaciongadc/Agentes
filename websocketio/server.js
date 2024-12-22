@@ -10,7 +10,8 @@ const io = new Server(server, {
         // origin: '*',  // Desarrollo
         origin: 'http://agentes.gobernaciondecochabamba.bo',  // Producción
         methods: ['GET', 'POST']
-    }
+    },
+    transports: ['polling', 'websocket']
 });
 
 app.use(cors());
@@ -53,7 +54,7 @@ app.post('/notify-user', (req, res) => {
     }
 });
 
-// Levantar el servidor
+// Levantar el servidor(Modificado para produccion)
 server.listen(3001, '0.0.0.0', () => {
     console.log('Servidor de Socket.io escuchando en el puerto 3001');
 });
