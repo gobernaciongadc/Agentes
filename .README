@@ -1,0 +1,41 @@
+Instala PM2:
+
+bash
+Copiar código
+npm install -g pm2
+Ejecuta tu archivo server.js:
+
+bash
+Copiar código
+pm2 start /var/www/agentes/server.js
+Guarda la configuración para que se reinicie al reiniciar el servidor:
+
+bash
+Copiar código
+pm2 save
+pm2 startup
+El comando pm2 startup generará un script que deberás copiar y pegar para habilitar el inicio automático en tu sistema.
+
+Verifica el estado de los procesos con PM2:
+
+bash
+Copiar código
+pm2 list
+
+Verifica los procesos activos en PM2:
+
+bash
+Copiar código
+pm2 list
+Esto mostrará una lista de los procesos en ejecución con un App name y un id.
+
+Detén el proceso: Para apagar el archivo server.js, utiliza el siguiente comando con el id correspondiente:
+
+bash
+Copiar código
+pm2 stop id_del_proceso
+(Opcional) Elimina el proceso de PM2: Si ya no necesitas que PM2 administre este proceso:
+
+bash
+Copiar código
+pm2 delete id_del_proceso
