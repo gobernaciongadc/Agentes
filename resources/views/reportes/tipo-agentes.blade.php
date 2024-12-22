@@ -81,8 +81,9 @@ Reportes
         // Agregar un evento "change" para detectar cambios en el valor seleccionado
         $('#por-agente').on('change', function() {
 
-            const selectedValue = $(this).val(); // Obtener el valor seleccionado
-            console.log(`Agente seleccionado: ${selectedValue}`);
+            // Limpiar la tabla DataTable antes de agregar nuevos datos
+            const table = $('#transmisionTable').DataTable(); // Inicializar la tabla si no lo está
+            table.clear().draw(); // Limpia los datos actuales y redibuja la tabla
 
             // Aquí puedes agregar la lógica que necesitas al cambiar el valor
             // Por ejemplo, puedes llamar a una función o disparar una solicitud AJAX
@@ -93,6 +94,10 @@ Reportes
         // Función para manejar el cambio en el valor del select    
 
         function handleTipoTransmisionChange(value) {
+
+            // Limpiar la tabla DataTable antes de agregar nuevos datos
+            const table = $('#plazosTable').DataTable(); // Inicializar la tabla si no lo está
+            table.clear().draw(); // Limpia los datos actuales y redibuja la tabla
 
             let datosHtml = '';
 

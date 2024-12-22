@@ -23,6 +23,18 @@ class AdminController extends Controller
 
     public function master()
     {
+
+        $user = Auth::user();
+        $showPanel = true;
+
+        if ($user->rol == 'Administrador') {
+            $showPanel = true;
+        } else {
+            $showPanel = false;
+        }
+
+
+
         $usuarios = [];
         $agentes = [];
         // Contadores
@@ -63,7 +75,7 @@ class AdminController extends Controller
         return view('admin.layouts.master', [
             'currentPage' => 'Dashboard',
             'titulo' => 'Panel de Control',
-            'showPanel' => true,  // Variable para controlar la inclusión
+            'showPanel' => $showPanel,  // Variable para controlar la inclusión
             'totales' => [
                 'derechosReales' => $totalDerechosReales,
                 'sentenciasJudiciales' => $totalSentenciasJudiciales,

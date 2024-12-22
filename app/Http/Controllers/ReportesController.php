@@ -175,4 +175,47 @@ class ReportesController extends Controller
         }
         return response()->json($data, $data['code']);
     }
+
+    // Reporte por Transmisión de Información
+    public function reportePlazos(): View
+    {
+
+        // 1.- Cargar tipos de transmision
+        $tipoTransmision = [
+            'Notarios de Fe Pública' => 'Notarios de Fe Pública - Plazo hasta el 15 de cada mes',
+            'Jueces y Secretarios del Tribunal Departamental de Justicia' => 'Jueces y Secretarios del Tribunal Departamental de Justicia - Plazo hasta el 15 del último mes del bimestre',
+            'SEPREC' => 'SEPREC - Plazo hasta el 15 de cada mes',
+            'Derechos Reales' => 'Derechos Reales - Plazo hasta el 15 de cada mes'
+        ];
+
+        // 2.- Cargar tipos de transmision
+        return view('reportes.tipo-plazos', compact('tipoTransmision'), ['titulo' => 'Reporte Por Plazos', 'currentPage' => 'Reportes Por Plazos']);
+    }
+
+    function reportePlazosPost(Request $request)
+    {
+
+        $params = (object) $request->all(); // Devulve un obejto
+
+        $informes = InformeNotarial::with('user.agente.persona')
+            ->where('tipo_informe', $params->tipo_transmision)
+            ->where('estado', '!=', 'Pendiente')
+            ->where('estado_sancion', 'Con sancion')
+            ->get();
+
+        try {
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'informes' => $informes
+            );
+        } catch (Exception $e) {
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'error' => $e->getMessage(),
+            );
+        }
+        return response()->json($data, $data['code']);
+    }
 }

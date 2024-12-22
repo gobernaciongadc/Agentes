@@ -102,6 +102,9 @@ Informe Notarials
                                         function confirmarEnvio(event, url) {
                                             event.preventDefault(); // Evita que el enlace se ejecute automáticamente.
 
+                                            console.log(url);
+
+
                                             swal({
                                                 title: "¿Estás seguro?",
                                                 text: "Esta acción enviará el informe. ¿Deseas continuar?",
@@ -137,6 +140,30 @@ Informe Notarials
                                     <a class="btn btn-sm btn-success text-white" onclick="confirmarEnvio(event, 'enviar-informe?id={{ $informeNotarial->id }}' )">
                                         <i class="fa fa-upload"></i> Enviar informe
                                     </a>
+
+                                    <script>
+                                        function confirmarEnvio(event, url) {
+                                            event.preventDefault(); // Evita que el enlace se ejecute automáticamente.
+
+                                            console.log(url);
+
+
+                                            swal({
+                                                title: "¿Estás seguro?",
+                                                text: "Esta acción enviará el informe. ¿Deseas continuar?",
+                                                type: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#398bf7", // Color del botón de confirmación
+                                                confirmButtonText: "Sí, enviar informe", // Texto del botón de confirmación
+                                                cancelButtonText: "Cancelar", // Texto del botón cancelar                              
+                                                closeOnConfirm: false
+                                            }, function() {
+                                                // Redirige al enlace si el usuario confirma.
+                                                window.location.href = url;
+                                            });
+
+                                        }
+                                    </script>
 
                                     @break
 

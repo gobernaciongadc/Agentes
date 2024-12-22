@@ -175,11 +175,8 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::get('reportes-municipio', [ReportesController::class, 'reporteMunicipio'])->name('reportes-municipio.reporteMunicipio');
     Route::post('reportes-municipio', [ReportesController::class, 'reporteMunicipioPost'])->name('reportes-municipio.reporteMunicipioPost');
 
-
-
-    Route::get('reportes-plazos', [ReportesController::class, 'indexPlazos'])->name('reportes-plazos.indexPlazos');
-
-
+    Route::get('reportes-plazos', [ReportesController::class, 'reportePlazos'])->name('reportes-plazos.reportePlazos');
+    Route::post('reportes-plazos', [ReportesController::class, 'reportePlazosPost'])->name('reportes-plazos.reportePlazosPost');
 
     Route::get('reportes-sanciones', [ReportesController::class, 'reporteSanciones'])->name('reportes-sanciones.reporteSanciones');
     Route::post('reportes-sanciones', [ReportesController::class, 'reporteSancionesPost'])->name('reportes-sanciones.reporteSancionesPost');

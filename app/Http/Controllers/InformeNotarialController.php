@@ -242,12 +242,31 @@ class InformeNotarialController extends Controller
     function enviarInforme(Request $request)
     {
         $user = Auth::user();
-
         $agente = Agente::where('id', $user->agente_id)->first();
-
         $idInforme = $request->query('id');
+
         // Cargar manualmente el registro
         $informeNotarial = InformeNotarial::findOrFail($idInforme);
+
+
+        // Cambia el estado de la sancion solo cuando esta pediente de envio
+        if ($informeNotarial->estado == 'Pendiente') {
+            // Determinar si está dentro del plazo(PLAZOS)
+            $estaEnPlazo = $this->verificarPlazo($agente->tipo_agente);
+            if (!$estaEnPlazo) {
+                // dd('No esta en plazo');
+                $informeNotarial->update([
+                    'estado_sancion' => 'Con sancion',
+                ]);
+            } else {
+                // dd('Esta dentro del plazo');
+                $informeNotarial->update([
+                    'estado_sancion' => 'Sin sancion',
+                ]);
+            }
+            // FIN Determinar si está dentro del plazo(PLAZOS)
+        }
+
 
         if ($informeNotarial->estado == 'Rechazado') {
             // Actualizar con los datos validados
@@ -281,6 +300,32 @@ class InformeNotarialController extends Controller
                     ->with('success', 'El informe se envio correctamente');
                 break;
         }
+    }
+
+    /**
+     * Verifica si el agente está dentro del plazo permitido.
+     */
+    private function verificarPlazo($tipoAgente)
+    {
+        $fechaActual = Carbon::now();
+
+        switch ($tipoAgente) {
+            case 'Notarios de Fe Pública':
+            case 'Derechos Reales':
+            case 'SEPREC':
+                // Plazo hasta el día 15 de cada mes
+                $fechaLimite = Carbon::now()->startOfMonth()->addDays(15);
+                return $fechaActual <= $fechaLimite;
+
+            case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
+                // Plazo hasta el 15 del último mes del bimestre
+                $mesActual = $fechaActual->month;
+                $ultimoMesBimestre = $mesActual % 2 == 0 ? $mesActual : $mesActual + 1;
+                $fechaLimite = Carbon::createFromDate($fechaActual->year, $ultimoMesBimestre, 15);
+                return $fechaActual <= $fechaLimite;
+        }
+
+        return false; // Por defecto, fuera de plazo
     }
 
     // Metodo verificar informe

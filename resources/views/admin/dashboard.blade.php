@@ -36,6 +36,16 @@
                     @if ($showPanel ?? false)
                     @include('admin.layouts.panel-control')
                     @endif
+
+                    @php
+                    $user = Auth::user();
+                    @endphp
+
+                    @if($user->rol == 'Agente' && url()->current() == route('admin.layaouts.master'))
+                    @include('admin.layouts.agente-welcome')
+                    @endif
+
+
                     @yield('content')
                 </div>
             </div>

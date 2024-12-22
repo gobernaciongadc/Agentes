@@ -56,6 +56,10 @@ Reportes por sanciones
 
         function handleTipoTransmisionChange() {
 
+            // Limpiar la tabla DataTable antes de agregar nuevos datos
+            const table = $('#transmisionTable').DataTable(); // Inicializar la tabla si no lo está
+            table.clear().draw(); // Limpia los datos actuales y redibuja la tabla
+
             let datosHtml = '';
             $.ajax({
                 url: "{{ route('reportes-sanciones.reporteSancionesPost') }}",
