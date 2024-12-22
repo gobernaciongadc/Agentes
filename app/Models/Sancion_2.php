@@ -11,7 +11,7 @@ class Sancion_2 extends Model
 
     protected $table = 'sanciones';
 
-    protected $fillable = ['nombre', 'agente_id', 'monto', 'estado', 'estado_vista', 'usuario_id', 'estado_envio'];
+    protected $fillable = ['nombre', 'agente_id', 'monto', 'estado', 'estado_vista', 'usuario_id', 'informe_id', 'estado_envio'];
 
     public function tipoSancion()
     {

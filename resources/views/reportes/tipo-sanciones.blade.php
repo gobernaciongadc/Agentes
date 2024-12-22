@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('template_title')
-Reportes
+Reportes por sanciones
 @endsection
 
 @section('content')
@@ -22,24 +22,6 @@ Reportes
         </script>
         @endif
 
-        <div class="row">
-
-            <div class=" col-12 mb-3">
-                <!-- Campo Tipo Agente -->
-                <div class="form-group mb-2 mb20">
-                    <label for="por-agente" class="form-label text-info">Agente de Información<span class="text-danger">*</span></label>
-                    <select name="por-agente" class="form-control mb-2 mb20" id="por-agente">
-                        <option value="" disabled selected>Selecciona un Agente</option>
-                        @foreach($agentes as $agente)
-                        <option value="{{ $agente->id }}">
-                            {{ $agente->agente->persona->nombres }} {{ $agente->agente->persona->apellidos }}
-                        </option>
-                        @endforeach
-                    </select>
-
-                </div>
-            </div>
-        </div>
 
         <div class="table-responsive">
             <table id="transmisionTable" class="table table-striped table-hover">
@@ -68,42 +50,18 @@ Reportes
 <!-- JavaScript -->
 <script>
     $(document).ready(function() {
-        // Inicializa Select2 para los selects
-        $('#por-agente').select2({
-            placeholder: "Selecciona un Agente",
-            allowClear: true,
-            width: '100%'
-        });
 
+        // Ejecutamos la función
+        handleTipoTransmisionChange();
 
-        // Agentes
-        // Agregar un evento "change" para detectar cambios en el valor seleccionado
-        $('#por-agente').on('change', function() {
-
-            console.log("entro");
-
-
-            const selectedValue = $(this).val(); // Obtener el valor seleccionado
-            console.log(`Agente seleccionado: ${selectedValue}`);
-
-            // Aquí puedes agregar la lógica que necesitas al cambiar el valor
-            // Por ejemplo, puedes llamar a una función o disparar una solicitud AJAX
-            // ejemplo:
-            handleTipoTransmisionChange(selectedValue);
-        });
-
-        // Función para manejar el cambio en el valor del select    
-
-        function handleTipoTransmisionChange(value) {
+        function handleTipoTransmisionChange() {
 
             let datosHtml = '';
-
             $.ajax({
-                url: "{{ route('reportes-agentes.reporteAgentesPost') }}",
+                url: "{{ route('reportes-sanciones.reporteSancionesPost') }}",
                 method: 'POST',
                 data: {
                     _token: "{{ csrf_token() }}",
-                    usuario_id: value
                 },
                 success: function(response) {
                     console.log(response); // Verifica el contenido de la respuesta
@@ -140,7 +98,6 @@ Reportes
                                 estadoTexto = '<span class="badge badge-secondary">Desconocido</span>';
                                 break;
                         }
-
                         // formateando la fecha
                         const fechaOriginal = element.created_at
                         const fecha = new Date(fechaOriginal);
@@ -156,7 +113,6 @@ Reportes
 
                         const btnVerificar = `<a href="/sancions-verificar/${element.id}/${element.user.id}/${element.tipo_informe}" class="btn btn-info btn-sm" title="Ver Informe"><i class="fa fa-eye"></i> Verificar</a>`;
 
-
                         datosHtml += '<tr>';
                         datosHtml += '<td>' + element.id + '</td>';
                         datosHtml += '<td>' + element.descripcion + '</td>';
@@ -170,12 +126,11 @@ Reportes
                     $('#tbody-transmision').html(datosHtml);
                 },
                 error: function(xhr, status, error) {
-
+                    console.error(error);
                 }
             })
-
-
         }
+
     });
 </script>
 

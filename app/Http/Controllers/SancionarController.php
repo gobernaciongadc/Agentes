@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InformeNotarial;
 use App\Models\Persona;
 use App\Models\Sancion;
 use App\Models\Sancion_2;
@@ -60,11 +61,14 @@ class SancionarController extends Controller
     {
         $user = Auth::user();
 
+        $params = (object) $request->all();
+
         // Validar los datos del request
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'agente_id' => 'required',
             'monto' => 'required',
+            'informe_id' => 'required',
             // Nota: Ya no validamos 'usuario_id' porque se asignará automáticamente
         ]);
 
@@ -162,5 +166,39 @@ class SancionarController extends Controller
             ['estado_vista' => 'Revizado']
         );
         return view('sanciones.show', compact('sancion'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
+    }
+
+    function getInformeSanciones(Request $request)
+    {
+
+        $params = (object) $request->all(); // Devulve un obejto
+
+        $idUsuario = $params->usuario_id;
+
+
+        // Sacamos los informes de un agente en especifico
+        $informes = InformeNotarial::with('user.agente.persona')
+            ->where('usuario_id', $idUsuario)
+            ->where('estado', 'Verificado')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        try {
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'informes' => $informes
+            );
+        } catch (Exception $e) {
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'error' => $e->getMessage(),
+            );
+        }
+        return response()->json(
+            $data,
+            $data['code']
+        );
     }
 }

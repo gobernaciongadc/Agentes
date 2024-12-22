@@ -39,6 +39,7 @@ Reportes
 
                 </div>
             </div>
+
         </div>
 
         <div class="table-responsive">
@@ -79,9 +80,6 @@ Reportes
         // Agentes
         // Agregar un evento "change" para detectar cambios en el valor seleccionado
         $('#por-agente').on('change', function() {
-
-            console.log("entro");
-
 
             const selectedValue = $(this).val(); // Obtener el valor seleccionado
             console.log(`Agente seleccionado: ${selectedValue}`);

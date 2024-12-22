@@ -202,6 +202,20 @@
                 </select>
             </div>
         </div>
+
+        <!-- Informe -->
+        <div class="mb-3">
+            <!-- Campo Tipo Agente -->
+            <div class="form-group mb-2 mb20">
+                <label for="informe_id" class="form-label text-dark">Informe<span class="text-danger">*</span></label>
+                <select name="informe_id" class="form-control mb-2 mb20" id="informe_id">
+                    <option value="" disabled selected>Selecciona Un Informe</option>
+
+                </select>
+
+            </div>
+        </div>
+
         <!-- Carga de jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -214,6 +228,80 @@
                     allowClear: true,
                     width: '100%'
                 });
+
+                // Inicializa Select2 Por Informe
+                $('#informe_id').select2({
+                    placeholder: "Selecciona Un Informe",
+                    allowClear: true,
+                    width: '100%'
+                });
+
+                // Al selecionar un agente que se cargue el informe que tiene el agente
+                $('#agente_id').on('change', function() {
+
+                    const selectedValue = $(this).val(); // Obtener el valor seleccionado
+                    console.log(`Agente seleccionado: ${selectedValue}`);
+
+
+                    // Limpia el select antes de realizar la nueva carga
+                    limpiarPorInforme();
+
+                    // Aquí puedes agregar la lógica que necesitas al cambiar el valor
+                    // Por ejemplo, puedes llamar a una función o disparar una solicitud AJAX
+                    // ejemplo:
+                    handleTipoTransmisionChange(selectedValue);
+
+                })
+
+                // Función para manejar el cambio en el valor del select    
+                function handleTipoTransmisionChange(value) {
+
+                    let datosHtml = '';
+
+                    $.ajax({
+                        url: "{{ route('sancions-get-informe.getInformeSanciones') }}",
+                        method: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            usuario_id: value
+                        },
+                        success: function(response) {
+                            // console.log(response);
+                            if (response.code === 200 && response.status === 'success' && response.informes.length > 0) {
+                                const informes = response.informes;
+
+                                // Recorre el arreglo de informes y agrega opciones al select
+                                informes.forEach(function(informe) {
+                                    $('#informe_id').append(
+                                        `<option value="${informe.id}">${informe.tipo_informe} - ${informe.descripcion} - ${informe.fecha_envio}</option>`
+                                    );
+                                });
+
+                                // Refresca el Select2 para que tome los nuevos datos
+                                $('#informe_id').trigger('change');
+                            } else {
+                                toastr.error("No se encontraron informes para este agente.", "Agentes de Información");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+
+                        }
+                    })
+
+
+                }
+
+                // Función para limpiar el select de informes
+                function limpiarPorInforme() {
+                    // Limpia el contenido del select
+                    $('#informe_id')
+                        .empty() // Elimina las opciones actuales
+                        .append('<option value="" disabled selected>Selecciona Un Informe</option>'); // Agrega la opción por defecto
+
+                    // Resetea el estado visual de Select2
+                    $('#informe_id').val(null).trigger('change');
+                }
+
             });
         </script>
 

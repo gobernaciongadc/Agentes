@@ -149,6 +149,7 @@ Route::group(['middleware' => ['role:Administrador']], function () {
 
     Route::post('sancions-store-verificar', [SancionController::class, 'storeVerificar'])->name('sancions-store-verificar.storeVerificar');
     Route::post('sancions-store-observacion', [SancionController::class, 'storeObservacion'])->name('sancions-store-observacion.storeObservacion');
+    Route::post('sancions-get-informe', [SancionController::class, 'getInformeSanciones'])->name('sancions-get-informe.getInformeSanciones');
 
     // COMUNICADOS
     Route::get('comunicados/create', [ComunicadoController::class, 'create'])->name('comunicados.create');
@@ -174,19 +175,25 @@ Route::group(['middleware' => ['role:Administrador']], function () {
     Route::get('reportes-municipio', [ReportesController::class, 'reporteMunicipio'])->name('reportes-municipio.reporteMunicipio');
     Route::post('reportes-municipio', [ReportesController::class, 'reporteMunicipioPost'])->name('reportes-municipio.reporteMunicipioPost');
 
+
+
     Route::get('reportes-plazos', [ReportesController::class, 'indexPlazos'])->name('reportes-plazos.indexPlazos');
 
+
+
     Route::get('reportes-sanciones', [ReportesController::class, 'reporteSanciones'])->name('reportes-sanciones.reporteSanciones');
+    Route::post('reportes-sanciones', [ReportesController::class, 'reporteSancionesPost'])->name('reportes-sanciones.reporteSancionesPost');
 
     // RUTAS PARA SANCIONES
     Route::prefix('sanciones')->name('sanciones.')->group(function () {
-
         Route::get('/crear', [SancionarController::class, 'createSancion'])->name('create'); // Formulario para crear sanción
         Route::post('/', [SancionarController::class, 'storeSancion'])->name('store'); // Guardar sanción
         Route::get('/{sancion}/editar', [SancionarController::class, 'editSancion'])->name('edit'); // Formulario para editar sanción
         Route::put('/{sancion}', [SancionarController::class, 'updateSancion'])->name('update'); // Actualizar sanción
         Route::delete('/{sancion}', [SancionarController::class, 'destroySancion'])->name('destroy'); // Eliminar sanción
     });
+
+    Route::post('sanciones-get-informe', [SancionarController::class, 'getInformeSanciones'])->name('sancions-get-informe.getInformeSanciones');
 
     // Ruta para enviar sanción a Agentes de Información
     Route::get('sanciones-envio/{sancion}/{idAgente}', [SancionarController::class, 'enviarSancion'])->name('sanciones-envio.enviarSancion');

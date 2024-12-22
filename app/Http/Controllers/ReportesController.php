@@ -60,7 +60,6 @@ class ReportesController extends Controller
             ->where('estado', 1)
             ->get();
 
-
         // 2.- Cargar tipos de transmision
         return view('reportes.tipo-agentes', compact('agentes'), ['titulo' => 'Reporte Por Agente', 'currentPage' => 'Reportes por agente']);
     }
@@ -133,29 +132,47 @@ class ReportesController extends Controller
 
     function reporteSanciones()
     {
+        // 1.- Solo carga la vista
+        return view('reportes.tipo-sanciones', ['titulo' => 'Reporte Por Sanciones', 'currentPage' => 'Reportes por sanciones']);
+    }
 
-        // 1.-Agentes sancionados
+    function reporteSancionesPost(Request $request)
+    {
 
-        $informesSancionados = [];
+        $informes = [];
 
-        $sancionados = Sancion_2::all();
-        $informes = InformeNotarial::all();
+        $params = (object) $request->all(); // Devulve un obejto
+
+        $sancionados = Sancion_2::where('estado_envio', 'Enviado')->get();
+
+        $informesGeneral = InformeNotarial::with('user.agente.persona')
+            ->where('estado', 'Verificado')
+            ->get();
 
         foreach ($sancionados as $key => $sancionado) {
 
-            foreach ($informes as $key => $informe) {
+            foreach ($informesGeneral as $key => $informe) {
 
                 // Verificar si el agente es sancionado
                 if ($sancionado->agente_id == $informe->usuario_id) {
-                    array_push($informesSancionados, $informe);
+                    array_push($informes, $informe);
                 }
             }
         }
 
-        $sanciones = $informesSancionados;
-        dd($sanciones);
-
-        // 2.- Cargar tipos de transmision
-        return view('reportes.tipo-sanciones', compact('agentes'), ['titulo' => 'Reporte Por Sanciones', 'currentPage' => 'Reportes por sanciones']);
+        try {
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'informes' => $informes
+            );
+        } catch (Exception $e) {
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'error' => $e->getMessage(),
+            );
+        }
+        return response()->json($data, $data['code']);
     }
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('estado_envio', ['Enviado', 'No enviado'])->default('No enviado'); // Estado del pago
             $table->foreignId('agente_id')->constrained('agentes')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict'); // Quien esta creando la sancion
+            $table->foreignId('informe_id')->constrained('informe_notarials')->onUpdate('cascade')->onDelete('restrict'); // Para que informe es la sancion
             $table->timestamps();
         });
     }
