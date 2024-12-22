@@ -7,7 +7,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: '*',
+        // origin: '*',  // Desarrollo
+        origin: 'http://agentes.gobernaciondecochabamba.bo',  // Producción
         methods: ['GET', 'POST']
     }
 });
@@ -53,6 +54,6 @@ app.post('/notify-user', (req, res) => {
 });
 
 // Levantar el servidor
-server.listen(3001, () => {
+server.listen(3001, '0.0.0.0', () => {
     console.log('Servidor de Socket.io escuchando en el puerto 3001');
 });
