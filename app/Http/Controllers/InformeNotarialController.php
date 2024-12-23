@@ -244,25 +244,33 @@ class InformeNotarialController extends Controller
     {
         $user = Auth::user();
         $agente = Agente::where('id', $user->agente_id)->first();
-        $idInforme = $request->query('id');
 
+        $idInforme = $request->query('id');
         // Cargar manualmente el registro
         $informeNotarial = InformeNotarial::findOrFail($idInforme);
 
-        // Enviar mensaje en tiempo real
-        $mensaje = [
-            'remitente' => 'David Salinas Poma',
-            'asunto' => 'Envio de informe notarial',
-            'idNotificacion' => 2,
-            'tipoNotificacion' => 'notificacion',
 
+
+
+        // Enviar mensaje en tiempo real
+        /**
+         * Paso 1: Enviar el mensaje -> SOCKET.JS
+         * Paso 2: SOCKET.JS agregar una condicion en el swich
+         * paso 3: Crear un bucle en la vista de menu NavBar en (adminController.php y metodo notificacionReal)
+         */
+        $mensaje = [
+            'remitente' => $agente->persona->nombres . " " . $agente->persona->apellidos,
+            'asunto' => 'Envio de informe',
+            'idInfome' => $idInforme,
+            'tipoNotificacion' => 'envio',
         ];
         $jsonMensaje = json_encode($mensaje);
+
         Http::post('http://localhost:3001/notify-user', [
             'userId' => 1,  // ID del usuario destinatario
             'message' => $jsonMensaje,        // Mensaje que recibirá el cliente
         ]);
-        // FIN Enviar mensaje en tiempo real
+
 
         // Cambia el estado de la sancion solo cuando esta pediente de envio
         if ($informeNotarial->estado == 'Pendiente') {

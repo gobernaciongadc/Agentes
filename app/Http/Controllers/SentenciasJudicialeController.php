@@ -58,7 +58,13 @@ class SentenciasJudicialeController extends Controller
     {
         $idInforme = $request->query('idInforme');
 
-        SentenciasJudiciale::create($request->validated());
+        // Validar los datos
+        $data = $request->validated();
+        // Asegurar que 'fecha_escritura' tenga un valor por defecto si es null
+        $data['fecha_resolucion'] = $data['fecha_resolucion'] ?? '0';
+
+
+        SentenciasJudiciale::create($data);
 
         return Redirect::route('sentencias-judiciales.index', ['id' => $idInforme])
             ->with('success', 'Registro creado correctamente.');
@@ -90,7 +96,14 @@ class SentenciasJudicialeController extends Controller
     public function update(SentenciasJudicialeRequest $request,  $id, $idInforme): RedirectResponse
     {
         $sentenciasJudiciale = SentenciasJudiciale::find($id);
-        $sentenciasJudiciale->update($request->validated());
+
+        // Obtener los datos validados
+        $data = $request->validated();
+
+        // Asegurarse de que 'fecha_escritura' tenga un valor por defecto si es null
+        $data['fecha_resolucion'] = $data['fecha_resolucion'] ?? '0';
+
+        $sentenciasJudiciale->update($data);
 
         return Redirect::route('sentencias-judiciales.index', ['id' => $idInforme])
             ->with('success', 'Información actualizada correctamente.');

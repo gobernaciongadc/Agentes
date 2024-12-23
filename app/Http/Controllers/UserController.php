@@ -25,6 +25,16 @@ class UserController extends Controller
     public function index(Request $request): View
     {
         $users = User::with('agente')->orderBy('id', 'desc')->get();
+
+        // Identificar el el tipo de agente
+        foreach ($users as $user) {
+            if ($user->agente) {
+                $user->tipo = 'Agente';
+            } else {
+                $user->tipo = 'Administrador';
+            }
+        }
+
         return view('user.index', compact('users'), ['titulo' => 'Gestión de Usuarios', 'currentPage' => 'Usuarios']);
     }
 

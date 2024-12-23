@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('municipio_jurisdiccion');
             $table->string('naturaleza_proceso');
             $table->string('numero_resolucion');
-            $table->date('fecha_resolucion');
+            $table->string('fecha_resolucion');
             $table->string('nombre_demandante');
             $table->string('cedula_demandante');
             $table->string('nombre_demandado');

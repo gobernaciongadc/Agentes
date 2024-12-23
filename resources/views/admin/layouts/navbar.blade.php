@@ -87,6 +87,8 @@
 
                                               // Aqui llega las notificaciones
 
+                                              console.log(data);
+
 
                                               let contenidoHTML = '';
 
@@ -107,6 +109,7 @@
                                                   return;
                                               }
 
+                                              // Para Notificaciones
                                               data.notificaciones.forEach(element => {
                                                   contenidoHTML += `
                                                         <a href="${baseUrl}/notificaciones/show/${element.id}">
@@ -121,7 +124,22 @@
                                                     </a>`;
                                               });
 
-                                              // Armado de sanciones
+                                              // Para Sanciones
+                                              data.sanciones.forEach(element => {
+                                                  contenidoHTML += `
+                                                        <a href="${baseUrl}/sanciones/show/${element.id}">
+                                                       <div class="btn btn-warning btn-circle"><i class="ti-alert"></i></div>
+                                                        <div class="mail-contnet">
+                                                            <span class="mail-desc">
+                                                                <p class="mb-0">Remitente: ${element.user.persona.nombres || 'Nombre no disponible'} ${element.user.persona.apellidos || 'Apellido no disponible'}</p>
+                                                                <p>Asunto: Sanción por incumplimiento de deberes</p>
+                                                            </span>
+                                                            <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
+                                                        </div>
+                                                    </a>`;
+                                              });
+
+                                              // Para Envios
                                               data.sanciones.forEach(element => {
                                                   contenidoHTML += `
                                                         <a href="${baseUrl}/sanciones/show/${element.id}">

@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const mensaje = JSON.parse(message);
 
+        console.log(mensaje);
+
+
         // habilitar punto de evento
         const punto = document.querySelector('#point-notificacion');
         punto.style.display = 'block';
@@ -104,6 +107,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Actualizar indicador de notificaciones
                 const notifyIndicator_sancion = document.querySelector('.notify .point');
                 notifyIndicator_sancion.style.display = 'block'
+                break;
+
+            case 'envio':
+
+                toastr.info(`Asunto: ${mensaje.asunto}`, 'Nueva Notificación', {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "15000",
+                    "hideDuration": "1000",
+                    "timeOut": "15000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                });
+
+
+                const newEnvio = `
+                         <a href="/sanciones/show/${mensaje.idSancion}">
+                            <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                            <div class="mail-contnet">
+                                <h5>Nueva Notificación</h5>
+                                <span class="mail-desc">
+                                <p class="mb-0">Remitente: ${mensaje.remitente || ' no disponible'} </p>
+                                <p>Asunto: ${mensaje.asunto || 'Asunto no disponible'}</p>
+                                </span>
+                                <span class="time">${new Date().toLocaleDateString('es-ES')} ${new Date().toLocaleTimeString('es-ES')}</span>
+                            </div>
+                        </a>`;
+                notifyContainer.insertAdjacentHTML('afterbegin', newEnvio);
+
+                // Actualizar indicador de notificaciones
+                const notifyEnvio = document.querySelector('.notify .point');
+                notifyEnvio.style.display = 'block'
                 break;
 
         }

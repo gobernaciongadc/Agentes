@@ -26,7 +26,7 @@ class NotaryRecordRequest extends FormRequest
             'numero_notaria' => 'required|string',
             'nombre_notaria' => 'required|string',
             'numero_escritura' => 'required|string',
-            'fecha_escritura' => 'required',
+            'fecha_escritura' => 'nullable|string|max:255',
             'naturaleza_escritura' => 'required|string',
             'nombre_cedente' => 'required|string',
             'ci_nit_cedente' => 'required|string',

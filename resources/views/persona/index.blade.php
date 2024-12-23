@@ -48,7 +48,7 @@ Personas
                         <table class="table table-striped table-hover" id="personasTable">
                             <thead class="thead">
                                 <tr>
-                                    <th>Id</th>
+                                    <th>ID</th>
 
                                     <th>Nombres</th>
                                     <th>Apellidos</th>

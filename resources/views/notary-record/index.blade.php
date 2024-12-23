@@ -94,11 +94,52 @@ Notarios de fe publica
                                 <a class="btn btn-sm btn-success" href="{{ route('notary-records.edit', ['id' => $notaryRecord->id, 'idInforme' => $informe->id]) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Esta seguro de eliminar?') ? this.closest('form').submit() : false;" title="Eliminar datos"><i class="fa fa-fw fa-trash"></i></button>
+                                <button type="button" class="btn btn-danger btn-sm delete-btn" title="Eliminar datos">
+                                    <i class="fa fa-fw fa-trash"></i>
+                                </button>
+
                             </form>
                         </td>
                     </tr>
                     @endforeach
+
+                    <!-- Sweetalert -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const deleteButtons = document.querySelectorAll('.delete-btn');
+
+                            deleteButtons.forEach(button => {
+                                button.addEventListener('click', function(event) {
+                                    event.preventDefault(); // Prevenir envío directo del formulario
+                                    const form = this.closest('form'); // Buscar el formulario más cercano al botón
+
+                                    // Verificar si se encontró el formulario
+                                    if (!form) {
+                                        console.error('Formulario no encontrado para el botón:', this);
+                                        return;
+                                    }
+
+                                    swal({
+                                        title: "¿Estas seguro?",
+                                        text: "No podras revertir esta acción!",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#0984e3",
+                                        confirmButtonText: "Si, eliminar esto!",
+                                        closeOnConfirm: false
+                                    }, function() {
+                                        // swal("Eliminado!", "El registro ha sido eliminado.", "Agentes de información");
+                                        form.submit(); // Enviar formulario si se confirma
+                                    });
+
+
+
+
+
+                                });
+                            });
+                        });
+                    </script>
                 </tbody>
             </table>
         </div>

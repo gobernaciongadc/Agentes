@@ -9,11 +9,17 @@
             Lista de sanciones
         </span>
 
+        @php
+        $user = Auth::user();
+        @endphp
+
+        @if ($user->rol == 'Administrador')
         <div class="float-right">
             <a href="{{ route('sanciones.create') }}" class="btn btn-info font-14 float-right" data-placement="left">
                 <i class="fa fa-plus"></i> Crear Sanción
             </a>
         </div>
+        @endif
 
     </div>
 

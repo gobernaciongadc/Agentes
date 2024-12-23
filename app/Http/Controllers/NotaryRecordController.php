@@ -60,10 +60,14 @@ class NotaryRecordController extends Controller
     {
         $idInforme = $request->query('idInforme');
 
+        // Validar los datos
+        $data = $request->validated();
 
-        NotaryRecord::create($request->validated());
+        // Asegurar que 'fecha_escritura' tenga un valor por defecto si es null
+        $data['fecha_escritura'] = $data['fecha_escritura'] ?? '0';
 
-
+        // Crear el registro
+        NotaryRecord::create($data);
 
         return Redirect::route('notary-records.index', ['id' => $idInforme])
             ->with('success', 'Registro creado correctamente.');
@@ -98,12 +102,19 @@ class NotaryRecordController extends Controller
         // Cargar manualmente el registro
         $notaryRecord = NotaryRecord::findOrFail($id);
 
-        // Actualizar con los datos validados
-        $notaryRecord->update($request->validated());
+        // Obtener los datos validados
+        $data = $request->validated();
+
+        // Asegurarse de que 'fecha_escritura' tenga un valor por defecto si es null
+        $data['fecha_escritura'] = $data['fecha_escritura'] ?? '0';
+
+        // Actualizar el registro
+        $notaryRecord->update($data);
 
         return Redirect::route('notary-records.index', ['id' => $idInforme])
             ->with('success', 'Información actualizada correctamente.');
     }
+
 
     public function destroy($id, $idInforme): RedirectResponse
     {

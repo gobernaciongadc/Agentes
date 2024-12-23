@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('numero_notaria'); // Alfanumérico
             $table->string('nombre_notaria'); // Texto
             $table->string('numero_escritura'); // Alfanumérico
-            $table->date('fecha_escritura'); // Fecha (Numérico)
+            $table->string('fecha_escritura'); // Fecha (Numérico)
             $table->string('naturaleza_escritura'); // Alfanumérico
             $table->string('nombre_cedente'); // Texto
             $table->string('ci_nit_cedente'); // Alfanumérico
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('tipo_bien'); // Texto
             $table->string('registro_bien')->nullable(); // Alfanumérico, puede ser nulo
             $table->string('tipo_formulario')->nullable(); // Alfanumérico, puede ser nulo
-            $table->unsignedBigInteger('numero_orden'); // Numérico
+            $table->string('numero_orden'); // Numérico
             $table->decimal('monto_pagado', 15, 2); // Numérico con dos decimales
             $table->text('observaciones')->nullable(); // Alfanumérico, puede ser nulo
 

@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string('cedula_o_nit_cedente');
             $table->string('nombre_razon_social_beneficiario');
             $table->string('cedula_o_nit_beneficiario');
-            $table->decimal('superficie_del_inmueble');
-            $table->decimal('porcentaje_de_acciones');
+            $table->string('superficie_del_inmueble');
+            $table->string('porcentaje_de_acciones');
             $table->string('tipo_de_formulario');
-            $table->integer('numero_de_orden');
+            $table->string('numero_de_orden');
             $table->decimal('monto_pagado', 10, 2);
             $table->timestamps();
 

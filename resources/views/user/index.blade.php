@@ -57,11 +57,13 @@ Users
                                     <td>{{ $user->id }}</td>
                                     <td>
                                         @if($user->agente_id == null)
+
                                         {{$user->persona->nombres}} {{$user->persona->apellidos}}
+
                                         @endif
 
                                         @if($user->persona_id == null)
-                                        {{$user->agente->persona->nombres}} {{$user->agente->persona->apellidos}}
+                                        {{$user->agente->persona->nombres}} {{$user->agente->persona->apellidos}} <span class="badge badge-info">({{$user->agente->tipo_agente}})</span>
                                         @endif
                                     </td>
                                     <td>{{ $user->email }}</td>

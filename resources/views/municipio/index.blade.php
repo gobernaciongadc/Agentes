@@ -23,17 +23,17 @@ Municipios
                         </div>
                     </div>
                 </div>
-
-                @if (session('success'))
-                <div id="success-message" class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
-
-                @if (session('error'))
-                <div id="error-message" class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
+                @if ($message = Session::get('success'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        toastr.success("{{ $message }}", "Agentes de Información", {
+                            closeButton: true,
+                            progressBar: true,
+                            timeOut: 5000,
+                            positionClass: 'toast-top-right'
+                        });
+                    });
+                </script>
                 @endif
 
                 <div class="card-body bg-white">
@@ -41,7 +41,7 @@ Municipios
                         <table id="municipioTable" class="table table-striped table-hover">
                             <thead class="thead">
                                 <tr>
-                                    <th>Id</th>
+                                    <th>ID</th>
 
                                     <th>Municipio</th>
                                     <th>Provincia</th>
@@ -53,7 +53,7 @@ Municipios
                             <tbody>
                                 @foreach ($municipios as $municipio)
                                 <tr>
-                                    <td style="width: 20%;">{{ ++$municipio->id }}</td>
+                                    <td style="width: 20%;">{{ $municipio->id }}</td>
 
                                     <td style="width: 20%;">{{ $municipio->nombre }}</td>
                                     <td style="width: 20%;">{{ $municipio->provincia }}</td>
@@ -85,13 +85,6 @@ Municipios
 @endsection
 
 @section('scripts')
-<script>
-    $('#municipioTable').DataTable({
-        language: {
-            url: 'https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json'
-        }
-    });
-</script>
 <script>
     function confirmDelete(id) {
         swal({

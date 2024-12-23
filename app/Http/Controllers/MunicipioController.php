@@ -16,7 +16,7 @@ class MunicipioController extends Controller
      */
     public function index(Request $request): View
     {
-        $municipios = Municipio::all();
+        $municipios = Municipio::orderBy('id', 'desc')->get();
         return view('municipio.index', compact('municipios'), ['currentPage' => 'Gestión de Municipios', 'titulo' => 'Municipios']);
     }
 

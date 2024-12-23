@@ -27,7 +27,7 @@ class SentenciasJudicialeRequest extends FormRequest
             'municipio_jurisdiccion' => 'required|string',
             'naturaleza_proceso' => 'required|string',
             'numero_resolucion' => 'required|string',
-            'fecha_resolucion' => 'required|date',
+            'fecha_resolucion' => 'nullable|string|max:255',
             'nombre_demandante' => 'required|string',
             'cedula_demandante' => 'required|string',
             'nombre_demandado' => 'required|string',
