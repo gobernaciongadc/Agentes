@@ -12,6 +12,7 @@ use App\Models\Verificar;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -238,7 +239,7 @@ class InformeNotarialController extends Controller
             ->with('success', 'InformeNotarial deleted successfully');
     }
 
-    // Metodo que envia el informe
+    // Metodo que envia el informe(Aqui enviamos la notificacion en tiempo real)
     function enviarInforme(Request $request)
     {
         $user = Auth::user();
@@ -248,6 +249,20 @@ class InformeNotarialController extends Controller
         // Cargar manualmente el registro
         $informeNotarial = InformeNotarial::findOrFail($idInforme);
 
+        // Enviar mensaje en tiempo real
+        $mensaje = [
+            'remitente' => 'David Salinas Poma',
+            'asunto' => 'Envio de informe notarial',
+            'idNotificacion' => 2,
+            'tipoNotificacion' => 'notificacion',
+
+        ];
+        $jsonMensaje = json_encode($mensaje);
+        Http::post('http://localhost:3001/notify-user', [
+            'userId' => 1,  // ID del usuario destinatario
+            'message' => $jsonMensaje,        // Mensaje que recibirá el cliente
+        ]);
+        // FIN Enviar mensaje en tiempo real
 
         // Cambia el estado de la sancion solo cuando esta pediente de envio
         if ($informeNotarial->estado == 'Pendiente') {

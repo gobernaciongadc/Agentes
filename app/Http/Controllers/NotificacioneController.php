@@ -35,8 +35,6 @@ class NotificacioneController extends Controller
 
             $notificaciones = Notificacione::all();
 
-
-
             foreach ($notificaciones as $notificacion) {
 
                 if (json_decode($notificacion->destinatario)->idUsuario == $user->id) {
