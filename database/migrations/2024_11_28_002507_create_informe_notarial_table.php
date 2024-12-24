@@ -20,6 +20,7 @@ return new class extends Migration
 
             $table->enum('envio_agente', ['Enviado', 'No enviado'])->default('No enviado'); // 
             $table->enum('envio_gober', ['Enviado', 'No enviado'])->default('No enviado'); // 
+            $table->enum('estado_vista', ['Revizado', 'No revizado'])->default('No revizado'); // 
 
             $table->timestamp('fecha_envio')->nullable(); // Fecha y hora de envío
             $table->string('tipo_informe')->nullable(); // Tipo de informe

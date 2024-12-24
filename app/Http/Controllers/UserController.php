@@ -79,15 +79,28 @@ class UserController extends Controller
         try {
             // Crear el usuario
 
-            $user = new User();
-            $user->rol = $params->rol;
-            $user->agente_id = $params->opcion_id;
-            $user->email = $params->email;
-            $user->password = bcrypt($params->password);
-            $user->save();
+            if ($params->rol == 'Agente') {
+                $user = new User();
+                $user->rol = $params->rol;
+                $user->agente_id = $params->opcion_id;
+                $user->email = $params->email;
+                $user->password = bcrypt($params->password);
+                $user->save();
 
-            // Asignar rol al usuario
-            $user->assignRole($request->get('rol'));
+                // Asignar rol al usuario
+                $user->assignRole($request->get('rol'));
+            }
+            if ($params->rol == 'Administrador') {
+                $user = new User();
+                $user->rol = $params->rol;
+                $user->persona_id = $params->opcion_id;
+                $user->email = $params->email;
+                $user->password = bcrypt($params->password);
+                $user->save();
+
+                // Asignar rol al usuario
+                $user->assignRole($request->get('rol'));
+            }
 
             // Operaciones adicionales según el rol
             if ($params->rol == 'Administrador') {

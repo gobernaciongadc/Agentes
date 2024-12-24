@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\InformeNotarialRequest;
 use App\Models\Agente;
 use App\Models\Observacion;
+use App\Models\User;
 use App\Models\Verificar;
 use Carbon\Carbon;
 use Exception;
@@ -240,9 +241,6 @@ class InformeNotarialController extends Controller
         // Cargar manualmente el registro
         $informeNotarial = InformeNotarial::findOrFail($idInforme);
 
-
-
-
         // Enviar mensaje en tiempo real
         /**
          * Paso 1: Enviar el mensaje -> SOCKET.JS
@@ -252,21 +250,27 @@ class InformeNotarialController extends Controller
         $mensaje = [
             'remitente' => $agente->persona->nombres . " " . $agente->persona->apellidos,
             'asunto' => 'Envio de informe',
-            'idInfome' => $idInforme,
+            'idInforme' => $idInforme,
             'tipoNotificacion' => 'envio',
+            'tipoAgente' => $agente->tipo_agente,
         ];
         $jsonMensaje = json_encode($mensaje);
 
-        Http::post('http://localhost:3001/notify-user', [
-            'userId' => 1,  // ID del usuario destinatario
-            'message' => $jsonMensaje,        // Mensaje que recibirá el cliente
-        ]);
+        // Esto es para enviar el mensaje en tiempo real a todos los usuarios de tipo Admin de la Gobernación
+        $users = User::where('rol', 'Administrador')->get();
+        foreach ($users as $user) {
+            Http::post('http://localhost:3001/notify-user', [
+                'userId' => $user->id,  // ID del usuario destinatario
+                'message' => $jsonMensaje,        // Mensaje que recibIRA el cliente
+            ]);
+        }
 
         // Cambiar estados segun rol(No esta actualizando)
         if ($user->rol == 'Agente') {
             $informeNotarial->update([
                 'envio_agente' => 'Enviado',
                 'envio_gober' => 'No enviado',
+                'estado_vista' => 'No revizado',
             ]);
         }
 
@@ -274,6 +278,7 @@ class InformeNotarialController extends Controller
             $informeNotarial->update([
                 'envio_gober' => 'Enviado',
                 'envio_agente' => 'No enviado',
+                'estado_vista' => 'No revizado',
             ]);
         }
 

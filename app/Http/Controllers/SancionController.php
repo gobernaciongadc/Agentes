@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Pusher\Pusher;
+use Illuminate\Support\Facades\Http;
 
 class SancionController extends Controller
 {
@@ -332,6 +333,29 @@ class SancionController extends Controller
             $informe = InformeNotarial::find($params['informe_id']);
             $informe->estado = 'Rechazado';
             $informe->save();
+
+
+            // Enviar mensaje en tiempo real
+            /**
+             * Paso 1: Enviar el mensaje -> SOCKET.JS
+             * Paso 2: SOCKET.JS agregar una condicion en el swich
+             * paso 3: Crear un bucle en la vista de menu NavBar en (adminController.php y metodo notificacionReal)
+             */
+            $mensaje = [
+                'remitente' => $user->persona->nombres . " " . $user->persona->apellidos,
+                'asunto' => 'Observacion al informe',
+                'idInforme' => $informe->id,
+                'tipoNotificacion' => 'observacion',
+                'tipoAgente' => 'Administrador',
+            ];
+            $jsonMensaje = json_encode($mensaje);
+
+            // Esto es para enviar el mensaje en tiempo real a agente observado
+            Http::post('http://localhost:3001/notify-user', [
+                'userId' => $informe->usuario_id,  // ID del usuario destinatario
+                'message' => $jsonMensaje,        // Mensaje que recibIRA el cliente
+            ]);
+
 
 
 

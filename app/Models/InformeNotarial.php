@@ -28,7 +28,7 @@ class InformeNotarial extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['descripcion', 'estado', 'fecha_envio', 'estado_sancion'];
+    protected $fillable = ['descripcion', 'estado', 'fecha_envio', 'estado_sancion', 'envio_agente', 'envio_gober'];
 
 
     /**

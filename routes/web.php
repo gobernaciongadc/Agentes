@@ -36,6 +36,8 @@ Auth::routes();
 Route::get('/admin/layouts/master', [App\Http\Controllers\AdminController::class, 'master'])->name('admin.layaouts.master');
 Route::get('notificacion-real', [App\Http\Controllers\AdminController::class, 'notificacionReal'])->name('notificacion-real.notificacionReal');
 
+// Mostrar informe de notificación
+Route::get('notificacion-informe/{id}', [App\Http\Controllers\AdminController::class, 'mostrarInformeNotificacion'])->name('notificacion-informe.mostrarInformeNotificacion');
 
 
 

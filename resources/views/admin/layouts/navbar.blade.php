@@ -86,7 +86,6 @@
                                           .then(data => {
 
                                               // Aqui llega las notificaciones
-
                                               console.log(data);
 
                                               let contenidoHTML = '';
@@ -144,21 +143,42 @@
                                               });
 
                                               // Para Envios
-                                              data.informes.forEach(element => {
-                                                  contenidoHTML += `
-                                                        <a href="${baseUrl}/sanciones/show/${element.id}">
-                                                       <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
-                                                        <div class="mail-contnet">
-                                                            <span class="mail-desc">
-                                                                <p class="mb-0">Remitente: Gobierno Autónomo Departamental de Cochabamba</p>
-                                                                <p>Asunto: Informes</p>
-                                                            </span>
-                                                            <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
-                                                        </div>
-                                                    </a>`;
-                                              });
+                                              switch (data.tipoAgente) {
+                                                  case 'Agente':
+                                                      data.informes.forEach(element => {
+                                                          contenidoHTML += `
+                                                        <a href="${baseUrl}/notificacion-informe/${element.id}">
+                                                                <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                                                                    <div class="mail-contnet">
+                                                                        <span class="mail-desc">
+                                                                            <p class="mb-0">Remitente: Gobierno Autónomo Departamental de Cochabamba</p>
+                                                                            <p>Asunto: Informes</p>
+                                                                        </span>
+                                                                        <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
+                                                                </div>
+                                                          </a>`;
+                                                      });
+                                                      break;
+                                                  case 'Administrador':
+                                                      data.informes.forEach(element => {
+                                                          contenidoHTML += `
+                                                        <a href="${baseUrl}/notificacion-informe/${element.id}">
+                                                                <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                                                                    <div class="mail-contnet">
+                                                                        <span class="mail-desc">
+                                                                            <p class="mb-0 text-dark">${element.user.agente.persona.nombres || 'Nombre no disponible'} ${element.user.agente.persona.apellidos || 'Apellido no disponible'}</p>
+                                                                            <p class="mb-0 text-dark">Asunto: Informes</p>
+                                                                            <p class="text-dark">Tipo Agente: <span class="">${element.user.agente.tipo_agente}</span> </p>
+                                                                        </span>
+                                                                        <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
+                                                                </div>
+                                                          </a>`;
+                                                      });
+                                                      break;
 
-
+                                                  default:
+                                                      break;
+                                              }
                                               mensaje.innerHTML = contenidoHTML;
                                           })
                                           .catch(error => {
