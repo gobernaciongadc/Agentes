@@ -47,15 +47,6 @@ class InformeNotarialController extends Controller
     public function indexSeprec(Request $request, $id = null): View
     {
 
-        // Si $id no es null, filtra los resultados o realiza acciones específicas
-        // if ($id) {
-        //     $informeNotarials = InformeNotarial::where('id', $id)->get();
-        // } else {
-        //     // Si no se proporciona $id, muestra todos los registros
-        //     $informeNotarials = InformeNotarial::all();
-        // }
-
-
         // Obtener el usuario autenticado
         $user = Auth::user();
 
@@ -270,6 +261,22 @@ class InformeNotarialController extends Controller
             'userId' => 1,  // ID del usuario destinatario
             'message' => $jsonMensaje,        // Mensaje que recibirá el cliente
         ]);
+
+        // Cambiar estados segun rol(No esta actualizando)
+        if ($user->rol == 'Agente') {
+            $informeNotarial->update([
+                'envio_agente' => 'Enviado',
+                'envio_gober' => 'No enviado',
+            ]);
+        }
+
+        if ($user->rol == 'Administrador') {
+            $informeNotarial->update([
+                'envio_gober' => 'Enviado',
+                'envio_agente' => 'No enviado',
+            ]);
+        }
+
 
 
         // Cambia el estado de la sancion solo cuando esta pediente de envio

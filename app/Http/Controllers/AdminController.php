@@ -92,6 +92,7 @@ class AdminController extends Controller
 
         $agentesNotificados = [];
         $sancionesNotificados = [];
+        $informesNotificados = [];
 
         // Usuario autenticado
         $user = Auth::user();
@@ -119,8 +120,30 @@ class AdminController extends Controller
             foreach ($sanciones as $notificacion) {
 
                 if ($notificacion->agente_id == $user->id) {
-
                     $sancionesNotificados[] = $notificacion;
+                }
+            }
+
+            // Para sacar los informes no revizados
+            if ($user->rol == 'Agente') {
+                $informes = InformeNotarial::with('user')->where('envio_gober', 'enviado')
+                    ->where('estado', '!=', 'Pendiente')
+                    ->where('envio_agente', 'No enviado')
+                    ->orderBy('id', 'desc')->get();
+            }
+            if ($user->rol == 'Administrador') {
+                $informes = InformeNotarial::with('user')->where('envio_agente', 'enviado')
+                    ->where('estado', 'Pendiente')
+                    ->where('envio_gober', 'No enviado')
+                    ->orderBy('id', 'desc')->get();
+            }
+
+
+            foreach ($informes as $notificacion) {
+
+                if ($notificacion->usuario_id == $user->id) {
+
+                    $informesNotificados[] = $notificacion;
                 }
             }
 
@@ -131,21 +154,51 @@ class AdminController extends Controller
                 'message' => 'Lista de notificaciones cargada correctamente',
                 'notificaciones' => $agentesNotificados,
                 'sanciones' => $sancionesNotificados,
+                'informes' => $informesNotificados,
                 'tipoAgente' => $tipoAgente,
                 'totalNotificaciones' => count($agentesNotificados),
-                'totalSanciones' => count($sancionesNotificados)
+                'totalSanciones' => count($sancionesNotificados),
+                'totalInformes' => count($informesNotificados)
             );
         } else {
 
             $tipoAgente = 'Administrador';
-            $notificaciones = Notificacione::all();
+
+            // Para sacar los informes no revizados
+            if ($user->rol == 'Agente') {
+                $informes = InformeNotarial::with('user')->where('envio_gober', 'enviado')
+                    ->where('estado', '!=', 'Pendiente')
+                    ->where('envio_agente', 'No enviado')
+                    ->orderBy('id', 'desc')->get();
+            }
+            if ($user->rol == 'Administrador') {
+                $informes = InformeNotarial::with('user')->where('envio_agente', 'enviado')
+                    ->where('estado', 'Pendiente')
+                    ->where('envio_gober', 'No enviado')
+                    ->orderBy('id', 'desc')->get();
+            }
+
+
+            foreach ($informes as $notificacion) {
+
+                if ($notificacion->usuario_id == $user->id) {
+
+                    $informesNotificados[] = $notificacion;
+                }
+            }
 
             $data = array(
                 'status' => 'success',
                 'code' => 200,
                 'message' => 'Lista de notificaciones cargada correctamente',
                 'notificaciones' => $agentesNotificados,
-                'tipoAgente' => $tipoAgente
+                'sanciones' => $sancionesNotificados,
+                'informes' => $informesNotificados,
+                'tipoAgente' => $tipoAgente,
+                'totalNotificaciones' => count($agentesNotificados),
+                'totalSanciones' => count($sancionesNotificados),
+                'totalInformes' => count($informesNotificados),
+                'Hola' => 'Adios'
             );
         }
 

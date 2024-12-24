@@ -17,6 +17,10 @@ return new class extends Migration
             $table->text('descripcion', 800); // Descripción del informe
             $table->enum('estado', ['Pendiente', 'Verificado', 'No verificado', 'Rechazado', 'Corregido'])->default('Pendiente'); // Estado del informe
             $table->enum('estado_sancion', ['Sin sancion', 'Con sancion'])->default('Sin sancion'); // Estado del informe
+
+            $table->enum('envio_agente', ['Enviado', 'No enviado'])->default('No enviado'); // 
+            $table->enum('envio_gober', ['Enviado', 'No enviado'])->default('No enviado'); // 
+
             $table->timestamp('fecha_envio')->nullable(); // Fecha y hora de envío
             $table->string('tipo_informe')->nullable(); // Tipo de informe
             $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');

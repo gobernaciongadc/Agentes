@@ -89,10 +89,9 @@
 
                                               console.log(data);
 
-
                                               let contenidoHTML = '';
 
-                                              if (data.totalNotificaciones > 0 || data.totalSanciones > 0) {
+                                              if (data.totalNotificaciones > 0 || data.totalSanciones > 0 || data.totalInformes > 0) {
                                                   punto.style.display = 'block';
                                               } else {
                                                   punto.style.display = 'none';
@@ -105,6 +104,11 @@
                                               }
 
                                               if (!data.sanciones) {
+                                                  console.warn("El servidor no devolvió 'Sanciones'");
+                                                  return;
+                                              }
+
+                                              if (!data.informes) {
                                                   console.warn("El servidor no devolvió 'Sanciones'");
                                                   return;
                                               }
@@ -140,14 +144,14 @@
                                               });
 
                                               // Para Envios
-                                              data.sanciones.forEach(element => {
+                                              data.informes.forEach(element => {
                                                   contenidoHTML += `
                                                         <a href="${baseUrl}/sanciones/show/${element.id}">
-                                                       <div class="btn btn-warning btn-circle"><i class="ti-alert"></i></div>
+                                                       <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
                                                         <div class="mail-contnet">
                                                             <span class="mail-desc">
-                                                                <p class="mb-0">Remitente: ${element.user.persona.nombres || 'Nombre no disponible'} ${element.user.persona.apellidos || 'Apellido no disponible'}</p>
-                                                                <p>Asunto: Sanción por incumplimiento de deberes</p>
+                                                                <p class="mb-0">Remitente: Gobierno Autónomo Departamental de Cochabamba</p>
+                                                                <p>Asunto: Informes</p>
                                                             </span>
                                                             <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
                                                         </div>
