@@ -14,6 +14,6 @@ class PersonaSeeder extends Seeder
     public function run()
     {
         // Crear 50 registros ficticios
-        Persona::factory(20)->create();
+        Persona::factory(1)->create();
     }
 }

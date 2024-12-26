@@ -14,6 +14,6 @@ class MunicipioSeeder extends Seeder
     public function run(): void
     {
         // Crear 20 registros ficticios
-        Municipio::factory(20)->create();
+        Municipio::factory(1)->create();
     }
 }
