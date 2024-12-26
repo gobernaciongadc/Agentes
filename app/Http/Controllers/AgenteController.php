@@ -95,7 +95,7 @@ class AgenteController extends Controller
         $agente = Agente::find($id);
         $personas = Persona::all();
         $municipios = Municipio::all();
-        $tipoAgentes = ['Notarios de Fe Pública', 'Jueces y Secretarios del Tribunal Departamental de Justicia', 'SEPREC', 'Derechos Reales', 'proceso sancionador administrativo'];
+        $tipoAgentes = ['Notarios de Fe Pública', 'Jueces y Secretarios del Tribunal Departamental de Justicia', 'SEPREC', 'Derechos Reales'];
         $estados = [
             0 => 'Inactivo',
             1 => 'Activo',
