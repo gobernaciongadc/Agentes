@@ -61,7 +61,7 @@ Comunicados
 
                                 @endif
                                 @if ($tipoAgente == 'Agente')
-
+                                <th>Estado</th>
                                 <th>Acciones</th>
 
                                 @endif
@@ -100,6 +100,17 @@ Comunicados
                                 @endif
 
                                 @if ($tipoAgente == 'Agente')
+
+                                @if ($comunicado->estado_vista == 'Revizado')
+                                <td>
+                                    <span class="badge badge-success">Revizado</span>
+                                </td>
+                                @else
+                                <td>
+                                    <span class="badge badge-danger">No Revizado</span>
+                                </td>
+                                @endif
+
                                 <td>
                                     <a class="btn btn-sm btn-primary " href="{{ route('comunicados.show',$comunicado->id) }}"><i class="fa fa-fw fa-eye"></i> Ver Comunicado</a>
                                 </td>

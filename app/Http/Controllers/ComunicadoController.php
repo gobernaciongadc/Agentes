@@ -7,7 +7,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\ComunicadoRequest;
 use App\Models\Agente;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -73,7 +75,34 @@ class ComunicadoController extends Controller
             $data['adjuntos'] = $nombreArchivo;
         }
 
-        Comunicado::create($data);
+        $comunicado = Comunicado::create($data);
+
+        // Enviar mensaje en tiempo real
+        /**
+         * Paso 1: Enviar el mensaje -> SOCKET.JS
+         * Paso 2: SOCKET.JS agregar una condicion en el swich
+         * paso 3: Crear un bucle en la vista de menu NavBar en (adminController.php y metodo notificacionReal)
+         */
+        $mensaje = [
+            'remitente' => $user->persona->nombres . " " . $user->persona->apellidos,
+            'asunto' => 'Comunicado',
+            'idComunicado' => $comunicado->id,
+            'tipoNotificacion' => 'comunicado',
+            'tipoAgente' => $user->rol
+        ];
+        $jsonMensaje = json_encode($mensaje);
+
+        // Esto es para enviar el mensaje en tiempo real a todos los usuarios de tipo Admin de la Gobernación
+        $usuarios = User::where('rol', 'Agente')->get();
+        foreach ($usuarios as $usuario) {
+
+            if ($usuario->agente->tipo_agente == $comunicado->destinatario) {
+                Http::post('http://localhost:3001/notify-user', [
+                    'userId' => $usuario->id,  // ID del usuario destinatario
+                    'message' => $jsonMensaje,        // Mensaje que recibIRA el cliente
+                ]);
+            }
+        }
 
         return Redirect::route('comunicados.index')
             ->with('success', 'Comunicado creado correctamente.');

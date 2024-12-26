@@ -24,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const { tipoNotificacion } = mensaje;
 
-        // console.log(mensaje);
+
+
+        console.log(mensaje);
 
 
         switch (tipoNotificacion) {
@@ -145,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const notifyEnvio = document.querySelector('.notify .point');
                 notifyEnvio.style.display = 'block'
                 break;
+
             case 'observacion':
 
                 toastr.info(`Asunto: ${mensaje.asunto}`, 'Nueva Notificación', {
@@ -185,10 +188,87 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifyObservacion.style.display = 'block'
                 break;
 
+            case 'comunicado':
+
+                toastr.info(`Asunto: ${mensaje.asunto}`, 'Nueva Notificación', {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "15000",
+                    "hideDuration": "1000",
+                    "timeOut": "15000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                });
+
+                const newComunicado = `
+                         <a href="/notificacion-comunicado/${mensaje.idComunicado}">
+                            <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                            <div class="mail-contnet">
+                                <h5>Nueva Notificación</h5>
+                                <span class="mail-desc">
+                                <p class="mb-0">Remitente: ${mensaje.remitente || ' no disponible'} </p>
+                                <p class="mb-0 text-dark" >Asunto: ${mensaje.asunto || 'Asunto no disponible'}</p>
+                                 <p class="text-dark">Tipo Agente: <span class="">${mensaje.tipoAgente}</span> </p>
+                                </span>
+                                <span class="time">${new Date().toLocaleDateString('es-ES')} ${new Date().toLocaleTimeString('es-ES')}</span>
+                            </div>
+                        </a>`;
+                notifyContainer.insertAdjacentHTML('afterbegin', newComunicado);
+
+                // Actualizar indicador de notificaciones
+                const notifyComunicado = document.querySelector('.notify .point');
+                notifyComunicado.style.display = 'block'
+                break;
+
+            case 'pago':
+
+                toastr.info(`Asunto: ${mensaje.asunto}`, 'Nueva Notificación', {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "15000",
+                    "hideDuration": "1000",
+                    "timeOut": "15000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                });
+
+                const newPago = `
+                         <a href="/notificacion-pago/${mensaje.idSancion}">
+                            <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                            <div class="mail-contnet">
+                                <h5>Nueva Notificación</h5>
+                                <span class="mail-desc">
+                                <p class="mb-0">Remitente: ${mensaje.remitente || ' no disponible'} </p>
+                                <p class="mb-0 text-dark" >Asunto: ${mensaje.asunto || 'Asunto no disponible'}</p>
+                                 <p class="text-dark">Tipo Agente: <span class="">${mensaje.tipoAgente}</span> </p>
+                                </span>
+                                <span class="time">${new Date().toLocaleDateString('es-ES')} ${new Date().toLocaleTimeString('es-ES')}</span>
+                            </div>
+                        </a>`;
+                notifyContainer.insertAdjacentHTML('afterbegin', newPago);
+
+                // Actualizar indicador de notificaciones
+                const notifyPago = document.querySelector('.notify .point');
+                notifyPago.style.display = 'block'
+                break;
+
+
         }
-
-
-
-
     });
 });

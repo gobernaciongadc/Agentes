@@ -332,6 +332,9 @@ class SancionController extends Controller
 
             $informe = InformeNotarial::find($params['informe_id']);
             $informe->estado = 'Rechazado';
+            $informe->envio_gober = 'Enviado';
+            $informe->envio_agente = 'No enviado';
+            $informe->estado_vista = 'No revizado';
             $informe->save();
 
 
@@ -346,7 +349,7 @@ class SancionController extends Controller
                 'asunto' => 'Observacion al informe',
                 'idInforme' => $informe->id,
                 'tipoNotificacion' => 'observacion',
-                'tipoAgente' => 'Administrador',
+                'tipoAgente' => 'Administrador', // Sancionador
             ];
             $jsonMensaje = json_encode($mensaje);
 
@@ -355,8 +358,6 @@ class SancionController extends Controller
                 'userId' => $informe->usuario_id,  // ID del usuario destinatario
                 'message' => $jsonMensaje,        // Mensaje que recibIRA el cliente
             ]);
-
-
 
 
             return response()->json([

@@ -94,7 +94,7 @@ Informe Juzgado
 
                                     @case('Pendiente')
                                     <a class="btn btn-sm btn-primary" href="{{ route('sentencias-judiciales.index', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-file"></i> Realizar Informe</a>
-                                    <a class="btn btn-sm btn-success text-white" onclick="confirmarEnvio(event, 'enviar-informe?id={{ $informeNotarial->id }}' )">
+                                    <a class="btn btn-sm btn-success text-white" onclick="confirmarEnvio(event, '/enviar-informe?id={{ $informeNotarial->id }}' )">
                                         <i class="fa fa-upload"></i> Enviar informe
                                     </a>
 
@@ -132,7 +132,7 @@ Informe Juzgado
 
                                     <a class="btn btn-sm btn-dark" href="{{ route('sentencias-judiciales.index', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-file"></i> Corregir Informe</a>
                                     <a class="btn btn-warning btn-sm text-white" onclick="openModalObservar('{{$informeNotarial->id}}','{{$informeNotarial->usuario_id}}','{{$informeNotarial->tipo_informe}}')"><i class="fa fa-eye"></i> Ver Observaciones</a>
-                                    <a class="btn btn-sm btn-success text-white" onclick="confirmarEnvio(event, 'enviar-informe?id={{ $informeNotarial->id }}' )">
+                                    <a class="btn btn-sm btn-success text-white" onclick="confirmarEnvio(event, '/enviar-informe?id={{ $informeNotarial->id }}' )">
                                         <i class="fa fa-upload"></i> Enviar informe
                                     </a>
                                     <script>

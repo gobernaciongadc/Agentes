@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h4 class="text-info font-weight-bold">Editar Sanción</h4>
+        <h4 class="text-info font-weight-bold">Confirmar pago</h4>
         <a href="{{ route('sanciones.index') }}" class="btn btn-info font-14 float-right" data-placement="left">
             <i class="fa fa-chevron-left"></i> Regresar
         </a>
@@ -24,14 +24,14 @@
         @endif
 
         <!-- Campo Nombre -->
-        <div class="mb-3">
+        <div class="mb-3" hidden>
             <label for="nombre" class="form-label">Tipo de la Sanción</label>
             <textarea name="nombre" id="nombre" class="form-control" rows="3" required>{{ old('nombre', $sancion->nombre) }}</textarea>
         </div>
 
 
         <!-- Campo Monto -->
-        <div class="mb-3">
+        <div class="mb-3" hidden>
             <label for="monto" class="form-label">Monto (UFV)</label>
             <input type="text" id="monto" name="monto" class="form-control" min="0" step="0.01" value="{{ old('monto', $sancion->monto) }}" required>
         </div>

@@ -38,6 +38,8 @@ Route::get('notificacion-real', [App\Http\Controllers\AdminController::class, 'n
 
 // Mostrar informe de notificación
 Route::get('notificacion-informe/{id}', [App\Http\Controllers\AdminController::class, 'mostrarInformeNotificacion'])->name('notificacion-informe.mostrarInformeNotificacion');
+Route::get('notificacion-comunicado/{id}', [App\Http\Controllers\AdminController::class, 'mostrarComunicadoNotificacion'])->name('notificacion-informe.mostrarComunicadoNotificacion');
+Route::get('notificacion-pago/{id}', [App\Http\Controllers\AdminController::class, 'mostrarPagoNotificacion'])->name('notificacion-Pago.mostrarPagoNotificacion');
 
 
 
@@ -107,6 +109,9 @@ Route::group(
         Route::get('sentencias-judiciales/edit/{id}/{idInforme}', [SentenciasJudicialeController::class, 'edit'])->name('sentencias-judiciales.edit');
         Route::match(['put', 'patch'], 'sentencias-judiciales/update/{id}/{idInforme}', [SentenciasJudicialeController::class, 'update'])->name('sentencias-judiciales.update');
         Route::delete('sentencias-judiciales/{id}/{idInforme}', [SentenciasJudicialeController::class, 'destroy'])->name('sentencias-judiciales.destroy');
+
+        // ENVIO DE COMPROBANTE DE PAGO
+        Route::post('envio-comprobante', [SancionarController::class, 'comprobantePago'])->name('envio-comprobante.comprobantePago');
     }
 );
 

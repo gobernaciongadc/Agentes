@@ -85,36 +85,26 @@
                                           })
                                           .then(data => {
 
-                                              // Aqui llega las notificaciones
-                                              console.log(data);
+
 
                                               let contenidoHTML = '';
 
-                                              if (data.totalNotificaciones > 0 || data.totalSanciones > 0 || data.totalInformes > 0) {
+                                              //   console.log(data);
+                                              //   console.log(data.observados);
+
+                                              if (data.totalNotificaciones > 0 || data.totalSanciones > 0 ||
+                                                  data.totalInformes > 0 || data.totalObservados > 0 ||
+                                                  data.totalComunicados > 0 || data.totalPagos > 0) {
                                                   punto.style.display = 'block';
                                               } else {
                                                   punto.style.display = 'none';
                                               }
 
 
-                                              if (!data.notificaciones) {
-                                                  console.warn("El servidor no devolvió 'notificaciones'");
-                                                  return;
-                                              }
-
-                                              if (!data.sanciones) {
-                                                  console.warn("El servidor no devolvió 'Sanciones'");
-                                                  return;
-                                              }
-
-                                              if (!data.informes) {
-                                                  console.warn("El servidor no devolvió 'Sanciones'");
-                                                  return;
-                                              }
-
-                                              // Para Notificaciones
-                                              data.notificaciones.forEach(element => {
-                                                  contenidoHTML += `
+                                              if (data.totalNotificaciones > 0) {
+                                                  // Para Notificaciones
+                                                  data.notificaciones.forEach(element => {
+                                                      contenidoHTML += `
                                                         <a href="${baseUrl}/notificaciones/show/${element.id}">
                                                         <div class="btn btn-danger btn-circle"><i class="ti-bell"></i></div>
                                                         <div class="mail-contnet">
@@ -122,14 +112,17 @@
                                                                 <p class="mb-0">Remitente: ${element.user.persona.nombres || 'Nombre no disponible'} ${element.user.persona.apellidos || 'Apellido no disponible'}</p>
                                                                 <p>Asunto: ${element.asunto || 'Asunto no disponible'}</p>
                                                             </span>
-                                                            <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
+                                                            <span class="time">${formatFechaHora(element.updated_at) || 'Fecha no disponible'}</span>
                                                         </div>
                                                     </a>`;
-                                              });
+                                                  });
+
+                                              }
 
                                               // Para Sanciones
-                                              data.sanciones.forEach(element => {
-                                                  contenidoHTML += `
+                                              if (data.totalSanciones > 0) {
+                                                  data.sanciones.forEach(element => {
+                                                      contenidoHTML += `
                                                         <a href="${baseUrl}/sanciones/show/${element.id}">
                                                        <div class="btn btn-warning btn-circle"><i class="ti-alert"></i></div>
                                                         <div class="mail-contnet">
@@ -137,29 +130,71 @@
                                                                 <p class="mb-0">Remitente: ${element.user.persona.nombres || 'Nombre no disponible'} ${element.user.persona.apellidos || 'Apellido no disponible'}</p>
                                                                 <p>Asunto: Sanción por incumplimiento de deberes</p>
                                                             </span>
-                                                            <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
+                                                            <span class="time">${formatFechaHora(element.updated_at) || 'Fecha no disponible'}</span>
                                                         </div>
                                                     </a>`;
-                                              });
+                                                  });
+                                              }
+
+                                              // Para obsrvados
+                                              if (data.totalObservados > 0) {
+                                                  data.observados.forEach(element => {
+                                                      contenidoHTML += `
+                                                         <a href="/notificacion-informe/${element.id}">
+                                                            <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                                                            <div class="mail-contnet">
+                                                                <span class="mail-desc">
+                                                                    <p class="mb-0">Remitente: GADC </p>
+                                                                    <p class="mb-0 text-dark" >Asunto:Corrigir Las observaciones</p>
+                                                                    <p class="text-dark">Tipo: <span class="">Administrador</span> </p>
+                                                                </span>
+                                                            <span class="time">${formatFechaHora(element.updated_at) || 'Fecha no disponible'}</span>
+                                                              </div>
+                                                          </a>`;
+                                                  });
+                                              }
+
+                                              // Para Comunicados
+                                              if (data.totalComunicados > 0) {
+                                                  data.comunicados.forEach(element => {
+                                                      contenidoHTML += `
+                                                         <a href="/notificacion-comunicado/${element.id}">
+                                                            <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                                                            <div class="mail-contnet">
+                                                                <span class="mail-desc">
+                                                                    <p class="mb-0">Remitente: ${element.user.persona.nombres || 'Nombre no disponible'} ${element.user.persona.apellidos || 'Apellido no disponible'} </p>
+                                                                    <p class="mb-0 text-dark" >Asunto:Comunicado</p>
+                                                                    <p class="text-dark">Tipo: <span class="">Administrador</span> </p>
+                                                                </span>
+                                                            <span class="time">${formatFechaHora(element.updated_at) || 'Fecha no disponible'}</span>
+                                                              </div>
+                                                          </a>`;
+                                                  });
+                                              }
+
+                                              // Para Pagos
+                                              if (data.totalPagos > 0) {
+                                                  data.pagos.forEach(element => {
+                                                      contenidoHTML += `
+                                                         <a href="/notificacion-pago/${element.id}">
+                                                            <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                                                            <div class="mail-contnet">
+                                                                <span class="mail-desc">
+                                                                    <p class="mb-0">Remitente: ${element.agente.persona.nombres || 'Nombre no disponible'} ${element.agente.persona.apellidos || 'Apellido no disponible'} </p>
+                                                                    <p class="mb-0 text-dark" >Asunto:Comprobante de Pago</p>
+                                                                    <p class="text-dark">Tipo: <span class="">${element.agente.tipo_agente}</span> </p>
+                                                                </span>
+                                                            <span class="time">${formatFechaHora(element.updated_at) || 'Fecha no disponible'}</span>
+                                                              </div>
+                                                          </a>`;
+                                                  });
+                                              }
 
                                               // Para Envios
                                               switch (data.tipoAgente) {
-                                                  case 'Agente':
-                                                      data.informes.forEach(element => {
-                                                          contenidoHTML += `
-                                                        <a href="${baseUrl}/notificacion-informe/${element.id}">
-                                                                <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
-                                                                    <div class="mail-contnet">
-                                                                        <span class="mail-desc">
-                                                                            <p class="mb-0">Remitente: Gobierno Autónomo Departamental de Cochabamba</p>
-                                                                            <p>Asunto: Informes</p>
-                                                                        </span>
-                                                                        <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
-                                                                </div>
-                                                          </a>`;
-                                                      });
-                                                      break;
+
                                                   case 'Administrador':
+
                                                       data.informes.forEach(element => {
                                                           contenidoHTML += `
                                                         <a href="${baseUrl}/notificacion-informe/${element.id}">
@@ -170,14 +205,12 @@
                                                                             <p class="mb-0 text-dark">Asunto: Informes</p>
                                                                             <p class="text-dark">Tipo Agente: <span class="">${element.user.agente.tipo_agente}</span> </p>
                                                                         </span>
-                                                                        <span class="time">${formatFechaHora(element.created_at) || 'Fecha no disponible'}</span>
+                                                                        <span class="time">${formatFechaHora(element.updated_at) || 'Fecha no disponible'}</span>
                                                                 </div>
                                                           </a>`;
                                                       });
                                                       break;
 
-                                                  default:
-                                                      break;
                                               }
                                               mensaje.innerHTML = contenidoHTML;
                                           })

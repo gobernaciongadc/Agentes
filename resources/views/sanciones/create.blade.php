@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span class="text-info font-weight-bold">Plantilla de Sanciones</span>
+        <span class="text-info font-weight-bold">Plantilla de Sanciones<span class="small">(Sanciones solo a informes verificados)</span></span>
         <div class="float-right">
             <a href="{{ route('sanciones.index') }}" class="btn btn-info font-14 float-right" data-placement="left">
                 <i class="fa fa-chevron-left"></i> Regresar

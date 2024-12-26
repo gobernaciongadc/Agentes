@@ -51,6 +51,7 @@ Reportes
                         <th>Tipo Agente</th>
                         <th>Fecha Emitida</th>
                         <th>Estado Recibido</th>
+                        <th>Estado Sanción</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -110,6 +111,7 @@ Reportes
                 let datosHtml = '';
                 informes.forEach(element => {
                     let estadoTexto = '';
+                    let estadoTextoSancion = '';
                     switch (element.estado) {
                         case 'Pendiente':
                             estadoTexto = '<span class="badge badge-warning">Pendiente</span>';
@@ -129,6 +131,12 @@ Reportes
                         default:
                             estadoTexto = '<span class="badge badge-secondary">Desconocido</span>';
                             break;
+                    }
+
+                    if (element.estado_sancion === 'Con sancion') {
+                        estadoTextoSancion = '<span class="badge badge-danger">Con sancion</span>';
+                    } else {
+                        estadoTextoSancion = '<span class="badge badge-success">Sin sancion</span>';
                     }
 
                     // formateando la fecha
@@ -154,6 +162,7 @@ Reportes
                     datosHtml += '<td>' + element.tipo_informe + '</td>';
                     datosHtml += '<td>' + fechaFormateada + '</td>';
                     datosHtml += '<td>' + estadoTexto + '</td>';
+                    datosHtml += '<td>' + estadoTextoSancion + '</td>';
                     datosHtml += '<td>' + btnVerificar + '</td>';
                     datosHtml += '</tr>';
                 });

@@ -241,6 +241,7 @@ class InformeNotarialController extends Controller
         // Cargar manualmente el registro
         $informeNotarial = InformeNotarial::findOrFail($idInforme);
 
+
         // Enviar mensaje en tiempo real
         /**
          * Paso 1: Enviar el mensaje -> SOCKET.JS
@@ -257,16 +258,18 @@ class InformeNotarialController extends Controller
         $jsonMensaje = json_encode($mensaje);
 
         // Esto es para enviar el mensaje en tiempo real a todos los usuarios de tipo Admin de la Gobernación
-        $users = User::where('rol', 'Administrador')->get();
-        foreach ($users as $user) {
+        $usuarios = User::where('rol', 'Administrador')->get();
+        foreach ($usuarios as $usuario) {
             Http::post('http://localhost:3001/notify-user', [
-                'userId' => $user->id,  // ID del usuario destinatario
+                'userId' => $usuario->id,  // ID del usuario destinatario
                 'message' => $jsonMensaje,        // Mensaje que recibIRA el cliente
             ]);
         }
 
-        // Cambiar estados segun rol(No esta actualizando)
+
+        // Cambiar estados segun rol
         if ($user->rol == 'Agente') {
+
             $informeNotarial->update([
                 'envio_agente' => 'Enviado',
                 'envio_gober' => 'No enviado',
@@ -274,6 +277,8 @@ class InformeNotarialController extends Controller
             ]);
         }
 
+
+        // Esto es cuando envia desde un admin a un agente(ojo nuncaa va a entrar aqui)
         if ($user->rol == 'Administrador') {
             $informeNotarial->update([
                 'envio_gober' => 'Enviado',
@@ -301,7 +306,6 @@ class InformeNotarialController extends Controller
             }
             // FIN Determinar si está dentro del plazo(PLAZOS)
         }
-
 
         if ($informeNotarial->estado == 'Rechazado') {
             // Actualizar con los datos validados

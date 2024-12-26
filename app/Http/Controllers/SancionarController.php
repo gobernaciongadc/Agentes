@@ -201,4 +201,64 @@ class SancionarController extends Controller
             $data['code']
         );
     }
+
+    public function comprobantePago(Request $request)
+    {
+
+        $user = Auth::user();
+
+
+        // Validar la solicitud
+        $request->validate([
+            'id' => 'required|exists:sanciones,id',
+            'documento_pago' => 'required|file|mimes:pdf,jpg,jpeg,png|max:9048',
+        ]);
+
+        try {
+            // Obtener la sanción correspondiente
+            $sancion = Sancion_2::findOrFail($request->id);
+
+            // Subir el archivo con un nombre único
+            $archivo = $request->file('documento_pago');
+            $nombreArchivo = time() . '.' . $archivo->getClientOriginalExtension();
+            $archivo->storeAs('uploads/comprobantes', $nombreArchivo, 'public');
+
+
+            // Actualizar el registro en la base de datos
+            $sancion->update([
+                'documento_pago' => $nombreArchivo,
+                // 'estado_envio' => 'No enviado',
+                'envio_pago' => 'Enviado'
+            ]);
+
+            // Enviar mensaje en tiempo real
+            /**
+             * Paso 1: Enviar el mensaje -> SOCKET.JS
+             * Paso 2: SOCKET.JS agregar una condicion en el swich
+             * paso 3: Crear un bucle en la vista de menu NavBar en (adminController.php y metodo notificacionReal)
+             */
+            $mensaje = [
+                'remitente' => $user->agente->persona->nombres . " " . $user->agente->persona->apellidos,
+                'asunto' => 'Comprobante de pago',
+                'idSancion' => $request->id,
+                'tipoNotificacion' => 'pago',
+                'tipoAgente' => $user->agente->tipo_agente
+            ];
+            $jsonMensaje = json_encode($mensaje);
+
+            // Esto es para enviar el mensaje en tiempo real a todos los usuarios de tipo Admin de la Gobernación
+            $usuarios = User::where('rol', 'Administrador')->get();
+            foreach ($usuarios as $usuario) {
+                Http::post('http://localhost:3001/notify-user', [
+                    'userId' => $usuario->id,  // ID del usuario destinatario
+                    'message' => $jsonMensaje,        // Mensaje que recibIRA el cliente
+                ]);
+            }
+
+            // Redirigir a index con un mensaje dexito
+            return redirect()->route('sanciones.index')->with('success', 'Comprobante de pago guardado correctamente.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Ocurrió un error al guardar el comprobante']);
+        }
+    }
 }

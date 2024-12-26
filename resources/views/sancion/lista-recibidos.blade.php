@@ -95,6 +95,7 @@ Sancions
                         <th>Tipo Agente</th>
                         <th>Fecha Emitida</th>
                         <th>Estado Recibido</th>
+                        <th>Estado Plazo</th>
                         <th style="width: 16%;">Acciones</th>
                     </tr>
                 </thead>
@@ -128,6 +129,15 @@ Sancions
                             <span class="badge badge-primary">{{ $informe->estado }}</span>
                             @break
                             @endswitch
+                        </td>
+
+                        <td>
+
+                            @if($informe->estado_sancion == 'Con sancion')
+                            <span class="badge badge-danger">Con sancion</span>
+                            @else
+                            <span class="badge badge-success">Sin sancion</span>
+                            @endif
                         </td>
 
                         <td>

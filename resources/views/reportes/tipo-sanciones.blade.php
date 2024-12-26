@@ -33,6 +33,7 @@ Reportes por sanciones
                         <th>Tipo Agente</th>
                         <th>Fecha Emitida</th>
                         <th>Estado Recibido</th>
+                        <th>Estado Sanción</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -102,6 +103,13 @@ Reportes por sanciones
                                 estadoTexto = '<span class="badge badge-secondary">Desconocido</span>';
                                 break;
                         }
+
+                        if (element.estado_sancion === 'Con sancion') {
+                            estadoTextoSancion = '<span class="badge badge-danger">Sancionado</span>';
+                        } else {
+                            estadoTextoSancion = '<span class="badge badge-success">Sin sancion</span>';
+                        }
+
                         // formateando la fecha
                         const fechaOriginal = element.created_at
                         const fecha = new Date(fechaOriginal);
@@ -124,6 +132,7 @@ Reportes por sanciones
                         datosHtml += '<td>' + element.tipo_informe + '</td>';
                         datosHtml += '<td>' + fechaFormateada + '</td>';
                         datosHtml += '<td>' + estadoTexto + '</td>';
+                        datosHtml += '<td>' + estadoTextoSancion + '</td>';
                         datosHtml += '<td>' + btnVerificar + '</td>';
                         datosHtml += '</tr>';
                     });
