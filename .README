@@ -39,3 +39,93 @@ pm2 stop id_del_proceso
 bash
 Copiar código
 pm2 delete id_del_proceso
+
+---
+
+Crear un Servicio con systemd
+Si necesitas que el proceso se ejecute automáticamente al reiniciar el sistema, lo mejor es crear un servicio de systemd.
+
+Crea un archivo de servicio:
+
+bash
+Copiar código
+sudo nano /etc/systemd/system/socket-server.service
+Agrega el siguiente contenido al archivo, reemplazando las rutas según sea necesario:
+
+ini
+Copiar código
+[Unit]
+Description=Socket.io Server
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /var/www/agentes/websocketio/server.js
+WorkingDirectory=/var/www/agentes/websocketio
+Restart=always
+User=root
+Group=root
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+Guarda y cierra el archivo, luego recarga systemd:
+
+bash
+Copiar código
+sudo systemctl daemon-reload
+Inicia el servicio:
+
+bash
+Copiar código
+sudo systemctl start socket-server
+Habilítalo para que inicie al reiniciar:
+
+bash
+Copiar código
+sudo systemctl enable socket-server
+Verifica el estado:
+
+bash
+Copiar código
+sudo systemctl status socket-server
+
+---
+
+Para detener el servicio que creaste con systemd, puedes usar el siguiente comando:
+
+bash
+Copiar código
+sudo systemctl stop socket-server
+Explicación de otros comandos relacionados:
+Deshabilitar el inicio automático: Si ya no deseas que el servicio se inicie automáticamente al reiniciar el sistema:
+bash
+Copiar código
+sudo systemctl disable socket-server
+Verificar si el servicio está detenido:
+bash
+Copiar código
+sudo systemctl status socket-server
+Verás un estado como inactive (dead) si el servicio está detenido.
+Reiniciar el servicio: Si necesitas detenerlo y luego volverlo a iniciar en un solo paso:
+bash
+Copiar código
+sudo systemctl restart socket-server
+Eliminar el servicio (si ya no lo necesitas): Para eliminar completamente el archivo del servicio:
+Detén el servicio:
+bash
+Copiar código
+sudo systemctl stop socket-server
+Borra el archivo del servicio:
+bash
+Copiar código
+sudo rm /etc/systemd/system/socket-server.service
+Recarga systemd para aplicar los cambios:
+bash
+Copiar código
+sudo systemctl daemon-reload
+Opcionalmente, limpia los enlaces simbólicos si existen:
+bash
+Copiar código
+sudo systemctl reset-failed
+Estos pasos te permitirán gestionar el servicio de manera eficiente según lo necesites.

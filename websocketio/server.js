@@ -55,7 +55,7 @@ app.post('/notify-user', (req, res) => {
 });
 
 // Levantar el servidor(Modificado para produccion)
-// server.listen(3001, '0.0.0.0', () => { // Produccion
-server.listen(3001, () => {  // Desarrollo
+server.listen(3001, '0.0.0.0', () => { // Produccion 3.-
+    // server.listen(3001, () => {  // Desarrollo
     console.log('Servidor de Socket.io escuchando en el puerto 3001');
 });
