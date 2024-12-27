@@ -56,7 +56,7 @@ Personas
                                     <th>Correo Electronico</th>
                                     <th>Telefono</th>
                                     <th>Direccion</th>
-
+                                    <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -71,13 +71,17 @@ Personas
                                     <td>{{ $persona->telefono }}</td>
                                     <td>{{ $persona->direccion }}</td>
 
+                                    <td>{{ $persona->estado }}</td>
+
                                     <td style="width: 10%;">
-                                        <form action="{{ route('personas.destroy', $persona->id) }}" method="POST">
+                                        <form id="delete-form-{{ $persona->id }}" action="{{ route('personas.destroy', $persona->id) }}" method="POST">
                                             <a class="btn btn-sm btn-primary " href="{{ route('personas.show', $persona->id) }}" title="Ver Datos"><i class="fa fa-fw fa-eye"></i></a>
                                             <a class="btn btn-sm btn-success" href="{{ route('personas.edit', $persona->id) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Esta seguro de eliminar?') ? this.closest('form').submit() : false;" title="Eliminar Datos"><i class="fa fa-fw fa-trash"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $persona->id }}')" title="Eliminar Datos">
+                                                <i class="fa fa-fw fa-trash"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -95,4 +99,24 @@ Personas
 @vite('resources/css/persona.css')
 @vite('resources/js/persona.js')
 
+@endsection
+
+@section('scripts')
+<script>
+    function confirmDelete(id) {
+        swal({
+            title: "Esta seguro?",
+            text: "No podrás revertir esto!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, eliminar esto!",
+            closeOnConfirm: false
+        }, function() {
+            // Enviar el formulario para eliminar
+            document.getElementById('delete-form-' + id).submit();
+            swal("Eliminado!", "El registro ha sido eliminado.", "success");
+        });
+    }
+</script>
 @endsection

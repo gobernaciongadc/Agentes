@@ -88,10 +88,13 @@ class PersonaController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        Persona::find($id)->delete();
+        Persona::find($id);
+
+        // Actualizar estado persona a No activo
+        Persona::where('id', $id)->update(['estado' => 'No activo']);
 
         return Redirect::route('personas.index')
-            ->with('success', 'Persona deleted successfully');
+            ->with('success', 'Persona dado de baja exitosamente.');
     }
 
 

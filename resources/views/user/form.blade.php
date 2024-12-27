@@ -30,6 +30,7 @@
               <label for="persona" class="form-label">Nombre<span class="text-danger">*</span></label><br>
               <select name="opcion_id" class="form-control" id="persona"></select>
           </div>
+
           <script>
               // Dinamico select para administradores y agentes de información
               document.addEventListener('DOMContentLoaded', () => {

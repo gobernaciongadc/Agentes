@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('correo_electronico', 100)->unique()->nullable();
             $table->string('telefono', 20)->nullable();
             $table->string('direccion', 255)->nullable();
-            $table->integer('estado_user')->default(1);
-            $table->integer('estado_agente')->default(1);
+            $table->enum('estado', ['Activo', 'No activo'])->default('Activo'); // 
+            // $table->integer('estado_user')->default(1);
+            // $table->integer('estado_agente')->default(1);
 
             // Campos de timestamps
             $table->timestamps();

@@ -63,7 +63,23 @@ Users
                                         @endif
 
                                         @if($user->persona_id == null)
-                                        {{$user->agente->persona->nombres}} {{$user->agente->persona->apellidos}} <span class="badge badge-info">({{$user->agente->tipo_agente}})</span>
+                                        {{$user->agente->persona->nombres}} {{$user->agente->persona->apellidos}}
+                                        @switch($user->agente->tipo_agente)
+                                        @case('SEPREC')
+                                        <span class="badge badge-danger">({{$user->agente->tipo_agente}})</span>
+                                        @break
+                                        @case('Notarios de Fe Pública')
+                                        <span class="badge badge-primary">({{$user->agente->tipo_agente}})</span>
+                                        @break
+                                        @case('Jueces y Secretarios del Tribunal Departamental de Justicia')
+                                        <span class="badge badge-success">({{$user->agente->tipo_agente}})</span>
+                                        @break
+                                        @case('Derechos Reales')
+                                        <span class="badge badge-info">({{$user->agente->tipo_agente}})</span>
+                                        @break
+                                        @default
+                                        @endswitch
+
                                         @endif
                                     </td>
                                     <td>{{ $user->email }}</td>

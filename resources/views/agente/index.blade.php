@@ -70,12 +70,14 @@ Agentes
 
 
                                     <td style="width: 10%;">
-                                        <form action="{{ route('agentes.destroy', $agente->id) }}" method="POST">
+                                        <form id="delete-form-{{ $agente->id }}" action="{{ route('agentes.destroy', $agente->id) }}" method="POST">
                                             <a class="btn btn-sm btn-primary " href="{{ route('agentes.show', $agente->id) }}" title="Ver Datos"><i class="fa fa-fw fa-eye"></i></a>
                                             <a class="btn btn-sm btn-success" href="{{ route('agentes.edit', $agente->id) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;" title="Dar de baja agente"><i class="fa fa-fw fa-trash"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $agente->id }}')" title="Eliminar Datos">
+                                                <i class="fa fa-fw fa-trash"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -91,4 +93,23 @@ Agentes
 
 @vite('resources/css/agente.css')
 @vite('resources/js/agente.js')
+@endsection
+@section('scripts')
+<script>
+    function confirmDelete(id) {
+        swal({
+            title: "Esta seguro?",
+            text: "No podrás revertir esto!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, dar de daja!",
+            closeOnConfirm: false
+        }, function() {
+            // Enviar el formulario para eliminar
+            document.getElementById('delete-form-' + id).submit();
+            swal("Inactivado!", "El registro ha sido dado de baja.", "success");
+        });
+    }
+</script>
 @endsection

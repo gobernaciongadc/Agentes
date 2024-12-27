@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // const socket = io('http://localhost:3001'); // Desarrollo
-    const socket = io('http://agentes.gobernaciondecochabamba.bo'); // Produccion 1.-
+    const socket = io('http://localhost:3001'); // Desarrollo
+    // const socket = io('http://agentes.gobernaciondecochabamba.bo'); // Produccion 1.-
     const userId = document.querySelector('meta[name="user-id"]').content;
 
     if (!userId) return; // No iniciar si no hay usuario autenticado

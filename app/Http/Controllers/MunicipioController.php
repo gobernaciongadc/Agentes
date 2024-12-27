@@ -86,7 +86,10 @@ class MunicipioController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        Municipio::find($id)->delete();
+        Municipio::find($id);
+
+        // Actualizar estado municipio a No activo
+        Municipio::where('id', $id)->update(['estado' => 0]);
 
         return Redirect::route('municipios.index')
             ->with('success', 'Municipio eliminado exitosamente.');

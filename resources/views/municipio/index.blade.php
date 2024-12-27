@@ -102,5 +102,4 @@ Municipios
         });
     }
 </script>
-
 @endsection
