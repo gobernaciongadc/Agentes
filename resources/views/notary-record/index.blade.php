@@ -20,9 +20,13 @@ Notarios de fe publica
             <a href="{{ route('informe-notarials.index') }}" class="btn btn-danger font-14" data-placement="left">
                 <i class="fa fa-chevron-left"></i> Regresar a Información Notarios
             </a>
+
+            @if($informe->estado != 'Rechazado')
             <a href="{{ route('notary-records.create', ['idInforme'=>$id]) }}" class="btn btn-primary font-14" data-placement="left">
                 <i class="fa fa-plus"></i> Crear Nuevo Registro
             </a>
+            @endif
+
         </div>
 
         @if ($message = Session::get('success'))
@@ -46,7 +50,7 @@ Notarios de fe publica
                         <th>ID</th>
                         <th>Municipio</th>
                         <th>Número Notaria</th>
-                        <th>Nombre Notario(a)</th>
+                        <th>Nombre Notaria(o)</th>
                         <th>Número Escritura</th>
                         <th>Fecha Escritura</th>
                         <th>Naturaleza Escritura</th>
@@ -94,10 +98,11 @@ Notarios de fe publica
                                 <a class="btn btn-sm btn-success" href="{{ route('notary-records.edit', ['id' => $notaryRecord->id, 'idInforme' => $informe->id]) }}" title="Modificar Datos"><i class="fa fa-fw fa-edit"></i></a>
                                 @csrf
                                 @method('DELETE')
+                                @if($informe->estado != 'Rechazado')
                                 <button type="button" class="btn btn-danger btn-sm delete-btn" title="Eliminar datos">
                                     <i class="fa fa-fw fa-trash"></i>
                                 </button>
-
+                                @endif
                             </form>
                         </td>
                     </tr>

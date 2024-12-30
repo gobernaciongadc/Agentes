@@ -91,9 +91,18 @@ Informe Notarials
 
                                     @case('Pendiente')
                                     <a class="btn btn-sm btn-primary" href="{{ route('empresas.index', ['id'=>$informeNotarial->id]) }}"><i class="fa fa-file"></i> Realizar Informe</a>
+                                    <!-- Mostrar botón "Sin movimiento" si no hay notarios -->
+
+                                    @if(count($informeNotarial->notarios ?? []) == 0)
+                                    <a class="btn btn-sm btn-danger text-white"
+                                        onclick="confirmarEnvio(event, '/enviar-informe?id={{ $informeNotarial->id }}')">
+                                        <i class="fa fa-chevron-right"></i> Sin movimiento
+                                    </a>
+                                    @else
                                     <a class="btn btn-sm btn-success text-white" onclick="confirmarEnvio(event, '/enviar-informe?id={{ $informeNotarial->id }}' )">
                                         <i class="fa fa-upload"></i> Enviar informe
                                     </a>
+                                    @endif
 
                                     <script>
                                         function confirmarEnvio(event, url) {
@@ -194,7 +203,7 @@ Informe Notarials
                                     <th>ID</th>
                                     <th style="width: 40%;">Observación</th>
                                     <th>Fecha Observación</th>
-                                    <th>Ver Archivo</th>
+                                    <!-- <th>Ver Archivo</th> -->
                                 </tr>
 
                             </thead>
@@ -324,9 +333,10 @@ Informe Notarials
                                              <a class="btn btn-sm btn-primary" href="${baseUrl}/empresas?id=${informe.id}">
                                                 <i class="fa fa-file"></i> Realizar Informe
                                              </a>
-                                             <a class="btn btn-sm btn-success enviar-informe" data-id="${informe.id}" href="#">
-                                                <i class="fa fa-upload"></i> Enviar informe
+                                             <a class="btn btn-sm btn-danger enviar-informe" data-id="${informe.id}" href="#">
+                                                <i class="fa fa-chevron-right"></i> Sin movimiento
                                              </a>`;
+                                             
                                             case 'No verificado':
                                                 return  '<span class="badge badge-success">Enviado</span>';  
                                             case 'Verificado':
@@ -492,7 +502,6 @@ Informe Notarials
                             <td>${element.id}</td>
                             <td>${element.descripcion}</td>
                             <td>${formattedDate}</td>
-                            <td><a href="{{ url('/observaciones') }}/${element.archivo_observacion}" target="_blank" class="btn btn-twitter btn-sm"><i class="fa fa-file"></i> Ver Archivo</a></td>
                         </tr>
                     `;
                 });

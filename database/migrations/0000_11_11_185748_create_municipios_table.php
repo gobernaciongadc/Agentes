@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('municipios', function (Blueprint $table) {
             $table->id(); // ID único de la tabla
-            $table->string('nombre'); // Nombre del municipio
+            $table->string('nombre')->unique(); // Nombre del municipio
             $table->string('provincia'); // Provincia a la que pertenece
             $table->integer('estado')->default(1); // Estado de registro del municipio
             $table->timestamps(); // Timestamps para created_at y updated_at

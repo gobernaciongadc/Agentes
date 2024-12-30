@@ -197,7 +197,7 @@ Sancions
                                     <th>ID</th>
                                     <th style="width: 40%;">Observación</th>
                                     <th>Fecha Observación</th>
-                                    <th>Ver Archivo</th>
+                                    <!-- <th>Ver Archivo</th> -->
                                 </tr>
 
                             </thead>
@@ -261,7 +261,6 @@ Sancions
                             <td>${element.id}</td>
                             <td>${element.descripcion}</td>
                             <td>${formattedDate}</td>
-                            <td><a href="{{ url('/observaciones') }}/${element.archivo_observacion}" target="_blank" class="btn btn-twitter btn-sm"><i class="fa fa-file"></i> Ver Archivo</a></td>
                         </tr>
                     `;
                 });
@@ -283,3 +282,5 @@ Sancions
 @vite('resources/css/sancion.css')
 @vite('resources/js/sancion.js')
 @endsection
+
+<!-- <td><a href="{{ url('/observaciones') }}/${element.archivo_observacion}" target="_blank" class="btn btn-twitter btn-sm"><i class="fa fa-file"></i> Ver Archivo</a></td> -->

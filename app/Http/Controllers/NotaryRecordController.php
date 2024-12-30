@@ -47,10 +47,12 @@ class NotaryRecordController extends Controller
 
         $notaryRecord = new NotaryRecord();
 
+        $tipoBien = ['Inmueble', 'Mueble'];
+
         // Obtener la query string completa
         $idInforme = $request->query('idInforme');
 
-        return view('notary-record.create', compact('notaryRecord', 'notario', 'municipio', 'idInforme', 'idUser'), ['titulo' => 'Gestión de Informe Notarios', 'currentPage' => 'Regitrar Formulario']);
+        return view('notary-record.create', compact('notaryRecord', 'notario', 'municipio', 'idInforme', 'idUser', 'tipoBien'), ['titulo' => 'Gestión de Informe Notarios', 'currentPage' => 'Regitrar Formulario']);
     }
 
     /**
@@ -89,9 +91,9 @@ class NotaryRecordController extends Controller
     public function edit($id, $idInforme): View
     {
         $notaryRecord = NotaryRecord::find($id);
-        // dd($notaryRecord);
 
-        return view('notary-record.edit', compact('notaryRecord', 'idInforme'), ['titulo' => 'Gestión de Informe Notarios', 'currentPage' => 'Informe']);
+        $tipoBien = ['Inmueble', 'Mueble'];
+        return view('notary-record.edit', compact('notaryRecord', 'idInforme', 'tipoBien'), ['titulo' => 'Gestión de Informe Notarios', 'currentPage' => 'Informe']);
     }
 
     /**

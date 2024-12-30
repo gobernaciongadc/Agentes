@@ -54,6 +54,12 @@ Verificar Notarios de fe publica
         </script>
         @endif
 
+        @if($notaryRecords->isEmpty())
+        <h3 class="text-center alert alert-danger mt-2">Sin Movimiento</h3>
+        @else
+
+        <input type="hidden" name="tituloReporte" id="tituloReporte" value="{{ $notaryRecords[0]->nombre_notaria }}">
+
         <div class="table-responsive mt-3">
             <table class="table table-striped table-hover" id="verificarEmpresasTable">
                 <thead class="thead small bg-cabecera">
@@ -61,7 +67,7 @@ Verificar Notarios de fe publica
                         <th>ID</th>
                         <th>Municipio</th>
                         <th>Número Notaria</th>
-                        <th>Nombre Notario(a)</th>
+                        <th class="no-print">Nombre Notario(a)</th>
                         <th>Número Escritura</th>
                         <th>Fecha Escritura</th>
                         <th>Naturaleza Escritura</th>
@@ -107,6 +113,8 @@ Verificar Notarios de fe publica
                 </tbody>
             </table>
         </div>
+        @endif
+
     </div>
 </div>
 
@@ -169,8 +177,8 @@ Verificar Notarios de fe publica
                             </div>
                             <!-- Tercera fila - sector archivos -->
 
-                            <div class="form-group mb-2 mb20">
-                                <label for="respaldo-2" class="form-label">Archivo de Observación<span class="text-danger">*</span></label><br>
+                            <div class="form-group mb-2 mb20" hidden>
+                                <label for="respaldo-2" class="form-label">Archivo de Observación</label><br>
                                 <label class="custom-file-upload">
                                     <span>📄 Seleccionar Archivo</span>
                                     <input type="file" name="observacion-seprec" id="respaldo-2">
@@ -267,6 +275,7 @@ Verificar Notarios de fe publica
         // Botones superiores
         const btnVerificar = document.getElementById('btn-verificar');
         const btnObservar = document.getElementById('btn-observar');
+
 
         if (!formData.get('descripcion-informe-observar') || !formData.get('observacion-seprec')) {
             toastr.error('Por favor complete todos los campos obligatorios', 'Agentes de Información');

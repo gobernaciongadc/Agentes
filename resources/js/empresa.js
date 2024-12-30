@@ -9,7 +9,8 @@ $('#empresasTable').DataTable({
     paging: true,      // Desactiva la paginación (oculta "Anterior" y "Siguiente")
     order: [[0, 'desc']] // Ordena por la primera columna en orden descendente       // Desactiva la paginación (oculta "Anterior" y "Siguiente")
 });
-
+const tituloRepor = document.getElementById('tituloReporte').value;
+const tituloReporte = "Agente de Información: " + tituloRepor; // Variable con el título dinámico
 $('#verificarEmpresasTable').DataTable({
     language: {
         url: 'https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json'
@@ -23,12 +24,36 @@ $('#verificarEmpresasTable').DataTable({
         [10, 25, 50, 100, -1], // Valores (número de registros)
         [10, 25, 50, 100, "Todos"] // Etiquetas visibles
     ],
-    order: [[0, 'desc']],
+    order: [[0, 'desc']],  // Ordena por la primera columna en orden descendente
     dom: 'Bfrtip',
     buttons: [
-        'excel', 'print'
-    ]  // Ordena por la primera columna en orden descendente
+        {
+            extend: 'excel',
+            title: tituloReporte // Usa la variable como título
+        },
+        {
+            extend: 'print',
+            title: tituloReporte, // Usa la variable como título
+            customize: function (win) {
+                // Estilos adicionales si se necesitan
+                $(win.document.body).css('font-size', '10pt');
+                $(win.document.body).find('table')
+                    .addClass('compact')
+                    .css('font-size', 'inherit');
+            },
+            exportOptions: {
+                columns: ':visible:not(.no-print)' // Excluye las columnas con la clase "no-print"
+            }
+        }
+    ],
+    columnDefs: [
+        {
+            targets: 'no-print', // Aplica a columnas con la clase "no-print"
+            visible: false       // Oculta estas columnas al exportar/imprimir
+        }
+    ]
 });
+
 
 
 // Mostrar el nombre del archivo seleccionado
@@ -43,8 +68,12 @@ document.getElementById('respaldo-2').addEventListener('change', function () {
     document.getElementById('file-name-2').textContent = fileName2;
 });
 
-// Mostrar el nombre del archivo seleccionado
-document.getElementById('respaldo-3').addEventListener('change', function () {
-    const fileName3 = this.files[0]?.name || 'Ningún archivo seleccionado';
-    document.getElementById('file-name-3').textContent = fileName3;
-});
+const respaldo3 = document.getElementById('respaldo-3');
+if (respaldo3) {
+    respaldo3.addEventListener('change', function () {
+        const fileName3 = this.files[0]?.name || 'Ningún archivo seleccionado';
+        document.getElementById('file-name-3').textContent = fileName3;
+    });
+} else {
+    console.error("No se encontró el elemento con el ID 'respaldo-3'.");
+}

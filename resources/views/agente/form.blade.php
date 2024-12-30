@@ -62,6 +62,12 @@
             @enderror
         </div>
 
+        <div class="form-group mb-2 mb20">
+            <label for="descripcion" class="form-label">Descripción<span class="text-danger">*</span></label>
+            <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $agente?->descripcion) }}" id="descripcion">
+            {!! $errors->first('descripcion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        </div>
+
         <!-- Campo Respaldo -->
         <div class="form-group mb-2 mb20">
             <label for="respaldo" class="form-label">Respaldo en PDF<span class="text-danger">*</span></label>

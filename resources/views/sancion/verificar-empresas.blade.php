@@ -55,13 +55,16 @@ Verificar Empresas
         </script>
         @endif
 
+        @if($notaryRecords->isEmpty())
+        <h3 class="text-center alert alert-danger mt-2">Sin Movimiento</h3>
+        @else
+        <input type="hidden" name="tituloReporte" id="tituloReporte" value="{{ $notaryRecords[0]->nombre_secretario }}">
         <div class="table-responsive mt-3">
             <table class="table table-striped table-hover" id="verificarEmpresasTable">
                 <thead class="thead small bg-cabecera">
                     <tr>
                         <th style="width: 5%">ID</th>
-
-                        <th>Nombre Representante SEPREC</th>
+                        <th class="no-print">Nombre Representante SEPREC</th>
                         <th>Nombre Razón Social</th>
                         <th>Número Matricula Comercio</th>
                         <th>Dirección</th>
@@ -143,6 +146,7 @@ Verificar Empresas
                 </tbody>
             </table>
         </div>
+        @endif
     </div>
 </div>
 
@@ -206,7 +210,7 @@ Verificar Empresas
                             <!-- Tercera fila - sector archivos -->
 
                             <div class="form-group mb-2 mb20">
-                                <label for="respaldo-2" class="form-label">Archivo de Observación<span class="text-danger">*</span></label><br>
+                                <label for="respaldo-2" class="form-label">Archivo de Observación</label><br>
                                 <label class="custom-file-upload">
                                     <span>📄 Seleccionar Archivo</span>
                                     <input type="file" name="observacion-seprec" id="respaldo-2">

@@ -218,6 +218,9 @@ Route::get('notificaciones/show/{id}', [NotificacioneController::class, 'show'])
 Route::get('sanciones', [SancionarController::class, 'indexSancion'])->name('sanciones.index'); // Listar sanciones
 Route::get('sanciones/show/{id}', [SancionarController::class, 'showSancion'])->name('sanciones.show');
 
+// Para Plantillas PDF
+Route::get('certificado-pdf/{id}', [SancionarController::class, 'pdfCertificado'])->name('certificado.pdfCertificado'); 
+
 /*
 Si deseas redirigir solo a los usuarios no autenticados, puedes hacer algo como esto:
 php

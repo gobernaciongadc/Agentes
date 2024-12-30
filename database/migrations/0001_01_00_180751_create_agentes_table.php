@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('municipio_id')->constrained('municipios')->onUpdate('cascade')->onDelete('restrict');
             $table->string('tipo_agente');
             $table->string('respaldo');
+            $table->text('descripcion')->nullable();
             $table->integer('estado')->default(1);
             $table->integer('estado_user')->default(1);
             $table->timestamps();

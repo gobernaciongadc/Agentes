@@ -21,9 +21,11 @@ Empresas
             <a href="{{ route('informe-index-seprec.indexSeprec') }}" class="btn btn-danger font-14" data-placement="left">
                 <i class="fa fa-chevron-left"></i> Regresar a Información de SEPREC
             </a>
+            @if($informe->estado != 'Rechazado')
             <a href="{{ route('empresas.create',['idInforme'=>$id]) }}" class="btn btn-primary font-14" data-placement="left">
                 <i class="fa fa-plus"></i> Crear Nuevo Registro
             </a>
+            @endif
         </div>
 
 
@@ -131,9 +133,11 @@ Empresas
                                 <a class="btn btn-sm btn-success" href="{{ route('empresas.edit', ['id' => $empresa->id, 'idInforme' => $informe->id]) }}"><i class="fa fa-fw fa-edit"></i></a>
                                 @csrf
                                 @method('DELETE')
+                                @if($informe->estado != 'Rechazado')
                                 <button type="button" class="btn btn-danger btn-sm delete-btn" title="Eliminar datos">
                                     <i class="fa fa-fw fa-trash"></i>
                                 </button>
+                                @endif
                             </form>
                         </td>
                     </tr>

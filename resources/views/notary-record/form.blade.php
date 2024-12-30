@@ -29,7 +29,7 @@
 
      <div class="col-md-4">
          <div class="form-group mb-2 mb20">
-             <label for="nombre_notaria" class="form-label">{{ __('Nombre Notaria') }} <span class="text-danger">*</span></label>
+             <label for="nombre_notaria" class="form-label">{{ __('Nombre Notaria(o)') }} <span class="text-danger">*</span></label>
              <input type="text" name="nombre_notaria" class="form-control @error('nombre_notaria') is-invalid @enderror" value="{{ old('nombre_notaria', $notaryRecord?->nombre_notaria?: $notario->nombres .' '.$notario->apellidos ) }}" id="nombre_notaria" readonly>
              {!! $errors->first('nombre_notaria', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
          </div>
@@ -95,11 +95,21 @@
          </div>
      </div>
 
+     <!-- Campo Tipo Bien -->
      <div class="col-md-3">
          <div class="form-group mb-2 mb20">
-             <label for="tipo_bien" class="form-label">{{ __('Tipo Bien') }} <span class="text-danger">*</span></label>
-             <input type="text" name="tipo_bien" class="form-control @error('tipo_bien') is-invalid @enderror" value="{{ old('tipo_bien', $notaryRecord?->tipo_bien) }}" id="tipo_bien">
-             {!! $errors->first('tipo_bien', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+             <label for="tipo_bien" class="form-label">Tipo Bien<span class="text-danger">*</span></label>
+             <select name="tipo_bien" class="form-control @error('tipo_bien') is-invalid @enderror mb-2 mb20" id="tipo_bien">
+                 <option value="" disabled selected>Selecciona un tipo</option>
+                 @foreach($tipoBien as $tipo)
+                 <option value="{{ $tipo }}" {{ old('tipo_bien', $notaryRecord?->tipo_bien) == $tipo ? 'selected' : '' }}>
+                     {{ $tipo }}
+                 </option>
+                 @endforeach
+             </select>
+             @error('tipoBien')
+             <div class="invalid-feedback">{{ $message }}</div>
+             @enderror
          </div>
      </div>
 
@@ -116,10 +126,27 @@
      <div class="col-md-3">
          <div class="form-group mb-2 mb20">
              <label for="tipo_formulario" class="form-label">{{ __('Tipo Formulario') }} <span class="text-danger">*</span></label>
-             <input type="text" name="tipo_formulario" class="form-control @error('tipo_formulario') is-invalid @enderror" value="{{ old('tipo_formulario', $notaryRecord?->tipo_formulario) }}" id="tipo_formulario">
+             <input type="text" name="tipo_formulario" class="form-control @error('tipo_formulario') is-invalid @enderror" value="{{ old('tipo_formulario', $notaryRecord?->tipo_formulario) }}" id="tipo_formulario" readonly>
              {!! $errors->first('tipo_formulario', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
          </div>
      </div>
+
+     <script>
+         document.addEventListener('DOMContentLoaded', function() {
+             const tipoBienSelect = document.getElementById('tipo_bien');
+             const tipoFormularioInput = document.getElementById('tipo_formulario');
+
+             // Escucha el cambio en el campo tipo_bien
+             tipoBienSelect.addEventListener('change', function() {
+                 // Actualiza el campo tipo_formulario con el valor seleccionado
+                 if (tipoBienSelect.value === 'Inmueble') {
+                     tipoFormularioInput.value = 'A-1';
+                 } else {
+                     tipoFormularioInput.value = 'A-2';
+                 }
+             });
+         });
+     </script>
 
      <div class="col-md-4">
          <div class="form-group mb-2 mb20">

@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\InformeNotarialRequest;
 use App\Models\Agente;
+use App\Models\NotaryRecord;
 use App\Models\Observacion;
 use App\Models\User;
 use App\Models\Verificar;
@@ -26,21 +27,18 @@ class InformeNotarialController extends Controller
     public function index(Request $request, $id = null): View
     {
 
-        // Si $id no es null, filtra los resultados o realiza acciones específicas
-        // if ($id) {
-        //     $informeNotarials = InformeNotarial::where('id', $id)->get();
-        // } else {
-        //     // Si no se proporciona $id, muestra todos los registros
-        //     $informeNotarials = InformeNotarial::all();
-        // }
-
-
         // Obtener el usuario autenticado
         $user = Auth::user();
 
         $agente = Agente::where('id', $user->agente_id)->first();
 
         $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+
+        foreach ($informeNotarials as $informe) {
+            $informe->notarios = NotaryRecord::where('usuario_id', $user->id)
+                ->where('informe_id', $informe->id)
+                ->get();
+        }
 
         return view('informe-notarial.index', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información Notarial', 'currentPage' => 'Informe Notarial']);
     }
@@ -54,6 +52,12 @@ class InformeNotarialController extends Controller
         $agente = Agente::where('id', $user->agente_id)->first();
 
         $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
+
+        foreach ($informeNotarials as $informe) {
+            $informe->notarios = NotaryRecord::where('usuario_id', $user->id)
+                ->where('informe_id', $informe->id)
+                ->get();
+        }
 
         return view('informe-notarial.index_notario', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
     }
@@ -76,6 +80,11 @@ class InformeNotarialController extends Controller
         $agente = Agente::where('id', $user->agente_id)->first();
 
         $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
+        foreach ($informeNotarials as $informe) {
+            $informe->notarios = NotaryRecord::where('usuario_id', $user->id)
+                ->where('informe_id', $informe->id)
+                ->get();
+        }
 
         return view('informe-notarial.index_juzgado', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Setratarios y Juzgados', 'currentPage' => 'Informe Juzgados']);
     }
@@ -98,7 +107,11 @@ class InformeNotarialController extends Controller
         $agente = Agente::where('id', $user->agente_id)->first();
 
         $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
-
+        foreach ($informeNotarials as $informe) {
+            $informe->notarios = NotaryRecord::where('usuario_id', $user->id)
+                ->where('informe_id', $informe->id)
+                ->get();
+        }
         return view('informe-notarial.index_derechos', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Derechos Reales', 'currentPage' => 'Informe Derechos Reales']);
     }
 
@@ -160,6 +173,10 @@ class InformeNotarialController extends Controller
 
                     // Obtener el informe con el id del nuevo registro                 
                     $getInforme = InformeNotarial::with('user')->where('id', $informe->id)->where('usuario_id', $user->id)->first();
+
+                    $getInforme->notarios = NotaryRecord::where('usuario_id', $user->id)
+                        ->where('informe_id', $informe->id)
+                        ->get();
 
                     // Obtener el agente que esta creando el informe
                     $getAgente = Agente::find($user->agente_id);

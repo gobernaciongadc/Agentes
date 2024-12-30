@@ -48,7 +48,7 @@ class MunicipioController extends Controller
             // Capturar cualquier excepción y redireccionar con un mensaje de error
             return Redirect::back()
                 ->withInput() // Retener los datos ingresados
-                ->with('error', 'Hubo un problema al crear el municipio. Por favor, intenta nuevamente.');
+                ->with('error', 'Hubo un problema al crear el municipio ó el registro ya existe');
         }
     }
 

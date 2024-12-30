@@ -53,13 +53,16 @@ Verificar Derechos Reales
             });
         </script>
         @endif
-
+        @if($notaryRecords->isEmpty())
+        <h3 class="text-center alert alert-danger mt-2">Sin Movimiento</h3>
+        @else
+        <input type="hidden" name="tituloReporte" id="tituloReporte" value="{{ $notaryRecords[0]->nombre_secretario }}">
         <div class="table-responsive mt-3">
             <table class="table table-striped table-hover" id="verificarEmpresasTable">
                 <thead class="thead small bg-cabecera">
                     <tr>
                         <th>ID</th>
-                        <th>Nombre Secretario</th>
+                        <th class="no-print">Nombre Secretario</th>
                         <th>Número Juzgado</th>
                         <th>Municipio Jurisdicción</th>
                         <th>Naturaleza Proceso</th>
@@ -97,6 +100,7 @@ Verificar Derechos Reales
                 </tbody>
             </table>
         </div>
+        @endif
     </div>
 </div>
 
@@ -160,7 +164,7 @@ Verificar Derechos Reales
                             <!-- Tercera fila - sector archivos -->
 
                             <div class="form-group mb-2 mb20">
-                                <label for="respaldo-2" class="form-label">Archivo de Observación<span class="text-danger">*</span></label><br>
+                                <label for="respaldo-2" class="form-label">Archivo de Observación</label><br>
                                 <label class="custom-file-upload">
                                     <span>📄 Seleccionar Archivo</span>
                                     <input type="file" name="observacion-seprec" id="respaldo-2">

@@ -20,6 +20,11 @@
                 </div>
                 <div class="card-body bg-white">
                     <form method="POST" action="{{ route('municipios.store') }}" role="form" enctype="multipart/form-data">
+                        @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                        @endif
                         @csrf
 
                         @include('municipio.form')

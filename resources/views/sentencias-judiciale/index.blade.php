@@ -18,9 +18,11 @@ Sentencias Judiciales
             <a href="{{ route('informe-index-juzgado.indexJuzgado') }}" class="btn btn-danger font-14" data-placement="left">
                 <i class="fa fa-chevron-left"></i> Regresar a Información de Jueces o Secretarios
             </a>
+            @if($informe->estado != 'Rechazado')
             <a href="{{ route('sentencias-judiciales.create',['idInforme'=>$id]) }}" class="btn btn-info font-14" data-placement="left">
                 <i class="fa fa-plus"></i> Crear Nuevo Registro
             </a>
+            @endif
         </div>
 
         @if ($message = Session::get('success'))
@@ -77,9 +79,11 @@ Sentencias Judiciales
                                 <a class="btn btn-sm btn-success" href="{{ route('sentencias-judiciales.edit', ['id' => $sentenciasJudiciale->id, 'idInforme' => $informe->id]) }}" title="Modificar datos"><i class="fa fa-fw fa-edit"></i></a>
                                 @csrf
                                 @method('DELETE')
+                                @if($informe->estado != 'Rechazado')
                                 <button type="button" class="btn btn-danger btn-sm delete-btn" title="Eliminar datos">
                                     <i class="fa fa-fw fa-trash"></i>
                                 </button>
+                                @endif
                             </form>
                         </td>
                     </tr>

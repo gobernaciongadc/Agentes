@@ -298,7 +298,7 @@ class SancionController extends Controller
 
         $validate = Validator::make($request->all(), [
             'descripcion-informe-observar' => 'required|string',
-            'observacion-seprec' => 'required|file|max:9048', // Validar archivo PDF
+            'observacion-seprec' => 'nullable|file|max:9048', // Validar archivo PDF
             'informe_id' => 'required',
             'tipo_informacion' => 'required'
         ]);
@@ -314,20 +314,34 @@ class SancionController extends Controller
 
         try {
 
-            // Obtener el nombre original y generar un nombre único
-            $originalName = $request->file('observacion-seprec')->getClientOriginalName();
-            $uniqueName = uniqid() . '_' . $originalName;
-
-            // Mover el archivo a la carpeta "verificaciones" dentro de public/
-            $request->file('observacion-seprec')->move(public_path('observaciones'), $uniqueName);
-
+            // Crear una nueva instancia del modelo Observacion
             $observacion = new Observacion();
+
+            // Validar si el archivo "observacion-seprec" llega en la solicitud
+            if ($request->hasFile('observacion-seprec')) {
+                // Obtener el nombre original y generar un nombre único
+                $originalName = $request->file('observacion-seprec')->getClientOriginalName();
+                $uniqueName = uniqid() . '_' . $originalName;
+
+                // Mover el archivo a la carpeta "observaciones" dentro de public/
+                $request->file('observacion-seprec')->move(public_path('observaciones'), $uniqueName);
+
+                // Asignar el nombre del archivo al modelo
+                $observacion->archivo_observacion = $uniqueName;
+            } else {
+                // Si no se envió el archivo, asignar null
+                $observacion->archivo_observacion = null;
+            }
+
+            // Asignar los demás campos al modelo
             $observacion->descripcion = $params['descripcion-informe-observar'];
             $observacion->usuario_id = $user->id; // ID del usuario autenticado
             $observacion->tipo_informe = $params['tipo_informacion'];
-            $observacion->archivo_observacion = $uniqueName; // Nombre del archivo
             $observacion->informe_id = $params['informe_id'];
+
+            // Guardar el modelo en la base de datos
             $observacion->save();
+
 
 
             $informe = InformeNotarial::find($params['informe_id']);

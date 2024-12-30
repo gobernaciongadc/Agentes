@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $tipo_agente
  * @property $respaldo
  * @property $estado
+ * @property $descripcion
  * @property $created_at
  * @property $updated_at
  *
@@ -33,7 +34,7 @@ class Agente extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['persona_id', 'municipio_id', 'tipo_agente', 'respaldo'];
+    protected $fillable = ['persona_id', 'municipio_id', 'tipo_agente', 'respaldo', 'descripcion', 'estado', 'estado_user'];
 
 
     /**
