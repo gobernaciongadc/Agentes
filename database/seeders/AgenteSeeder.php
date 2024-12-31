@@ -25,6 +25,7 @@ class AgenteSeeder extends Seeder
                 Agente::factory()->create([
                     'persona_id' => $persona->id,
                     'municipio_id' => $municipio->id,
+                    'descripcion' => 'Descripción por defecto', // Agrega este campo
                 ]);
             });
         });

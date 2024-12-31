@@ -53,6 +53,7 @@ class AgenteController extends Controller
                 'municipio_id' => 'required',
                 'tipo_agente' => 'required|string',
                 'respaldo' => 'required|file|mimes:pdf|max:2048',
+                'descripcion' => 'required|string',
             ], [
                 'respaldo.required' => 'El archivo respaldo es obligatorio.',
                 'respaldo.mimes' => 'El archivo debe ser un PDF.',

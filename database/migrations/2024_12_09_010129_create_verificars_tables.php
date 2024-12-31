@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('verificars', function (Blueprint $table) {
             $table->id();
-            $table->text('descripcion');
-            $table->string('certificado');
+            $table->text('observacion');
+            $table->string('constancia');
+            $table->string('certificado', 800);
             $table->string('tipo_informe');
             $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('informe_id')->constrained('informe_notarials')->onUpdate('cascade')->onDelete('restrict');

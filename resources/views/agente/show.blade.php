@@ -32,6 +32,10 @@
                         <strong style="color:black">Tipo Agente:</strong>{{ $agente->tipo_agente }}
                     </div>
                     <div class="form-group mb-2 mb20">
+                        <strong style="color:black">Descripción:</strong>
+                        <td>{{ $agente->descripcion}}</td>
+                    </div>
+                    <div class="form-group mb-2 mb20">
                         <strong style="color:black">Respaldo:</strong>
                         <a href="{{ asset('storage/respaldos/' . basename($agente->respaldo)) }}" target="_blank">
                             <i class="fa fa-file-pdf-o"></i> Ver PDF

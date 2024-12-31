@@ -39,6 +39,8 @@ class SancionController extends Controller
     public function indexBandejaEntrada(Request $request, $id): View
     {
 
+
+
         $derechosReales = [];
         $sentenciasJudiciales = [];
         $notarial = [];
@@ -77,6 +79,8 @@ class SancionController extends Controller
                 }
             }
         }
+
+
 
 
         switch ($id) {
@@ -169,43 +173,62 @@ class SancionController extends Controller
     function indexVerificar($idInforme, $idUser, $tipo): View
     {
 
+
         $usuario = User::where('id', $idUser)->first();
-        $agente = Agente::where('id', $usuario->agente_id)->first();
+        $agente = Agente::with('persona', 'municipio')->where('id', $usuario->agente_id)->first();
+
+        // dd($usuario, $agente->persona->nombres, $agente->persona->apellidos);
+
+        $info = InformeNotarial::where('id', $idInforme)->first();
+
+        $certificado = [
+            'nombres' => $agente->persona->nombres . ' ' . $agente->persona->apellidos,
+            'cedula' => $agente->persona->carnet,
+            'tipoAgente' => $agente->tipo_agente,
+            'descripcionAgente' => $agente->descripcion,
+            'municipio' => $agente->municipio->nombre . ' - ' . $agente->municipio->provincia,
+            'fechaHora' => $info->fecha_envio
+        ];
 
 
         switch ($agente->tipo_agente) {
             case 'SEPREC':
 
                 $empresas = Empresa::where('informe_id', $idInforme)->orderBy('id', 'desc')->get();
-
+                $certificado['cantidadRegistros'] = $empresas->count();
                 // Obtener la query string completa
                 $informe = InformeNotarial::where('id', $idInforme)->first();
 
-                return view('sancion.verificar-empresas', compact('empresas',  'informe', 'idInforme', 'idUser', 'tipo'), ['titulo' => 'Verificación de información SEPREC', 'currentPage' => 'Verificación SEPREC']);
+                return view('sancion.verificar-empresas', compact('empresas',  'informe', 'idInforme', 'idUser', 'tipo', 'certificado'), ['titulo' => 'Verificación de información SEPREC', 'currentPage' => 'Verificación SEPREC']);
 
                 break;
             case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
 
                 $sentenciasJudiciales = SentenciasJudiciale::where('informe_id', $idInforme)->orderBy('id', 'desc')->get();
+                $certificado['cantidadRegistros'] = $sentenciasJudiciales->count();
                 // Obtener la query string completa
                 $informe = InformeNotarial::where('id', $idInforme)->first();
-                return view('sancion.verificar-juzgados', compact('sentenciasJudiciales', 'idInforme', 'informe', 'idUser', 'tipo'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
+                return view('sancion.verificar-juzgados', compact('sentenciasJudiciales', 'idInforme', 'informe', 'idUser', 'tipo', 'certificado'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
 
                 break;
             case 'Derechos Reales':
 
                 $derechosReales = DerechosReale::where('informe_id', $idInforme)->orderBy('id', 'desc')->get();
+                $certificado['cantidadRegistros'] = $derechosReales->count();
                 // Obtener la query string completa
                 $informe = InformeNotarial::where('id', $idInforme)->first();
-                return view('sancion.verificar-derechos', compact('derechosReales', 'idInforme', 'informe', 'idUser', 'tipo'), ['titulo' => 'Gestión de registro de información de Derechos Reales', 'currentPage' => 'Derechos Reales']);
+                return view('sancion.verificar-derechos', compact('derechosReales', 'idInforme', 'informe', 'idUser', 'tipo', 'certificado'), ['titulo' => 'Gestión de registro de información de Derechos Reales', 'currentPage' => 'Derechos Reales']);
 
                 break;
             case 'Notarios de Fe Pública':
 
                 $notaryRecords = NotaryRecord::where('informe_id', $idInforme)->get();
+
+                $certificado['cantidadRegistros'] = $notaryRecords->count();
+
                 // Obtener la query string completa
                 $informe = InformeNotarial::where('id', $idInforme)->first();
-                return view('sancion.verificar-notarios', compact('notaryRecords', 'idInforme', 'informe', 'idUser', 'tipo'), ['titulo' => 'Gestión de Informe Notarios', 'currentPage' => 'Informe']);
+                return view('sancion.verificar-notarios', compact('notaryRecords', 'idInforme', 'informe', 'idUser', 'tipo', 'certificado'), ['titulo' => 'Gestión de Informe Notarios', 'currentPage' => 'Informe']);
 
                 break;
             default:
@@ -228,8 +251,8 @@ class SancionController extends Controller
         }
 
         $validate = Validator::make($request->all(), [
-            'descripcion' => 'required|string',
-            'verificacion-seprec' => 'required|file|max:9048', // Validar archivo PDF
+            'observacion' => 'string',
+            'constancia' => 'required|string', // Validar archivo PDF
             'informe_id' => 'required',
             'tipo_informacion' => 'required'
         ]);
@@ -245,18 +268,13 @@ class SancionController extends Controller
 
         try {
 
-            // Obtener el nombre original y generar un nombre único
-            $originalName = $request->file('verificacion-seprec')->getClientOriginalName();
-            $uniqueName = uniqid() . '_' . $originalName;
-
-            // Mover el archivo a la carpeta "verificaciones" dentro de public/
-            $request->file('verificacion-seprec')->move(public_path('verificaciones'), $uniqueName);
 
             $verificar = new Verificar();
-            $verificar->descripcion = $params['descripcion'];
+            $verificar->observacion = $params['observacion'];
             $verificar->usuario_id = $user->id; // ID del usuario autenticado
             $verificar->tipo_informe = $params['tipo_informacion'];
-            $verificar->certificado = $uniqueName; // Nombre del archivo
+            $verificar->constancia = $params['constancia']; // Nombre del archivo
+            $verificar->certificado = $params['certificado'];
             $verificar->informe_id = $params['informe_id'];
             $verificar->save();
 
