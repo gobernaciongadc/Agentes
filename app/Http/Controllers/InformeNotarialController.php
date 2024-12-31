@@ -7,11 +7,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\InformeNotarialRequest;
 use App\Models\Agente;
+use App\Models\DerechosReale;
+use App\Models\Empresa;
 use App\Models\NotaryRecord;
 use App\Models\Observacion;
+use App\Models\SentenciasJudiciale;
 use App\Models\User;
 use App\Models\Verificar;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -54,7 +58,7 @@ class InformeNotarialController extends Controller
         $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
 
         foreach ($informeNotarials as $informe) {
-            $informe->notarios = NotaryRecord::where('usuario_id', $user->id)
+            $informe->notarios = Empresa::where('usuario_id', $user->id)
                 ->where('informe_id', $informe->id)
                 ->get();
         }
@@ -65,15 +69,6 @@ class InformeNotarialController extends Controller
     public function indexJuzgado(Request $request, $id = null): View
     {
 
-        // Si $id no es null, filtra los resultados o realiza acciones específicas
-        // if ($id) {
-        //     $informeNotarials = InformeNotarial::where('id', $id)->get();
-        // } else {
-        //     // Si no se proporciona $id, muestra todos los registros
-        //     $informeNotarials = InformeNotarial::all();
-        // }
-
-
         // Obtener el usuario autenticado
         $user = Auth::user();
 
@@ -81,7 +76,7 @@ class InformeNotarialController extends Controller
 
         $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
         foreach ($informeNotarials as $informe) {
-            $informe->notarios = NotaryRecord::where('usuario_id', $user->id)
+            $informe->notarios = SentenciasJudiciale::where('usuario_id', $user->id)
                 ->where('informe_id', $informe->id)
                 ->get();
         }
@@ -92,15 +87,6 @@ class InformeNotarialController extends Controller
     public function indexDerecho(Request $request, $id = null): View
     {
 
-        // Si $id no es null, filtra los resultados o realiza acciones específicas
-        // if ($id) {
-        //     $informeNotarials = InformeNotarial::where('id', $id)->get();
-        // } else {
-        //     // Si no se proporciona $id, muestra todos los registros
-        //     $informeNotarials = InformeNotarial::all();
-        // }
-
-
         // Obtener el usuario autenticado
         $user = Auth::user();
 
@@ -108,7 +94,7 @@ class InformeNotarialController extends Controller
 
         $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
         foreach ($informeNotarials as $informe) {
-            $informe->notarios = NotaryRecord::where('usuario_id', $user->id)
+            $informe->notarios = DerechosReale::where('usuario_id', $user->id)
                 ->where('informe_id', $informe->id)
                 ->get();
         }
@@ -439,5 +425,25 @@ class InformeNotarialController extends Controller
 
         // Devuelve en json con laravel
         return response()->json($data, $data['code']);
+    }
+
+    function pdfCertificado($id)
+    {
+        $verificacion = Verificar::where('informe_id', $id)->first();
+        $certificado = json_decode($verificacion->certificado);
+
+        // dd($certificado);
+
+        // Generar el PDF
+        $dompdf = new Dompdf();
+        $html = view('pdf.certificado', compact('verificacion', 'certificado'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('letter', 'portrait');
+        $dompdf->render();
+
+        // Retornar el contenido del PDF para mostrar en el navegador
+        return response($dompdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="certificado.pdf"');
     }
 }

@@ -132,7 +132,7 @@ Informe Notarials
                                     @break
 
                                     @case('Verificado')
-                                    <a class="btn btn-twitter btn-sm text-white" onclick="mostrarVerificacion('{{$informeNotarial->id}}')"><i class="fa fa-certificate"></i> Certificado de Informe</a>
+                                    <a class="btn btn-twitter btn-sm text-white" href="{{ route('certificado.pdfCertificado', ['id'=>$informeNotarial->id]) }}" target="_blank"><i class="fa fa-certificate"></i> Certificado de Informe</a>
                                     @break
 
                                     @case('Rechazado')

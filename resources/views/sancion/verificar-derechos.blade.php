@@ -54,10 +54,10 @@ Verificar Derechos Reales
         </script>
         @endif
 
-        @if($notaryRecords->isEmpty())
+        @if($derechosReales->isEmpty())
         <h3 class="text-center alert alert-danger mt-2">Sin Movimiento</h3>
         @else
-        <input type="hidden" name="tituloReporte" id="tituloReporte" value="{{ $notaryRecords[0]->nombre_registrador }}">
+        <input type="hidden" name="tituloReporte" id="tituloReporte" value="{{ $derechosReales[0]->nombre_registrador }}">
 
         <div class="table-responsive mt-3">
             <table class="table table-striped table-hover" id="verificarEmpresasTable">
@@ -117,33 +117,42 @@ Verificar Derechos Reales
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-success">
-                <h5 class="titulo-card">Verificación de Informe</h5>
+                <h5 class="titulo-card">Certificar Informe</h5>
                 <button type="button" class="close" onclick="closeModalVerificar()" aria-label="Close">×</button>
             </div>
             <div class="modal-body">
+                <h5 class="text-uppercase">Datos agente de información</h5>
+
+                <p class="text-uppercase font-14 mb-1 text-dark">Nombre Completo: <span class="text-info">{{ $certificado['nombres'] }}</span></p>
+                <p class="text-uppercase font-14 mb-1 text-dark">Cédula de Identidad: <span class="text-info">{{ $certificado['cedula'] }}</span></p>
+                <p class="text-uppercase font-14 mb-1 text-dark">{{ $certificado['tipoAgente'] }}: <span class="text-info">{{ $certificado['descripcionAgente'] }}</span></p>
+                <p class="text-uppercase font-14 mb-1 text-dark">Jurisdicción o Municipio: <span class="text-info">{{ $certificado['municipio'] }}</span></p>
+                <p class="text-uppercase font-14 mb-1 text-dark">Periodo:</p>
+                <p class="text-uppercase font-14 mb-1 text-dark">Fecha y hora de Presentación: <span class="text-info">{{ $certificado['fechaHora'] }}</span></p>
+                <hr>
+
+                <h5 class="text-uppercase">Resumen del Informe Presentado</h5>
+
+                <p class="text-uppercase font-14 mb-1 text-dark">Cantidad de Registros: <span class="text-info">{{ $certificado['cantidadRegistros'] }}</span></p>
+
                 <form id="verificar-informe-form">
                     <div class="form-group">
-                        <label for="descripcion-informe-verificar" class="control-label">Descripción de Verificación de Informe:</label>
-                        <textarea class="form-control" id="descripcion-informe-verificar" name="descripcion" rows="6"></textarea>
+                        <label for="observacion" class="control-label">OBSERVACIÓN</label>
+                        <textarea class="form-control" id="observacion" name="observacion" rows="3"></textarea>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="respaldo" class="form-label">Archivo de Verificación <span class="text-danger">*</span></label><br>
+                    <div class="form-group">
+                        <label for="constancia" class="control-label">NÚMERO DE CONSTANCIA<span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="constancia" name="constancia">
+                    </div>
+                    <!-- Enviamos el certificado en formato json -->
+                    <input type="hidden" class="form-control" id="certificado" name="certificado" value="{{ json_encode($certificado) }}">
 
-                        <label class="custom-file-upload">
-                            <span>📄 Seleccionar Archivo</span>
-                            <input type="file" name="verificacion-seprec" id="respaldo-1" accept="application/pdf" class="form-control">
-                        </label>
-                        <br>
-                        <span id="file-name-1">
-                            Ningún archivo seleccionado
-                        </span>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeModalVerificar()">Cerrar</button>
                 <button type="button" id="btn-guardar-verificar" class="btn btn-info" onclick="guardarInformeVerificar()">
-                    <i class="fa fa-save"></i> Verificar
+                    <i class="fa fa-save"></i> Certificar
                 </button>
             </div>
         </div>
@@ -218,17 +227,19 @@ Verificar Derechos Reales
     function guardarInformeVerificar() {
         const formData = new FormData(document.getElementById('verificar-informe-form'));
         const btnGuardar = document.getElementById('btn-guardar-verificar');
+        const certificado = document.getElementById('certificado').value;
 
         const btnVerificar = document.getElementById('btn-verificar');
         const btnObservar = document.getElementById('btn-observar');
 
-        if (!formData.get('descripcion') || !formData.get('verificacion-seprec')) {
-            alert('Por favor complete todos los campos obligatorios');
+        if (!formData.get('constancia')) {
+            toastr.error('El campo de constancia es obligatorio', 'Agentes de Información');
             return;
         }
 
         formData.append('informe_id', '{{$idInforme}}');
         formData.append('tipo_informacion', '{{$tipo}}');
+        formData.append('certificado', certificado);
         formData.append('_token', '{{ csrf_token() }}');
 
         btnGuardar.disabled = true;
@@ -258,6 +269,7 @@ Verificar Derechos Reales
             }
         });
     }
+
 
 
     function guardarInformeObservar() {

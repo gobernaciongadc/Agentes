@@ -54,7 +54,11 @@ Route::group(
         Route::get('informe-index-juzgado', [InformeNotarialController::class, 'indexJuzgado'])->name('informe-index-juzgado.indexJuzgado');
         Route::get('informe-index-derecho', [InformeNotarialController::class, 'indexDerecho'])->name('informe-index-derecho.indexDerecho');
         Route::get('enviar-informe', [InformeNotarialController::class, 'enviarInforme'])->name('enviar-informe.enviarInforme'); // Enviar informe
+
         Route::post('verificar-informe', [InformeNotarialController::class, 'verificarInforme'])->name('verificar-informe.verificarInforme'); // Enviar informe
+        // Para Plantillas PDF
+        Route::get('certificado-pdf/{id}', [InformeNotarialController::class, 'pdfCertificado'])->name('certificado.pdfCertificado');
+
         Route::post('observar-informe', [InformeNotarialController::class, 'observarInforme'])->name('observar-informe.observarInforme'); // Enviar informe
 
         // RUTA PARA INFORME A DETALLE DE NOTARIOS DE FE PUBLICA
@@ -218,8 +222,6 @@ Route::get('notificaciones/show/{id}', [NotificacioneController::class, 'show'])
 Route::get('sanciones', [SancionarController::class, 'indexSancion'])->name('sanciones.index'); // Listar sanciones
 Route::get('sanciones/show/{id}', [SancionarController::class, 'showSancion'])->name('sanciones.show');
 
-// Para Plantillas PDF
-Route::get('certificado-pdf/{id}', [SancionarController::class, 'pdfCertificado'])->name('certificado.pdfCertificado'); 
 
 /*
 Si deseas redirigir solo a los usuarios no autenticados, puedes hacer algo como esto:
