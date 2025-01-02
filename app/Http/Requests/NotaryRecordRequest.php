@@ -39,7 +39,7 @@ class NotaryRecordRequest extends FormRequest
             'monto_pagado' => 'required',
             'observaciones' => 'string',
             'informe_id' => 'required',
-            'usuario_id' => 'required',
+            'usuario_id' => 'required'
         ];
     }
 }

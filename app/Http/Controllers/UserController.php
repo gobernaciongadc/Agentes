@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agente;
+use App\Models\Periodo;
 use App\Models\Persona;
 use App\Models\User;
 use Exception;
@@ -89,6 +90,12 @@ class UserController extends Controller
 
                 // Asignar rol al usuario
                 $user->assignRole($request->get('rol'));
+
+                // Si es agente crear su registro automatico de periodo
+                $periodo = Periodo::create([
+                    'year' => now()->year,
+                    'usuario_id' => $user->id,
+                ]);
             }
             if ($params->rol == 'Administrador') {
                 $user = new User();

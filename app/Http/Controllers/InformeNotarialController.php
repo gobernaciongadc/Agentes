@@ -11,6 +11,7 @@ use App\Models\DerechosReale;
 use App\Models\Empresa;
 use App\Models\NotaryRecord;
 use App\Models\Observacion;
+use App\Models\Periodo;
 use App\Models\SentenciasJudiciale;
 use App\Models\User;
 use App\Models\Verificar;
@@ -44,7 +45,10 @@ class InformeNotarialController extends Controller
                 ->get();
         }
 
-        return view('informe-notarial.index', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información Notarial', 'currentPage' => 'Informe Notarial']);
+        // Periodos
+        $periodos = Periodo::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+
+        return view('informe-notarial.index', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información Notarial', 'currentPage' => 'Informe Notarial']);
     }
 
     public function indexSeprec(Request $request, $id = null): View
@@ -62,8 +66,9 @@ class InformeNotarialController extends Controller
                 ->where('informe_id', $informe->id)
                 ->get();
         }
-
-        return view('informe-notarial.index_notario', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
+        // Periodos
+        $periodos = Periodo::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+        return view('informe-notarial.index_notario', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
     }
 
     public function indexJuzgado(Request $request, $id = null): View
@@ -98,7 +103,9 @@ class InformeNotarialController extends Controller
                 ->where('informe_id', $informe->id)
                 ->get();
         }
-        return view('informe-notarial.index_derechos', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Derechos Reales', 'currentPage' => 'Informe Derechos Reales']);
+        // Periodos
+        $periodos = Periodo::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+        return view('informe-notarial.index_derechos', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información de Derechos Reales', 'currentPage' => 'Informe Derechos Reales']);
     }
 
 
@@ -112,6 +119,38 @@ class InformeNotarialController extends Controller
 
         return view('informe-notarial.create', compact('informeNotarial'), ['titulo' => 'Gestión de Información Notarial', 'currentPage' => 'Informe Notarial']);
     }
+
+    function convertirFecha($year, $periodo)
+    {
+        // Mapeo de los nombres de los meses a sus respectivos números
+        $meses = [
+            'Enero' => 1,
+            'Febrero' => 2,
+            'Marzo' => 3,
+            'Abril' => 4,
+            'Mayo' => 5,
+            'Junio' => 6,
+            'Julio' => 7,
+            'Agosto' => 8,
+            'Septiembre' => 9,
+            'Octubre' => 10,
+            'Noviembre' => 11,
+            'Diciembre' => 12,
+        ];
+
+        // Validar que el mes exista
+        if (array_key_exists($periodo, $meses)) {
+            // Crear la fecha con el primer día del mes
+            $fecha = Carbon::create($year, $meses[$periodo], 15);
+
+            // Mostrar la fecha (por ejemplo: "2024-01-01")
+            return $fecha->toDateString(); // Retorna la fecha como "YYYY-MM-DD"
+        }
+
+        // Si el mes no es válido, devolver null o algún valor de error
+        return null;
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -148,18 +187,116 @@ class InformeNotarialController extends Controller
 
                 $agente = Agente::where('id', $user->agente_id)->first();
 
+                // Converir  year=2024 , periodo=Enero  auna fecha valida sin los dias
+                $fecha = $this->convertirFecha($params->year, $params->periodo);
+
                 // Crear el objeto usuario para guardar en la base de datos
                 $informe = new InformeNotarial();
                 $informe->descripcion = $params->descripcion;
+                $informe->year = $params->year;
+                $informe->periodo = $params->periodo;
+                $informe->periodo_date = $fecha;
                 $informe->usuario_id = $user->id;
                 $informe->tipo_informe = $agente->tipo_agente;
                 try {
                     // Guardar
                     $informe->save();
 
-                    // Obtener el informe con el id del nuevo registro                 
-                    $getInforme = InformeNotarial::with('user')->where('id', $informe->id)->where('usuario_id', $user->id)->first();
+                    // Modificar estado de periodos  a usuado
+                    switch (strtolower($params->periodo)) {
+                        case 'enero':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->enero = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'febrero':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->febrero = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'marzo':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->marzo = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'abril':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->abril = 'no disponible';
+                            $periodo->save();
 
+                            break;
+                        case 'mayo':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->mayo = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'junio':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->junio = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'julio':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->julio = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'agosto':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->agosto = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'septiembre':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->septiembre = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'octubre':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->octubre = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'noviembre':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->noviembre = 'no disponible';
+                            $periodo->save();
+                            break;
+                        case 'diciembre':
+                            $periodo = Periodo::where('usuario_id', $user->id)
+                                ->where('year', $params->year)
+                                ->first();
+                            $periodo->diciembre = 'no disponible';
+                            $periodo->save();
+                            break;
+                    }
+
+                    // Obtener el informe con el id del nuevo registro                 
+                    $getInforme = InformeNotarial::with('user.agente')->where('id', $informe->id)->where('usuario_id', $user->id)->first();
+
+
+
+                    // OJO verificar(CREO QUE YA NO SE USA)
                     $getInforme->notarios = NotaryRecord::where('usuario_id', $user->id)
                         ->where('informe_id', $informe->id)
                         ->get();
@@ -172,8 +309,9 @@ class InformeNotarialController extends Controller
                         'status' => 'success',
                         'code' => 200,
                         'message' => 'El informe notarial se ha creado correctamente',
-                        'informe'  => $getInforme,
-                        'agente' => $getAgente
+                        'informe'  => $getInforme, //no necesita
+                        'agente' => $getAgente,
+                        'periodo' => 'Soy david'
                     );
                 } catch (Exception $e) {
                     $data = array(
@@ -244,7 +382,6 @@ class InformeNotarialController extends Controller
         // Cargar manualmente el registro
         $informeNotarial = InformeNotarial::findOrFail($idInforme);
 
-
         // Enviar mensaje en tiempo real
         /**
          * Paso 1: Enviar el mensaje -> SOCKET.JS
@@ -272,14 +409,12 @@ class InformeNotarialController extends Controller
 
         // Cambiar estados segun rol
         if ($user->rol == 'Agente') {
-
             $informeNotarial->update([
                 'envio_agente' => 'Enviado',
                 'envio_gober' => 'No enviado',
                 'estado_vista' => 'No revizado',
             ]);
         }
-
 
         // Esto es cuando envia desde un admin a un agente(ojo nuncaa va a entrar aqui)
         if ($user->rol == 'Administrador') {
@@ -290,14 +425,13 @@ class InformeNotarialController extends Controller
             ]);
         }
 
-
-
         // Cambia el estado de la sancion solo cuando esta pediente de envio
         if ($informeNotarial->estado == 'Pendiente') {
             // Determinar si está dentro del plazo(PLAZOS)
-            $estaEnPlazo = $this->verificarPlazo($agente->tipo_agente);
-            if (!$estaEnPlazo) {
-                // dd('No esta en plazo');
+            $cantidadDias = $this->verificarPlazo($agente->tipo_agente, $informeNotarial->periodo_date);
+
+
+            if ($cantidadDias > 0) {
                 $informeNotarial->update([
                     'estado_sancion' => 'Con sancion',
                 ]);
@@ -347,18 +481,46 @@ class InformeNotarialController extends Controller
     /**
      * Verifica si el agente está dentro del plazo permitido.
      */
-    private function verificarPlazo($tipoAgente)
+    private function verificarPlazo($tipoAgente, $periodoEnvio)
     {
         $fechaActual = Carbon::now();
 
         switch ($tipoAgente) {
             case 'Notarios de Fe Pública':
-            case 'Derechos Reales':
-            case 'SEPREC':
-                // Plazo hasta el día 15 de cada mes
-                $fechaLimite = Carbon::now()->startOfMonth()->addDays(15);
-                return $fechaActual <= $fechaLimite;
+                $fechaActual = Carbon::now();
+                $fechaEnvio = Carbon::parse($periodoEnvio);
+                // Obtener el siguiente mes y fijar el día al primero
+                $primerDiaSiguienteMes = $fechaEnvio->copy()->addMonth()->startOfMonth();
+                // Calcular la diferencia con signo
+                $diferenciaEnDias = $primerDiaSiguienteMes->floatDiffInDays($fechaActual, false);
+                // Truncar siempre hacia arriba
+                $cantidadDias = ceil($diferenciaEnDias);
 
+                return $cantidadDias;
+            case 'Derechos Reales':
+                $fechaActual = Carbon::now();
+                $fechaEnvio = Carbon::parse($periodoEnvio);
+                // Obtener el siguiente mes y fijar el día al primero
+                $primerDiaSiguienteMes = $fechaEnvio->copy()->addMonth()->startOfMonth();
+                // Calcular la diferencia con signo
+                $diferenciaEnDias = $primerDiaSiguienteMes->floatDiffInDays($fechaActual, false);
+                // Truncar siempre hacia arriba
+                $cantidadDias = ceil($diferenciaEnDias);
+
+                // dd($fechaActual, $fechaEnvio, $primerDiaSiguienteMes, $cantidadDias);
+
+                return $cantidadDias;
+            case 'SEPREC':
+                $fechaActual = Carbon::now();
+                $fechaEnvio = Carbon::parse($periodoEnvio);
+                // Obtener el siguiente mes y fijar el día al primero
+                $primerDiaSiguienteMes = $fechaEnvio->copy()->addMonth()->startOfMonth();
+                // Calcular la diferencia con signo
+                $diferenciaEnDias = $primerDiaSiguienteMes->floatDiffInDays($fechaActual, false);
+                // Truncar siempre hacia arriba
+                $cantidadDias = ceil($diferenciaEnDias);
+
+                return $cantidadDias;
             case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
                 // Plazo hasta el 15 del último mes del bimestre
                 $mesActual = $fechaActual->month;

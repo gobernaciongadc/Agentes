@@ -52,7 +52,7 @@ Agentes
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="small">
+                <tbody>
                     @foreach ($agentes as $agente)
                     <tr>
                         <td>{{ $agente->id }}</td>

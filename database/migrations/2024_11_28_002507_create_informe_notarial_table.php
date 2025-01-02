@@ -15,6 +15,12 @@ return new class extends Migration
         Schema::create('informe_notarials', function (Blueprint $table) {
             $table->id(); // ID autoincremental
             $table->text('descripcion', 800); // Descripción del informe
+
+            $table->string('year', 800); // Descripción del informe
+            $table->string('periodo', 800); // Descripción del informe
+
+            $table->date('periodo_date', 800); // Descripción del informe
+
             $table->enum('estado', ['Pendiente', 'Verificado', 'No verificado', 'Rechazado', 'Corregido'])->default('Pendiente'); // Estado del informe
             $table->enum('estado_sancion', ['Sin sancion', 'Con sancion'])->default('Sin sancion'); // Estado del informe
 

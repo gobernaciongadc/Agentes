@@ -134,7 +134,11 @@ Sancions
                         <td>
 
                             @if($informe->estado_sancion == 'Con sancion')
-                            <span class="badge badge-danger">Con sancion</span>
+
+                            <span class="badge badge-danger">Con sancion {{ $informe->periodo_date }}</span>
+                            <p>Cantidad de dias con retraso: <span class="text-danger">{{$informe->cantidadDias}}</span></p>
+
+
                             @else
                             <span class="badge badge-success">Sin sancion</span>
                             @endif

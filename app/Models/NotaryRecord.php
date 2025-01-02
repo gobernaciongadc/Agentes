@@ -25,6 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property $monto_pagado
  * @property $observaciones
  * @property $informe_id
+ * 
+
+ * 
  * @property $created_at
  * @property $updated_at
  *
