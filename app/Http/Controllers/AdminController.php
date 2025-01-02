@@ -12,6 +12,7 @@ use App\Models\Notificacione;
 use App\Models\Sancion_2;
 use App\Models\SentenciasJudiciale;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -278,7 +279,7 @@ class AdminController extends Controller
 
                     $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
 
-                    return view('informe-notarial.index_notario', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
+                    return view('informe-notarial.index_notario', compact('informeNotarials', 'agente', 'saludo'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
 
                 case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
 
@@ -292,9 +293,71 @@ class AdminController extends Controller
             }
         } else {
             $id = 'todos';
-            return view('sancion.lista-recibidos', compact('informes', 'id'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada', 'lista' => 'Lista General']);
+            // Obtener el usuario autenticado
+            $user = Auth::user();
+
+            $agente = Agente::where('id', $user->agente_id)->first();
+            $cantidadDias = $this->verificarPlazo($agente->tipo_agente, $informes[0]->periodo_date);
+
+            return view('sancion.lista-recibidos', compact('informes', 'id', 'cantidadDias'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada', 'lista' => 'Lista General']);
         }
     }
+
+
+    /**
+     * Verifica si el agente está dentro del plazo permitido.
+     */
+    private function verificarPlazo($tipoAgente, $periodoEnvio)
+    {
+        $fechaActual = Carbon::now();
+
+        switch ($tipoAgente) {
+            case 'Notarios de Fe Pública':
+                $fechaActual = Carbon::now();
+                $fechaEnvio = Carbon::parse($periodoEnvio);
+                // Obtener el siguiente mes y fijar el día al primero
+                $primerDiaSiguienteMes = $fechaEnvio->copy()->addMonth()->startOfMonth();
+                // Calcular la diferencia con signo
+                $diferenciaEnDias = $primerDiaSiguienteMes->floatDiffInDays($fechaActual, false);
+                // Truncar siempre hacia arriba
+                $cantidadDias = ceil($diferenciaEnDias);
+
+                return $cantidadDias;
+            case 'Derechos Reales':
+                $fechaActual = Carbon::now();
+                $fechaEnvio = Carbon::parse($periodoEnvio);
+                // Obtener el siguiente mes y fijar el día al primero
+                $primerDiaSiguienteMes = $fechaEnvio->copy()->addMonth()->startOfMonth();
+                // Calcular la diferencia con signo
+                $diferenciaEnDias = $primerDiaSiguienteMes->floatDiffInDays($fechaActual, false);
+                // Truncar siempre hacia arriba
+                $cantidadDias = ceil($diferenciaEnDias);
+
+                // dd($fechaActual, $fechaEnvio, $primerDiaSiguienteMes, $cantidadDias);
+
+                return $cantidadDias;
+            case 'SEPREC':
+                $fechaActual = Carbon::now();
+                $fechaEnvio = Carbon::parse($periodoEnvio);
+                // Obtener el siguiente mes y fijar el día al primero
+                $primerDiaSiguienteMes = $fechaEnvio->copy()->addMonth()->startOfMonth();
+                // Calcular la diferencia con signo
+                $diferenciaEnDias = $primerDiaSiguienteMes->floatDiffInDays($fechaActual, false);
+                // Truncar siempre hacia arriba
+                $cantidadDias = ceil($diferenciaEnDias);
+
+                return $cantidadDias;
+            case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
+                // Plazo hasta el 15 del último mes del bimestre
+                $mesActual = $fechaActual->month;
+                $ultimoMesBimestre = $mesActual % 2 == 0 ? $mesActual : $mesActual + 1;
+                $fechaLimite = Carbon::createFromDate($fechaActual->year, $ultimoMesBimestre, 15);
+                return $fechaActual <= $fechaLimite;
+        }
+
+        return false; // Por defecto, fuera de plazo
+    }
+
 
     function mostrarComunicadoNotificacion($id)
     {

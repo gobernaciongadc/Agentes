@@ -136,7 +136,7 @@ Sancions
                             @if($informe->estado_sancion == 'Con sancion')
 
                             <span class="badge badge-danger">Con sancion {{ $informe->periodo_date }}</span>
-                            <p>Cantidad de dias con retraso: <span class="text-danger">{{$informe->cantidadDias}}</span></p>
+                            <p>Dias con retraso: <span class="text-danger">{{$informe->cantidadDias}}</span></p>
 
 
                             @else
