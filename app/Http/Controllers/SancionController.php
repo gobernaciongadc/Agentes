@@ -40,14 +40,12 @@ class SancionController extends Controller
     public function indexBandejaEntrada(Request $request, $id): View
     {
 
-
-
         $derechosReales = [];
         $sentenciasJudiciales = [];
         $notarial = [];
         $empresas = [];
 
-
+        // dd($id); // Bandeja
 
 
         $informes = InformeNotarial::with('user')->where('estado', 'No verificado')
@@ -55,9 +53,6 @@ class SancionController extends Controller
             ->orWhere('estado', 'Rechazado')
             ->orWhere('estado', 'Corregido')
             ->get();
-
-        // dd($informes);
-
 
         if ($id != 'bandeja' && $informes->count() > 0) {
 
@@ -92,13 +87,34 @@ class SancionController extends Controller
             case 'Derechos Reales':
                 $informe = [];
                 $informes = $derechosReales;
+
+                // Logica CONTADOR DE DIAS
+                foreach ($informes as $key => $element) {
+
+                    $fechaActual = Carbon::now();
+                    $fechaEnvio = Carbon::parse($element->periodo_date);
+                    // Obtener el siguiente mes y fijar el día al primero
+                    $primerDiaSiguienteMes = $fechaEnvio->copy()->addMonth()->startOfMonth();
+
+                    // Calcular la diferencia con signo
+                    $diferenciaEnDias = $primerDiaSiguienteMes->floatDiffInDays($fechaActual, false);
+
+                    // Truncar siempre hacia abajo
+                    $cantidadDias = floor($diferenciaEnDias);
+
+                    // Agregar a los elementos
+                    $element['actual'] = $element->periodo_date;
+                    $element['cantidadDias'] = $cantidadDias;
+                    $element['siguienteMes'] = $primerDiaSiguienteMes->format('Y-m-d');
+                }
+
                 return view('sancion.lista-recibidos', compact('informes', 'id'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada', 'lista' => 'Derechos Reales']);
-                break;
             case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
                 $informe = [];
                 $informes = $sentenciasJudiciales;
+
                 return view('sancion.lista-recibidos', compact('informes', 'id'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada', 'lista' => 'Jueces y Secretarios del Tribunal Departamental de Justicia']);
-                break;
+
             case 'Notarios de Fe Pública':
 
                 $informe = [];
@@ -124,10 +140,31 @@ class SancionController extends Controller
                 }
 
                 return view('sancion.lista-recibidos', compact('informes', 'id'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada', 'lista' => 'Notarios de Fe Pública']);
-                break;
+
             case 'SEPREC':
                 $informe = [];
                 $informes = $empresas;
+
+                // Logica CONTADOR DE DIAS
+                foreach ($informes as $key => $element) {
+
+                    $fechaActual = Carbon::now();
+                    $fechaEnvio = Carbon::parse($element->periodo_date);
+                    // Obtener el siguiente mes y fijar el día al primero
+                    $primerDiaSiguienteMes = $fechaEnvio->copy()->addMonth()->startOfMonth();
+
+                    // Calcular la diferencia con signo
+                    $diferenciaEnDias = $primerDiaSiguienteMes->floatDiffInDays($fechaActual, false);
+
+                    // Truncar siempre hacia abajo
+                    $cantidadDias = floor($diferenciaEnDias);
+
+                    // Agregar a los elementos
+                    $element['actual'] = $element->periodo_date;
+                    $element['cantidadDias'] = $cantidadDias;
+                    $element['siguienteMes'] = $primerDiaSiguienteMes->format('Y-m-d');
+                }
+
                 return view('sancion.lista-recibidos', compact('informes', 'id'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada', 'lista' => 'SEPREC']);
                 break;
             case 'bandeja':
@@ -156,6 +193,7 @@ class SancionController extends Controller
                 break;
         }
     }
+
 
     /**
      * Show the form for creating a new resource.

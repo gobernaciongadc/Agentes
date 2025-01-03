@@ -25,7 +25,6 @@ class AdminController extends Controller
 
     public function master()
     {
-
         $user = Auth::user();
         $showPanel = true;
 
@@ -34,8 +33,6 @@ class AdminController extends Controller
         } else {
             $showPanel = false;
         }
-
-
 
         $usuarios = [];
         $agentes = [];
@@ -270,7 +267,6 @@ class AdminController extends Controller
 
                     return view('informe-notarial.index_derechos', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Derechos Reales', 'currentPage' => 'Informe Derechos Reales']);
 
-
                 case 'SEPREC':
                     // Obtener el usuario autenticado
                     $user = Auth::user();
@@ -294,12 +290,27 @@ class AdminController extends Controller
         } else {
             $id = 'todos';
             // Obtener el usuario autenticado
-            $user = Auth::user();
 
-            $agente = Agente::where('id', $user->agente_id)->first();
-            $cantidadDias = $this->verificarPlazo($agente->tipo_agente, $informes[0]->periodo_date);
+            foreach ($informes as $key => $element) {
 
-            return view('sancion.lista-recibidos', compact('informes', 'id', 'cantidadDias'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada', 'lista' => 'Lista General']);
+                $fechaActual = Carbon::now();
+                $fechaEnvio = Carbon::parse($element->periodo_date);
+                // Obtener el siguiente mes y fijar el día al primero
+                $primerDiaSiguienteMes = $fechaEnvio->copy()->addMonth()->startOfMonth();
+
+                // Calcular la diferencia con signo
+                $diferenciaEnDias = $primerDiaSiguienteMes->floatDiffInDays($fechaActual, false);
+
+                // Truncar siempre hacia abajo
+                $cantidadDias = floor($diferenciaEnDias);
+
+                // Agregar a los elementos
+                $element['actual'] = $element->periodo_date;
+                $element['cantidadDias'] = $cantidadDias;
+                $element['siguienteMes'] = $primerDiaSiguienteMes->format('Y-m-d');
+            }
+
+            return view('sancion.lista-recibidos', compact('informes', 'id'), ['titulo' => 'Bandeja de entrada', 'currentPage' => 'Bandeja de entrada', 'lista' => 'Lista General']);
         }
     }
 
