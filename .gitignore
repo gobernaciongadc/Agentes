@@ -7,7 +7,7 @@
 /storage/pail
 /vendor
 /websocketio
-# /public/js/socket.js
+/public/js/socket.js
 .env
 .env.backup
 .env.production
