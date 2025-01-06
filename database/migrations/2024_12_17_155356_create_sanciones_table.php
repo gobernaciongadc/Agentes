@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 255);
             $table->string('monto', 255);
+            $table->string('informe', 255)->nullable();
             $table->enum('estado', ['Pendiente', 'Pagado'])->default('Pendiente'); // Estado del pago
             $table->enum('estado_vista', ['Revizado', 'No revizado'])->default('No revizado'); // Estado del pago
             $table->enum('estado_envio', ['Enviado', 'No enviado'])->default('No enviado'); // Estado del pago

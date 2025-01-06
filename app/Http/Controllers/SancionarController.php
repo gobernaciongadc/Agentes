@@ -140,6 +140,7 @@ class SancionarController extends Controller
             'nombre' => 'required|string',
             'agente_id' => 'required|integer',
             'monto' => 'required|string',
+            'informe' => 'nullable|string',
             'cite_auto_inicial' => 'required|string|max:255',
             'archivo_auto_inicial' => 'required|file|mimes:pdf|max:4048', // Máximo 2MB
         ]);
@@ -151,6 +152,7 @@ class SancionarController extends Controller
         $saveSancion->informe_id = $validated['informe_id'] ?? null;
         $saveSancion->cite_auto_inicial = $validated['cite_auto_inicial'];
         $saveSancion->monto = $validated['monto'];
+        $saveSancion->informe = $validated['informe'] ?? null;
         $saveSancion->usuario_id = $user->id;
 
         // Subir el archivo con un nombre único
@@ -181,7 +183,6 @@ class SancionarController extends Controller
         return redirect()->route('sanciones.index')->with('success', 'Sanción creada correctamente.');
     }
 
-
     public function editSancion($sansion)
     {
         $sancion = Sancion_2::find($sansion);
@@ -190,7 +191,6 @@ class SancionarController extends Controller
         $agentes = User::with('agente.persona')->where('agente_id', '!=', null)
             ->where('estado', 1)
             ->get();
-
         return view('sanciones.edit', compact('sancion', 'agentes', 'estadoPago'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
     }
 
@@ -264,12 +264,16 @@ class SancionarController extends Controller
 
     public function showSancion($id)
     {
+        $informe = null;
         $sancion = Sancion_2::find($id);
 
         $usuario = User::with('agente.persona')->where('id', $sancion->agente_id)->first();
 
+        if ($sancion->informe_id != null) {
+            $informe = InformeNotarial::with('user.agente')->where('id', $sancion->informe_id)->first();
+        }
 
-        $informe = InformeNotarial::with('user.agente')->where('id', $sancion->informe_id)->first();
+        // dd($informe);
 
         $sancion->update(
             ['estado_vista' => 'Revizado']

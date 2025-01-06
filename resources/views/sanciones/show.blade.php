@@ -21,26 +21,33 @@ Verificar Datos de sanciones
                 <div class="card-body bg-white">
 
                     <div style="width: 50%;">
-                        <?php
 
-                        use App\Models\User;
-
-                        $usuario = User::with('agente.persona')->where('id', $sancion->agente_id)->first();
-
-                        ?>
                         <div class="form-group mb-2 mb20">
                             <strong class="text-dark">Tipo de agente:</strong>
+                            @if($informe != null)
                             {{ $informe->user->agente->tipo_agente }}
+                            @else
+                            {{ $usuario->agente->tipo_agente }}
+                            @endif
                         </div>
 
                         <div class="form-group mb-2 mb20">
                             <strong class="text-dark">Informe:</strong>
+                            @if($informe != null)
                             {{ $informe->descripcion }}
+                            @else
+                            {{ $sancion->informe }}
+                            @endif
+
                         </div>
 
                         <div class="form-group mb-2 mb20">
                             <strong class="text-dark">Dias de Retraso:</strong>
+                            @if($informe != null)
                             {{ $informe->dias_retrazo }}
+                            @else
+                            Sin presentación de informe
+                            @endif
                         </div>
 
                         <div class="form-group mb-2 mb20">
