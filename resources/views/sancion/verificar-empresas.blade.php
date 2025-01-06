@@ -150,7 +150,6 @@ Verificar Empresas
     </div>
 </div>
 
-
 <!-- Modal Verificación -->
 <div class="modal fade" id="verificacion-seprec-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -166,7 +165,7 @@ Verificar Empresas
                 <p class="text-uppercase font-14 mb-1 text-dark">Cédula de Identidad: <span class="text-info">{{ $certificado['cedula'] }}</span></p>
                 <p class="text-uppercase font-14 mb-1 text-dark">{{ $certificado['tipoAgente'] }}: <span class="text-info">{{ $certificado['descripcionAgente'] }}</span></p>
                 <p class="text-uppercase font-14 mb-1 text-dark">Jurisdicción o Municipio: <span class="text-info">{{ $certificado['municipio'] }}</span></p>
-                <p class="text-uppercase font-14 mb-1 text-dark">Periodo:</p>
+                <p class="text-uppercase font-14 mb-1 text-dark">Periodo: <span class="text-info">{{ $certificado['periodo'] }}</span></p>
                 <p class="text-uppercase font-14 mb-1 text-dark">Fecha y hora de Presentación: <span class="text-info">{{ $certificado['fechaHora'] }}</span></p>
                 <hr>
 

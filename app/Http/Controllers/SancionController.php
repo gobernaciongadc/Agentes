@@ -257,8 +257,6 @@ class SancionController extends Controller
 
     function indexVerificar($idInforme, $idUser, $tipo): View
     {
-
-
         $usuario = User::where('id', $idUser)->first();
         $agente = Agente::with('persona', 'municipio')->where('id', $usuario->agente_id)->first();
 
@@ -272,7 +270,8 @@ class SancionController extends Controller
             'tipoAgente' => $agente->tipo_agente,
             'descripcionAgente' => $agente->descripcion,
             'municipio' => $agente->municipio->nombre . ' - ' . $agente->municipio->provincia,
-            'fechaHora' => $info->fecha_envio
+            'fechaHora' => $info->fecha_envio,
+            'periodo' => $info->periodo . ' ' . $info->year
         ];
 
 
