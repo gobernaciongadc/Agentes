@@ -100,7 +100,9 @@ class PersonaController extends Controller
 
     function listpersonas()
     {
-        $listaPersonas = Persona::where('estado_user', 1)->get();
+
+        $listaPersonas = Persona::where('estado', 'Activo')->get();
+
 
         try {
             $data = array(

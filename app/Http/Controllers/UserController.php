@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agente;
 use App\Models\Periodo;
+use App\Models\PeriodoBimestral;
 use App\Models\Persona;
 use App\Models\User;
 use Exception;
@@ -92,10 +93,20 @@ class UserController extends Controller
                 $user->assignRole($request->get('rol'));
 
                 // Si es agente crear su registro automatico de periodo
-                $periodo = Periodo::create([
-                    'year' => now()->year,
-                    'usuario_id' => $user->id,
-                ]);
+
+                $usuario = User::with('agente')->where('id', $user->id)->first();
+
+                if ($usuario->agente->tipo_agente == 'Jueces y Secretarios del Tribunal Departamental de Justicia') {
+                    $periodoBimestral = PeriodoBimestral::create([
+                        'year' => now()->year,
+                        'usuario_id' => $user->id,
+                    ]);
+                } else {
+                    $periodo = Periodo::create([
+                        'year' => now()->year,
+                        'usuario_id' => $user->id,
+                    ]);
+                }
             }
             if ($params->rol == 'Administrador') {
                 $user = new User();

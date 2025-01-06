@@ -22,13 +22,13 @@ class SancionRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'tipo_sancion' => 'required|string',
-			'motivo' => 'required|string',
-			'feha_inposicion' => 'required',
-			'monto' => 'required',
-			'estado_recibido' => 'required|string',
-			'informe_id' => 'required',
-			'usuario_id' => 'required',
+            'tipo_sancion' => 'required|string',
+            'motivo' => 'required|string',
+            'feha_inposicion' => 'required',
+            'monto' => 'required',
+            'estado_recibido' => 'required|string',
+            'informe_id' => 'required',
+            'usuario_id' => 'required',
         ];
     }
 }

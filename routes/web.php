@@ -194,12 +194,15 @@ Route::group(['middleware' => ['role:Administrador']], function () {
 
     // RUTAS PARA SANCIONES
     Route::prefix('sanciones')->name('sanciones.')->group(function () {
-        Route::get('/crear', [SancionarController::class, 'createSancion'])->name('create'); // Formulario para crear sanción
+        Route::get('/crear', [SancionarController::class, 'index'])->name('index'); // Vista para crear sanción', [SancionarController::class, 'createSancion'])->name('create'); // Formulario para crear sanción
         Route::post('/', [SancionarController::class, 'storeSancion'])->name('store'); // Guardar sanción
         Route::get('/{sancion}/editar', [SancionarController::class, 'editSancion'])->name('edit'); // Formulario para editar sanción
         Route::put('/{sancion}', [SancionarController::class, 'updateSancion'])->name('update'); // Actualizar sanción
         Route::delete('/{sancion}', [SancionarController::class, 'destroySancion'])->name('destroy'); // Eliminar sanción
     });
+
+    Route::get('sanciones-crear/{idInforme}/{idUserInforme}/{tipo}/{dias}', [SancionarController::class, 'createSancion'])->name('sanciones-crear.createSancion'); // Vista para crear sanción', [SancionarController::class, 'createSancion'])->name('create'); // Formulario para crear sanción
+    Route::get('sanciones-crear-nopresentacion', [SancionarController::class, 'createSancionNoPresentacion'])->name('sanciones-crear-nopresentacion.createSancionNoPresentacion'); // Vista para crear sanción', [SancionarController::class, 'createSancion'])->name('create'); // Formulario para crear sanción
 
     Route::post('sanciones-get-informe', [SancionarController::class, 'getInformeSanciones'])->name('sancions-get-informe.getInformeSanciones');
 

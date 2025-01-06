@@ -47,40 +47,140 @@ class SancionarController extends Controller
         return view('sanciones.index', compact('sanciones', 'agentesNotificados', 'tipoAgente'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
     }
 
-    public function createSancion()
+    public function createSancionNoPresentacion()
     {
-        // 1.- Cargar Agentes
-        $agentes = User::with('agente.persona')->where('agente_id', '!=', null)
+        $descripcion = "No presentar información veraz en la forma, lugares y plazos establecidos en la normativa especifica, para los agentes de información";
+
+        // Normal = 1500,00 UFV  
+        // seprec=3000,00 UFV
+
+        $userAgentes = User::with('agente.persona')
+            ->where('rol', 'Agente')
             ->where('estado', 1)
             ->get();
 
-        return view('sanciones.create', compact('agentes'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
+
+        // dd($userAgentes);
+
+        $dataSancion = [
+            'descripcion' => $descripcion,
+            // 'monto' => $monto,
+            // 'idUsuarioAgente' => $idUserInforme,
+            // 'nameAgenteInforme' => $informe->user->agente->persona->nombres . " " . $informe->user->agente->persona->apellidos,
+            // 'tituloInforme' => $informe->descripcion,
+            // 'idInforme' => $idInforme,
+            // 'dias' => $dias
+        ];
+
+        // dd($dataSancion);
+        return view('sanciones.create-nopresentacion', compact('dataSancion', 'userAgentes'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
+    }
+    public function createSancion($idInforme, $idUserInforme, $tipo, $dias)
+    {
+        $descripcion = "";
+        $monto = "";
+
+
+        $informe = InformeNotarial::with('user.agente')->where('id', $idInforme)->first();
+
+        // Opcion 2 descripcion
+        if ($dias <= 30) {
+            $descripcion = 'Presentación de información fuera del plazo establecido, hasta treinta (30) días de vencido el mismo, hasta antes de ser notificados con el acto administrativo de inicio del Sumario Contravencional';
+        }
+
+        // Opcion 3 descripcion
+        if ($dias > 30) {
+            $descripcion = 'Presentación de la información fuera de plazo establecido, en los puntos 3.1 y 3.2, hasta antes de ser notificados con el acto administrativo de inicio del Sumario Contravencional';
+        }
+
+        // Montos Opcion 2
+        if (($tipo == 'Derechos Reales' || $tipo == 'Notarios de Fe Pública' || $tipo == 'Jueces y Secretarios del Tribunal Departamental de Justicia') && $dias <= 30) {
+            $monto = '150,00 UFV';
+        }
+
+        if (
+            $tipo == 'SEPREC' && $dias <= 30
+        ) {
+            $monto = '300,00 UFV';
+        }
+
+        // Montos Opcion 3
+        if (($tipo == 'Derechos Reales' || $tipo == 'Notarios de Fe Pública' || $tipo == 'Jueces y Secretarios del Tribunal Departamental de Justicia') && $dias > 30) {
+            $monto = '750,00 UFV';
+        }
+
+        if (
+            $tipo == 'SEPREC' && $dias > 30
+        ) {
+            $monto = '1.500,00 UFV';
+        }
+
+        $dataSancion = [
+            'descripcion' => $descripcion,
+            'monto' => $monto,
+            'idUsuarioAgente' => $idUserInforme,
+            'nameAgenteInforme' => $informe->user->agente->persona->nombres . " " . $informe->user->agente->persona->apellidos,
+            'tituloInforme' => $informe->descripcion,
+            'idInforme' => $idInforme,
+            'dias' => $dias
+        ];
+
+        // dd($dataSancion);
+        return view('sanciones.create', compact('dataSancion', 'tipo'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
     }
 
     public function storeSancion(Request $request)
     {
         $user = Auth::user();
 
-        $params = (object) $request->all();
+        // dd($request->all());
 
-        // Validar los datos del request
+        // Validación
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'agente_id' => 'required',
-            'monto' => 'required',
-            'informe_id' => 'required',
-            // Nota: Ya no validamos 'usuario_id' porque se asignará automáticamente
+            'nombre' => 'required|string',
+            'agente_id' => 'required|integer',
+            'monto' => 'required|string',
+            'cite_auto_inicial' => 'required|string|max:255',
+            'archivo_auto_inicial' => 'required|file|mimes:pdf|max:4048', // Máximo 2MB
         ]);
 
-        // Agregar el usuario autenticado al arreglo de datos
-        $validated['usuario_id'] = $user->id;
+        // Crear una nueva instancia de Sanción
+        $saveSancion = new Sancion_2();
+        $saveSancion->nombre = $validated['nombre'];
+        $saveSancion->agente_id = $validated['agente_id'];
+        $saveSancion->informe_id = $validated['informe_id'] ?? null;
+        $saveSancion->cite_auto_inicial = $validated['cite_auto_inicial'];
+        $saveSancion->monto = $validated['monto'];
+        $saveSancion->usuario_id = $user->id;
 
-        // Crear la sanción
-        Sancion_2::create($validated);
+        // Subir el archivo con un nombre único
+        if ($request->hasFile('archivo_auto_inicial')) {
+            $file = $request->file('archivo_auto_inicial');
+
+            // Generar un nombre único para el archivo
+            $uniqueFileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Guardar el archivo en el almacenamiento público
+            $filePath = $file->storeAs('sanciones', $uniqueFileName, 'public');
+            $saveSancion->archivo_auto_inicial = $filePath; // Guardar la ruta del archivo en la base de datos
+        }
+
+        $saveSancion->save();
+
+        // Actualizamos el estado del informe
+        if (!empty($validated['informe_id'])) {
+            // Solo se ejecuta si 'informe_id' está presente y no es nulo
+            $informe = InformeNotarial::where('id', $validated['informe_id'])->first();
+            if ($informe) { // Verificar si el informe existe
+                $informe->estado_plazo_sancion = 'creado';
+                $informe->save();
+            }
+        }
 
         // Redirigir con un mensaje de éxito
         return redirect()->route('sanciones.index')->with('success', 'Sanción creada correctamente.');
     }
+
 
     public function editSancion($sansion)
     {
@@ -112,6 +212,9 @@ class SancionarController extends Controller
     public function destroySancion($sancion)
     {
         $sancion = Sancion_2::find($sancion);
+        $informe = InformeNotarial::where('id', $sancion->informe_id)->first();
+        $informe->estado_plazo_sancion = 'Sin crear';
+        $informe->save();
         $sancion->delete();
         return redirect()->route('sanciones.index')->with('success', 'Sanción eliminada correctamente.');
     }
@@ -162,10 +265,16 @@ class SancionarController extends Controller
     public function showSancion($id)
     {
         $sancion = Sancion_2::find($id);
+
+        $usuario = User::with('agente.persona')->where('id', $sancion->agente_id)->first();
+
+
+        $informe = InformeNotarial::with('user.agente')->where('id', $sancion->informe_id)->first();
+
         $sancion->update(
             ['estado_vista' => 'Revizado']
         );
-        return view('sanciones.show', compact('sancion'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
+        return view('sanciones.show', compact('sancion', 'informe', 'usuario'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
     }
 
     function getInformeSanciones(Request $request)

@@ -45,6 +45,8 @@
 
                       if (rol === 'Administrador') {
 
+                          console.log('Hola Mundo');
+
                           // Hace una llamada AJAX para obtener los datos
                           $.ajax({
                               url: "{{route('admin.listpersonas')}}", // Reemplaza con la URL correcta de tu controlador

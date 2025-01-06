@@ -15,8 +15,8 @@
 
         @if ($user->rol == 'Administrador')
         <div class="float-right">
-            <a href="{{ route('sanciones.create') }}" class="btn btn-info font-14 float-right" data-placement="left">
-                <i class="fa fa-plus"></i> Crear Sanción
+            <a href="{{ route('sanciones-crear-nopresentacion.createSancionNoPresentacion') }}" class="btn btn-info font-14 float-right" data-placement="left">
+                <i class="fa fa-plus"></i> Crear sanción por no envio de informe
             </a>
         </div>
         @endif
@@ -56,6 +56,8 @@
                     <th>Estado Revisión</th>
                     @endif
 
+                    <th>Cite Auto Inicial</th>
+                    <th>Archivo Auto Inicial</th>
                     <th>Acciones</th>
 
 
@@ -107,11 +109,16 @@
                     @endif
 
 
-
+                    <td>{{ $sancion->cite_auto_inicial }}</td>
+                    <td>
+                        <a href="{{ asset('storage/sanciones/' . basename($sancion->archivo_auto_inicial)) }}" target="_blank">
+                            <i class="fa fa-file-pdf-o"></i> Ver PDF
+                        </a>
+                    </td>
                     <td>
                         @if ($tipoAgente == 'Administrador')
                         @if ($sancion->estado_envio == 'No enviado')
-                        <a href="{{ route('sanciones.edit', $sancion->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Editar</a>
+                        <!-- <a href="{{ route('sanciones.edit', $sancion->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Editar</a> -->
                         <form action="{{ route('sanciones.destroy', $sancion->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
@@ -123,7 +130,7 @@
                         <a href="{{ route('sanciones-envio.enviarSancion', ['sancion' => $sancion->id, 'idAgente' => $sancion->agente_id]) }}"
                             id="consolidar-sancion-{{ $sancion->id }}"
                             class="btn btn-sm btn-primary">
-                            <i class="fa fa-check"></i> Consolidar Sanción
+                            <i class="fa fa-check"></i> Enviar Sanción
                         </a>
                         @else
 
@@ -134,9 +141,43 @@
                             <i class="fa fa-file"></i> Ver Comprobante
                         </a>
                         @else
-                        <a href="{{ asset('storage/uploads/comprobantes/' . $sancion->documento_pago) }}" target="_blank" class="btn btn-sm btn-info font-14 ">
-                            <i class="fa fa-file"></i> Ver Comprobante
+                        <a href="{{ asset('storage/uploads/comprobantes/' . $sancion->documento_pago) }}"
+                            target="_blank"
+                            class="btn btn-sm btn-info font-14 verificar-archivo"
+                            data-archivo="{{ asset('storage/uploads/comprobantes/' . $sancion->documento_pago) }}">
+                            <i class="fa fa-file"></i> Ver A-03
                         </a>
+                        <script>
+                            if (!window.toastrInitialized) {
+                                window.toastrInitialized = true;
+
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    document.body.addEventListener('click', async (event) => {
+                                        const link = event.target.closest('.verificar-archivo'); // Verifica si el click fue en un enlace válido
+                                        if (link) {
+                                            event.preventDefault();
+
+                                            const archivo = link.getAttribute('data-archivo');
+
+                                            try {
+                                                const response = await fetch(archivo, {
+                                                    method: 'HEAD'
+                                                });
+
+                                                if (response.ok) {
+                                                    window.open(archivo, '_blank');
+                                                } else {
+                                                    toastr.error('Todavia no envio el formulario A-03', 'Agentes de Informacíon');
+                                                }
+                                            } catch (error) {
+                                                alert('Hubo un problema al verificar el archivo. Intente más tarde.');
+                                                console.error(error);
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        </script>
                         @endif
 
 
@@ -153,7 +194,7 @@
 
                                         swal({
                                             title: '¿Estás seguro?',
-                                            text: "Esta acción consolidará la sanción. No podrás revertirla.",
+                                            text: "Esta acción creara y enviara la sanción. No podrás revertirla.",
                                             type: "warning",
                                             showCancelButton: true,
                                             confirmButtonColor: "#0984e3",
@@ -163,7 +204,7 @@
                                             closeOnCancel: false
                                         }, function(isConfirm) {
                                             if (isConfirm) {
-                                                swal("Enviado", "La sanción ha sido consolidada.", "success");
+                                                swal("Enviado", "La sanción ha sido enviada.", "success");
                                                 // Redirige a la URL si se confirma
                                                 window.location.href = url;
                                             } else {
@@ -183,7 +224,7 @@
                         @if ($sancion->envio_pago == 'Enviado')
                         <span class="badge badge-success small">Comprobante de Pago Enviado</span>
                         @else
-                        <button type="button" class="btn btn-sm btn-danger" onclick='openModal("{{$sancion->id}}")'><i class="fa fa-upload"></i> Subir comprobante de Pago</button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick='openModal("{{$sancion->id}}")'><i class="fa fa-upload"></i> Subir formulario A-03</button>
                         @endif
                         @endif
 
@@ -206,7 +247,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-danger">
-                        <span class="titulo-card">Subir comprobante de pago</span>
+                        <span class="titulo-card">Subir formulario A-03</span>
                         <button type="button" class="close" onclick="closeModal()" aria-label="Close">×</button>
                     </div>
                     <div class="modal-body">
@@ -214,10 +255,10 @@
                             @csrf
                             <input type="hidden" name="id" id="idSancion">
                             <div class="form-group">
-                                <div class="col-md-6 form-group mb-3">
+                                <div class="col-md-8 form-group mb-3">
                                     <label for="documento_pago" class="form-label">
-                                        Adjuntar comprobante de pago
-                                        <span class="text-danger font-10">(Opcional)</span>
+                                        Adjuntar formulario A-03
+                                        <span class="text-danger font-10">(El archivo PDF o Imagen debe ser Legible)</span>
                                     </label>
                                     <br>
                                     <label class="custom-file-upload">

@@ -27,7 +27,7 @@ class SentenciasJudicialeController extends Controller
         // Obtener la query string completa
         $informe = InformeNotarial::where('id', $id)->first();
 
-        return view('sentencias-judiciale.index', compact('sentenciasJudiciales', 'id', 'informe'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
+        return view('sentencias-judiciale.index', compact('sentenciasJudiciales', 'id', 'informe'), ['titulo' => 'Gestión de registro de información de Jueces y/o Secretarios', 'currentPage' => 'Jueces y/o Secretarios']);
     }
 
     /**
@@ -48,7 +48,7 @@ class SentenciasJudicialeController extends Controller
         // Obtener la query string completa
         $idInforme = $request->query('idInforme');
 
-        return view('sentencias-judiciale.create', compact('sentenciasJudiciale', 'notario', 'municipio', 'idInforme', 'idUser'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
+        return view('sentencias-judiciale.create', compact('sentenciasJudiciale', 'notario', 'municipio', 'idInforme', 'idUser'), ['titulo' => 'Gestión de registro de información de Jueces y/o Secretarios', 'currentPage' => 'Jueces y/o Secretarios']);
     }
 
     /**
@@ -77,7 +77,7 @@ class SentenciasJudicialeController extends Controller
     {
         $sentenciasJudiciale = SentenciasJudiciale::find($id);
 
-        return view('sentencias-judiciale.show', compact('sentenciasJudiciale', 'idInforme'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
+        return view('sentencias-judiciale.show', compact('sentenciasJudiciale', 'idInforme'), ['titulo' => 'Gestión de registro de información de Jueces y/o Secretarios', 'currentPage' => 'Jueces y/o Secretarios']);
     }
 
     /**
@@ -87,7 +87,7 @@ class SentenciasJudicialeController extends Controller
     {
         $sentenciasJudiciale = SentenciasJudiciale::find($id);
 
-        return view('sentencias-judiciale.edit', compact('sentenciasJudiciale', 'idInforme'), ['titulo' => 'Gestión de registro de información Juzgados', 'currentPage' => 'Juzgados']);
+        return view('sentencias-judiciale.edit', compact('sentenciasJudiciale', 'idInforme'), ['titulo' => 'Gestión de registro de información de Jueces y/o Secretarios', 'currentPage' => 'Jueces y/o Secretarios']);
     }
 
     /**

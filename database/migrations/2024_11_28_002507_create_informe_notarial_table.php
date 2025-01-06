@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('periodo', 800); // Descripción del informe
 
             $table->date('periodo_date', 800); // Descripción del informe
+            $table->integer('dias_retrazo')->nullable(); // Dias con retrazo
 
             $table->enum('estado', ['Pendiente', 'Verificado', 'No verificado', 'Rechazado', 'Corregido'])->default('Pendiente'); // Estado del informe
             $table->enum('estado_sancion', ['Sin sancion', 'Con sancion'])->default('Sin sancion'); // Estado del informe
@@ -27,6 +28,9 @@ return new class extends Migration
             $table->enum('envio_agente', ['Enviado', 'No enviado'])->default('No enviado'); // 
             $table->enum('envio_gober', ['Enviado', 'No enviado'])->default('No enviado'); // 
             $table->enum('estado_vista', ['Revizado', 'No revizado'])->default('No revizado'); // 
+
+            $table->enum('estado_plazo_sancion', ['Sin crear', 'creado', 'enviado'])->default('Sin crear'); // Estado del informe
+
 
             $table->timestamp('fecha_envio')->nullable(); // Fecha y hora de envío
             $table->string('tipo_informe')->nullable(); // Tipo de informe

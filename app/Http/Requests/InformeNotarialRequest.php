@@ -22,9 +22,9 @@ class InformeNotarialRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'descripcion' => 'required|string',
-			'estado' => 'required',
-			'fecha_envio' => 'required',
+            'descripcion' => 'required|string',
+            'estado' => 'required',
+            'fecha_envio' => 'required',
         ];
     }
 }

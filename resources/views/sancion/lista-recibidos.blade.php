@@ -135,9 +135,21 @@ Sancions
 
                             @if($informe->estado_sancion == 'Con sancion')
 
-                            <span class="badge badge-danger">Con sancion {{ $informe->periodo_date }}</span>
-                            <p>Dias con retraso: <span class="text-danger">{{$informe->cantidadDias}}</span></p>
+                            @if($informe->estado_plazo_sancion == 'Sin crear')
+                            <!-- <span class="badge badge-danger">Con sancion {{ $informe->periodo_date }}</span> -->
+                            <a href="{{ route('sanciones-crear.createSancion', ['idInforme' => $informe->id, 'idUserInforme' => $informe->usuario_id, 'tipo' => $informe->tipo_informe,'dias'=> $informe->dias_retrazo])}}" class="btn btn-danger btn-sm"><i class="fa fa-money"></i> Sancionar</a>
+                            <p>Dias con retraso: <span class="text-danger">{{$informe->dias_retrazo}}</span></p>
+                            @endif
 
+                            @if($informe->estado_plazo_sancion == 'creado')
+                            <span class="badge badge-info">Sancion creada</span>
+                            <p>Con dias de retraso: <span class="text-danger">{{$informe->dias_retrazo}}</span></p>
+                            @endif
+
+                            @if($informe->estado_plazo_sancion == 'enviado')
+                            <span class="badge badge-success">Sancion enviada</span>
+                            <p>Con dias de retraso: <span class="text-danger">{{$informe->dias_retrazo}}</span></p>
+                            @endif
 
                             @else
                             <span class="badge badge-success">Sin sancion</span>
@@ -145,7 +157,6 @@ Sancions
                         </td>
 
                         <td>
-
                             @if ($informe->estado == 'No verificado')
                             <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-info btn-sm" title="Ver Informe"><i class=" fa fa-eye"></i> Verificar</a>
                             @endif
@@ -163,9 +174,7 @@ Sancions
                             <a href="{{ route('sancions-verificar.indexVerificar', ['idInforme' => $informe->id, 'idUser' => $informe->usuario_id, 'tipo' => $informe->tipo_informe]) }}" class="btn btn-primary btn-sm" title="Ver Informe">Ver informe <i class=" fa fa-chevron-right"></i></a>
                             @endif
 
-                            <!-- <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-search" title="Observar Informe"></i> Observación</button>
-                            <button type="button" class="btn btn-success btn-sm"><i class="fa fa-check" title="Consolidar Informe"></i> Consolidar</button>
-                            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-money" title="Sancionar Informe"></i> Sancionar</button> -->
+
                         </td>
 
 

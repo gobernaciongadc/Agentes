@@ -33,9 +33,7 @@ Informe Notarials
                 });
             </script>
             @endif
-            <h1>
-                {{ $saludo }}
-            </h1>
+
             <div class="card-body bg-white">
                 <div class="table-responsive">
                     <table id="informesTable" class="table table-striped table-hover">

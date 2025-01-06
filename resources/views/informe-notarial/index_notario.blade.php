@@ -762,6 +762,7 @@ Informe Notarials
             descripcion: `Informe del periodo ${selectedPeriods[0].periodo} del año ${selectedPeriods[0].year}`,
             _token: '{{ csrf_token() }}'
         };
+
         // Realizamos la petición AJAX
         $.ajax({
             url: '{{ route("informe-notarials.store") }}',

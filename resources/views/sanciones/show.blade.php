@@ -28,6 +28,25 @@ Verificar Datos de sanciones
                         $usuario = User::with('agente.persona')->where('id', $sancion->agente_id)->first();
 
                         ?>
+                        <div class="form-group mb-2 mb20">
+                            <strong class="text-dark">Tipo de agente:</strong>
+                            {{ $informe->user->agente->tipo_agente }}
+                        </div>
+
+                        <div class="form-group mb-2 mb20">
+                            <strong class="text-dark">Informe:</strong>
+                            {{ $informe->descripcion }}
+                        </div>
+
+                        <div class="form-group mb-2 mb20">
+                            <strong class="text-dark">Dias de Retraso:</strong>
+                            {{ $informe->dias_retrazo }}
+                        </div>
+
+                        <div class="form-group mb-2 mb20">
+                            <strong class="text-dark">Cite Auto Inicial:</strong>
+                            {{ $sancion->cite_auto_inicial }}
+                        </div>
 
                         <div class="form-group mb-2 mb20">
                             <strong class="text-dark">Agente Sancionado:</strong>
@@ -38,10 +57,19 @@ Verificar Datos de sanciones
                             <strong class="text-dark">Tipo Sanción:</strong>
                             {{ $sancion->nombre }}
                         </div>
+
                         <div class="form-group mb-2 mb20">
                             <strong class="text-dark">Monto (UFV):</strong>
                             {{ $sancion->monto }}
                         </div>
+
+                        <div class="form-group mb-2 mb20">
+                            <strong class="text-dark">Archivo Auto Inicial:</strong>
+                            <a href="{{ asset('storage/' . $sancion->archivo_auto_inicial) }}" target="_blank" class="btn btn-sm btn-info font-14 ">
+                                <i class="fa fa-file"></i> Ver Archivo
+                            </a>
+                        </div>
+
                         <div class="form-group mb-2 mb20">
                             <strong class="text-dark">Estado Pago:</strong>
                             {{ $sancion->estado }}

@@ -3,14 +3,11 @@
 @section('content')
 <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span class="text-info font-weight-bold">Plantilla de Sanciones<span class="small">(Sanciones solo a informes verificados)</span></span>
-        <div class="float-right">
-            <a href="{{ route('sanciones.index') }}" class="btn btn-info font-14 float-right" data-placement="left">
-                <i class="fa fa-chevron-left"></i> Regresar
-            </a>
-        </div>
+        <span class="text-info font-weight-bold">Plantilla de Sanciones</span>
     </div>
-    <form action="{{ route('sanciones.store') }}" method="POST" class="mt-4 border p-4" style="border-radius: 5px;">
+
+    <!-- Formulario para todo -->
+    <form action="{{ route('sanciones.store') }}" method="POST" class="mt-4 border p-4" style="border-radius: 5px;" enctype="multipart/form-data">
         @csrf
 
         @if ($errors->any())
@@ -23,290 +20,60 @@
         </div>
         @endif
 
+        <label for="tipo-sancion" class="form-label text">Tipo Agente<span class="text-danger">*</span></label>
+        <p>{{ $tipo }}</p>
+
+        <label for="dias-retrazo" class="form-label text">Dias con retraso<span class="text-danger">*</span></label>
+        <p class="text-danger">{{ $dataSancion['dias'] }}</p>
+
+        <!-- Titulo Informe -->
         <div class="mb-3">
-
-            <label for="tipo-sancion" class="form-label text">Elegir Tipo de Sanción<span class="text-danger">*</span></label>
-
-            <table class="table">
-                <thead class="thead bg-faded border">
-                    <tr>
-                        <th style="width: 20%;">SELECCIONAR</th>
-                        <th style="width: 50%;">DESCRIPCIÓN</th>
-                        <th>SANCIÓN POR INCUMPLIMIENTO AL DEBER FORMAL</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <input type="checkbox" id="basic_checkbox_1" class="filled-in">
-                            <label for="basic_checkbox_1"></label>
-                        </td>
-                        <td id="sancion-1">No presentar información veraz en la forma, lugares y plazos establecidos en la normativa específica, para los agentes de información</td>
-                        <td>
-                            <div class="demo-radio-button">
-                                <input name="group1" type="radio" id="radio_1_1" disabled>
-                                <label for="radio_1_1">1.500,00 UFV</label>
-                                <input name="group1" type="radio" id="radio_2_1" disabled>
-                                <label for="radio_2_1">3.000,00 UFV</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" id="basic_checkbox_2" class="filled-in">
-                            <label for="basic_checkbox_2"></label>
-                        </td>
-                        <td id="sancion-2">Presentación de información fuera del plazo establecido, hasta treinta (30) días de vencido el mismo, hasta antes de ser notificados con el acto administrativo de inicio del Sumario Contravencional </td>
-                        <td>
-                            <div class="demo-radio-button">
-                                <input name="group2" type="radio" id="radio_1_2" disabled>
-                                <label for="radio_1_2">150,00 UFV</label>
-                                <input name="group2" type="radio" id="radio_2_2" disabled>
-                                <label for="radio_2_2">300,00 UFV</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-
-                        <td>
-                            <input type="checkbox" id="basic_checkbox_3" class="filled-in">
-                            <label for="basic_checkbox_3"></label>
-                        </td>
-
-                        <td id="sancion-3">Presentación de la infomación fuera de plazo establecido, en los puntos 3.1 y 3.2, hasta antes de ser notificados con el acto administrativo de inicio del Sumario Contravencional</td>
-                        <td>
-                            <div class="demo-radio-button">
-                                <input name="group3" type="radio" id="radio_1_3" disabled>
-                                <label for="radio_1_3">750,00 UFV</label>
-                                <input name="group3" type="radio" id="radio_2_3" disabled>
-                                <label for="radio_2_3">1.500,00 UFV</label>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-
-            </table>
+            <label for="informe" class="form-label">Informe</label>
+            <input type="text" class="form-control" id="informe" name="informe" value="{{ $dataSancion['tituloInforme'] }}" required readonly>
         </div>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                // Obtener todos los checkboxes
-                const checkboxes = document.querySelectorAll("input[type='checkbox']");
-
-                // Obtener los elementos de nombre y monto
-                const nombre = document.getElementById('nombre');
-                const monto = document.getElementById('monto');
-
-                // Obtener los elementos de tipos de sanción
-                const sancion_1 = document.getElementById('sancion-1').innerText;
-                const sancion_2 = document.getElementById('sancion-2').innerText;
-                const sancion_3 = document.getElementById('sancion-3').innerText;
-
-                // Seleccionar todos los botones de radio
-                const radioButtons = document.querySelectorAll("input[type='radio']");
-
-                checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener("change", () => {
-                        // Verificar si el checkbox actual está marcado
-                        if (checkbox.checked) {
-                            // Obtener el id del checkbox seleccionado
-                            const checkboxId = checkbox.id;
-
-                            switch (checkboxId) {
-                                case "basic_checkbox_1":
-                                    nombre.value = sancion_1;
-                                    break;
-                                case "basic_checkbox_2":
-                                    nombre.value = sancion_2;
-                                    break;
-                                case "basic_checkbox_3":
-                                    nombre.value = sancion_3;
-                                    break;
-                            }
-
-                            // Deshabilitar todos los checkboxes y radios
-                            checkboxes.forEach((cb) => {
-                                if (cb !== checkbox) {
-                                    cb.checked = false;
-                                    cb.disabled = true;
-                                    toggleRadioButtons(cb, false);
-                                }
-                            });
-                            // Habilitar los radios correspondientes al checkbox actual
-                            toggleRadioButtons(checkbox, true);
-                        } else {
-                            // Limpiar los campos de nombre y monto
-                            nombre.value = '';
-                            monto.value = '';
-
-                            // Si se desmarca, reactivar todos los checkboxes y deshabilitar radios
-                            checkboxes.forEach((cb) => {
-                                cb.disabled = false;
-                            });
-                            toggleRadioButtons(checkbox, false);
-                        }
-                    });
-                });
-
-                // Evento para los radio buttons
-                radioButtons.forEach((radio) => {
-                    radio.addEventListener("change", () => {
-                        if (radio.checked) {
-                            // Actualizar el campo monto con el valor del label correspondiente
-                            const label = document.querySelector(`label[for="${radio.id}"]`);
-
-                            if (label) {
-                                console.log(label.innerText.trim());
-                                monto.value = label.innerText.trim(); // Extraer el texto del label
-                            }
-                        }
-                    });
-                });
-
-                function toggleRadioButtons(checkbox, enable) {
-                    // Obtener el grupo de radios asociados al checkbox
-                    const row = checkbox.closest("tr");
-                    if (row) {
-                        const radios = row.querySelectorAll("input[type='radio']");
-                        radios.forEach((radio) => {
-                            radio.disabled = !enable;
-                            if (!enable) {
-                                radio.checked = false; // Limpiar selección al deshabilitar
-                            }
-                        });
-                    }
-                }
-            });
-        </script>
-
+        <!-- Nombre de la sanción -->
         <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre de la Sanción</label>
-            <textarea name="nombre" class="form-control" id="nombre" readonly></textarea>
+            <label for="nombre" class="form-label">Tipo de la Sanción</label>
+            <textarea name="nombre" class="form-control" id="nombre" readonly>{{ $dataSancion['descripcion'] }}</textarea>
         </div>
 
+        <!-- Monto de la sanción -->
         <div class="mb-3">
             <label for="monto" class="form-label">Monto (UFV)</label>
-            <input type="text" class="form-control" id="monto" name="monto" required readonly>
+            <input type="text" class="form-control" id="monto" name="monto" value="{{ $dataSancion['monto'] }}" required readonly>
         </div>
 
+        <!-- Id Agente de información -->
+        <input type="hidden" name="agente_id" id="agente_id" value="{{ $dataSancion['idUsuarioAgente'] }}">
+        <input type="hidden" name="informe_id" id="informe_id" value="{{ $dataSancion['idInforme'] }}">
+
+        <!-- Nombre del agente -->
         <div class="mb-3">
-            <div class="form-group mb-2 mb20">
-                <label for="agente_id" class="form-label text-dark">Agente de Información<span class="text-danger">*</span></label>
-                <select name="agente_id" class="form-control mb-2 mb20" id="agente_id">
-                    <option value="" disabled selected>Selecciona un Agente</option>
-                    @foreach($agentes as $agente)
-                    <option value="{{ $agente->id }}">
-                        {{ $agente->agente->persona->nombres }} {{ $agente->agente->persona->apellidos }}
-                    </option>
-                    @endforeach
-                </select>
+            <label for="agenteName" class="form-label">Agente</label>
+            <input type="text" class="form-control" id="agenteName" name="agenteName" value="{{ $dataSancion['nameAgenteInforme'] }}" required readonly>
+        </div>
+
+        <!-- Cite auto inicial -->
+        <div class="mb-3">
+            <label for="cite_auto_inicial" class="form-label">Cite Auto Inicial<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="cite_auto_inicial" name="cite_auto_inicial" required>
+        </div>
+
+        <!-- Archivo Auto Inicial -->
+        <div class="form-group mb-2 mb20">
+            <label for="archivo_auto_inicial" class="form-label">Archivo Auto Inicial<span class="text-danger">*</span></label>
+            <div class="custom-file-container">
+                <label class="custom-file-label">
+                    📄 Seleccionar Archivo PDF
+                    <input type="file" name="archivo_auto_inicial" id="archivo_auto_inicial" accept="application/pdf">
+                </label>
+                <span id="name-file">Ningún archivo seleccionado</span>
             </div>
         </div>
 
-        <!-- Informe -->
-        <div class="mb-3">
-            <!-- Campo Tipo Agente -->
-            <div class="form-group mb-2 mb20">
-                <label for="informe_id" class="form-label text-dark">Informe<span class="text-danger">*</span></label>
-                <select name="informe_id" class="form-control mb-2 mb20" id="informe_id">
-                    <option value="" disabled selected>Selecciona Un Informe</option>
 
-                </select>
-
-            </div>
-        </div>
-
-        <!-- Carga de jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-        <!-- JavaScript -->
-        <script>
-            $(document).ready(function() {
-                // Inicializa Select2 para los selects
-                $('#agente_id').select2({
-                    placeholder: "Selecciona un Agente",
-                    allowClear: true,
-                    width: '100%'
-                });
-
-                // Inicializa Select2 Por Informe
-                $('#informe_id').select2({
-                    placeholder: "Selecciona Un Informe",
-                    allowClear: true,
-                    width: '100%'
-                });
-
-                // Al selecionar un agente que se cargue el informe que tiene el agente
-                $('#agente_id').on('change', function() {
-
-                    const selectedValue = $(this).val(); // Obtener el valor seleccionado
-                    console.log(`Agente seleccionado: ${selectedValue}`);
-
-
-                    // Limpia el select antes de realizar la nueva carga
-                    limpiarPorInforme();
-
-                    // Aquí puedes agregar la lógica que necesitas al cambiar el valor
-                    // Por ejemplo, puedes llamar a una función o disparar una solicitud AJAX
-                    // ejemplo:
-                    handleTipoTransmisionChange(selectedValue);
-
-                })
-
-                // Función para manejar el cambio en el valor del select    
-                function handleTipoTransmisionChange(value) {
-
-                    let datosHtml = '';
-
-                    $.ajax({
-                        url: "{{ route('sancions-get-informe.getInformeSanciones') }}",
-                        method: 'POST',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            usuario_id: value
-                        },
-                        success: function(response) {
-                            // console.log(response);
-                            if (response.code === 200 && response.status === 'success' && response.informes.length > 0) {
-                                const informes = response.informes;
-
-                                // Recorre el arreglo de informes y agrega opciones al select
-                                informes.forEach(function(informe) {
-                                    $('#informe_id').append(
-                                        `<option value="${informe.id}">${informe.tipo_informe} - ${informe.descripcion} - ${informe.fecha_envio}</option>`
-                                    );
-                                });
-
-                                // Refresca el Select2 para que tome los nuevos datos
-                                $('#informe_id').trigger('change');
-                            } else {
-                                toastr.error("No se encontraron informes para este agente.", "Agentes de Información");
-                            }
-                        },
-                        error: function(xhr, status, error) {
-
-                        }
-                    })
-
-
-                }
-
-                // Función para limpiar el select de informes
-                function limpiarPorInforme() {
-                    // Limpia el contenido del select
-                    $('#informe_id')
-                        .empty() // Elimina las opciones actuales
-                        .append('<option value="" disabled selected>Selecciona Un Informe</option>'); // Agrega la opción por defecto
-
-                    // Resetea el estado visual de Select2
-                    $('#informe_id').val(null).trigger('change');
-                }
-
-            });
-        </script>
-
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{{ route('sanciones.index') }}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary mt-3">Guardar</button>
     </form>
 </div>
 @vite('resources/css/sanciones.css')

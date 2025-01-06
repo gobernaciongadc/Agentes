@@ -13,7 +13,7 @@ Informe Juzgado
                 <div style="display: flex; justify-content: space-between; align-items: center;">
 
                     <span id="card_title" class="titulo-card">
-                        Informe de Secretarios y Juzgados
+                        Informe de Jueces y/o Secretarios
                     </span>
 
                     <div class="float-right">
@@ -560,19 +560,113 @@ Informe Juzgado
     <div class="col-md-4">
         <!-- sample modal content -->
         <div id="informe-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog" style="max-width: 1200px !important;">
                 <div class="modal-content">
                     <div class="modal-header bg-info">
-                        <span class="titulo-card">Crear Informe Notarial</span>
+                        <span class="titulo-card">Crear Informe</span>
                         <button type="button" class="close" onclick="closeModal()" aria-label="Close">×</button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="message-text" class="control-label">Descripción de Informe:</label>
-                                <textarea class="form-control" id="descripcion-informe"></textarea>
-                            </div>
-                        </form>
+                        <div class="table-responsive">
+                            <table id="periodoTable" class="table">
+                                <thead class="thead small">
+                                    <tr>
+                                        <th class="text-white font-bold"></th>
+                                        <th class="text-white font-bold"></th>
+                                        <th class="text-white font-bold"></th>
+                                        <th class="text-white font-bold"></th>
+                                        <th class="text-white font-bold"></th>
+                                        <th class="text-white font-bold"></th>
+                                        <th class="text-white font-bold"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($periodos as $periodo)
+                                    <tr>
+                                        <td class="text-dark font-bold">{{ $periodo->year }}</td>
+
+                                        <td>
+                                            @if ($periodo->enero_febrero == 'disponible')
+                                            <input type="checkbox"
+                                                id="{{ $periodo->year }}-enero-febrero"
+                                                class="chk-col-cyan"
+                                                data-year="{{ $periodo->year }}"
+                                                data-periodo="Enero-Febrero">
+                                            <label for="{{ $periodo->year }}-enero-febrero"><span class="badge badge-danger">Enero-Febrero</span></label>
+                                            @else
+                                            <span class="badge badge-success">Enero-Febrero</span>
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            @if ($periodo->marzo_abril == 'disponible')
+                                            <input type="checkbox"
+                                                id="{{ $periodo->year }}-marzo-abril"
+                                                class="chk-col-cyan"
+                                                data-year="{{ $periodo->year }}"
+                                                data-periodo="Marzo-Abril">
+                                            <label for="{{ $periodo->year }}-marzo-abril"><span class="badge badge-danger">Marzo-Abril</span></label>
+                                            @else
+                                            <span class="badge badge-success">Marzo-Abril</span>
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            @if ($periodo->mayo_junio == 'disponible')
+                                            <input type="checkbox"
+                                                id="{{ $periodo->year }}-mayo-junio"
+                                                class="chk-col-cyan"
+                                                data-year="{{ $periodo->year }}"
+                                                data-periodo="Mayo-Junio">
+                                            <label for="{{ $periodo->year }}-mayo-junio"><span class="badge badge-danger">Mayo-Junio</span></label>
+                                            @else
+                                            <span class="badge badge-success">Mayo-Junio</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($periodo->julio_agosto == 'disponible')
+                                            <input type="checkbox"
+                                                id="{{ $periodo->year }}-julio-agosto"
+                                                class="chk-col-cyan"
+                                                data-year="{{ $periodo->year }}"
+                                                data-periodo="Julio-Agosto">
+                                            <label for="{{ $periodo->year }}-julio-agosto"><span class="badge badge-danger">Julio-Agosto</span></label>
+                                            @else
+                                            <span class="badge badge-success">Julio-Agosto</span>
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            @if ($periodo->septiembre_octubre == 'disponible')
+                                            <input type="checkbox"
+                                                id="{{ $periodo->year }}-septiembre-octubre"
+                                                class="chk-col-cyan"
+                                                data-year="{{ $periodo->year }}"
+                                                data-periodo="Septiembre-Octubre">
+                                            <label for="{{ $periodo->year }}-septiembre-octubre"><span class="badge badge-danger">Septiembre-Octubre</span></label>
+                                            @else
+                                            <span class="badge badge-success">Septiembre-Octubre</span>
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            @if ($periodo->noviembre_diciembre == 'disponible')
+                                            <input type="checkbox"
+                                                id="{{ $periodo->year }}-noviembre-diciembre"
+                                                class="chk-col-cyan"
+                                                data-year="{{ $periodo->year }}"
+                                                data-periodo="Noviembre-Diciembre">
+                                            <label for="{{ $periodo->year }}-noviembre-diciembre"><span class="badge badge-danger">Noviembre-Diciembre</span></label>
+                                            @else
+                                            <span class="badge badge-success">Noviembre-Diciembre</span>
+                                            @endif
+                                        </td>
+
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default waves-effect" onclick="closeModal()">Cerrar</button>
@@ -585,6 +679,75 @@ Informe Juzgado
     </div>
 </div>
 <!-- Fin Modal -->
+<script>
+    // OJO NO BORRAR
+    function guardarInforme() {
+
+        const baseUrl = "{{ url('/') }}"; // Base de la URL
+        const btnGuardar = document.getElementById('btn-guardar');
+
+        // Capturar todos los checkboxes seleccionados
+        const selectedCheckboxes = document.querySelectorAll('#periodoTable input[type="checkbox"]:checked');
+
+        // Crear un array para almacenar la información
+        const selectedPeriods = [];
+
+        selectedCheckboxes.forEach(checkbox => {
+            const year = checkbox.dataset.year;
+            const periodo = checkbox.dataset.periodo;
+            selectedPeriods.push({
+                year,
+                periodo
+            });
+        });
+
+        // Mostrar los datos seleccionados
+        console.log('Periodos seleccionados:', selectedPeriods);
+        // Solo puede selecionar uno validar
+        if (selectedPeriods.length > 1) {
+            toastr.error('Solo puede seleccionar un periodo', 'Error!');
+            return;
+        }
+        // Solo puede selecionar uno validar
+        if (selectedPeriods.length <= 0) {
+            toastr.error('Seleccione al menos un periodo', 'Error!');
+            return;
+        }
+
+        const datos = {
+            year: selectedPeriods[0].year,
+            periodo: selectedPeriods[0].periodo,
+            descripcion: `Informe del periodo ${selectedPeriods[0].periodo} del año ${selectedPeriods[0].year}`,
+            _token: '{{ csrf_token() }}'
+        };
+
+        // Realizamos la petición AJAX
+        $.ajax({
+            url: '{{ route("informe-notarials.store") }}',
+            method: 'POST',
+            data: datos,
+            beforeSend: function() {
+                btnGuardar.disabled = true;
+            },
+            success: function(response) {
+                btnGuardar.disabled = true;
+                const {
+                    informe,
+                    agente
+                } = response;
+
+                // Actualizar la pagina 
+                location.reload();
+                // Siempre sera un agente el que crea el informe
+
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                toastr.error(`${error.responseJSON.message}`, 'Error!');
+            }
+        });
+    }
+</script>
 
 <!-- Modal Mostrar certificado -->
 <div class="row">
