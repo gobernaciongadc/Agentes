@@ -9,6 +9,8 @@ use App\Models\Empresa;
 use App\Models\InformeNotarial;
 use App\Models\NotaryRecord;
 use App\Models\Notificacione;
+use App\Models\Periodo;
+use App\Models\PeriodoBimestral;
 use App\Models\Sancion_2;
 use App\Models\SentenciasJudiciale;
 use App\Models\User;
@@ -255,7 +257,10 @@ class AdminController extends Controller
 
                     $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
 
-                    return view('informe-notarial.index', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información Notarial', 'currentPage' => 'Informe Notarial']);
+                    // Periodos
+                    $periodos = Periodo::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+
+                    return view('informe-notarial.index', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información Notarial', 'currentPage' => 'Informe Notarial']);
 
                 case 'Derechos Reales':
                     // Obtener el usuario autenticado
@@ -265,17 +270,23 @@ class AdminController extends Controller
 
                     $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
 
-                    return view('informe-notarial.index_derechos', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Derechos Reales', 'currentPage' => 'Informe Derechos Reales']);
+                    // Periodos
+                    $periodos = Periodo::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+
+                    return view('informe-notarial.index_derechos', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información de Derechos Reales', 'currentPage' => 'Informe Derechos Reales']);
 
                 case 'SEPREC':
                     // Obtener el usuario autenticado
                     $user = Auth::user();
 
+                    // Periodos
+                    $periodos = Periodo::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+
                     $agente = Agente::where('id', $user->agente_id)->first();
 
                     $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
 
-                    return view('informe-notarial.index_notario', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
+                    return view('informe-notarial.index_notario', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
 
                 case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
 
@@ -285,7 +296,10 @@ class AdminController extends Controller
 
                     $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
 
-                    return view('informe-notarial.index_juzgado', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Setratarios y Juzgados', 'currentPage' => 'Informe Juzgados']);
+                    // Periodos Bimestrales
+                    $periodos = PeriodoBimestral::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+
+                    return view('informe-notarial.index_juzgado', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información de Setratarios y Juzgados', 'currentPage' => 'Informe Juzgados']);
             }
         } else {
             $id = 'todos';
