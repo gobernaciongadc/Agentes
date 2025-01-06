@@ -275,7 +275,7 @@ class AdminController extends Controller
 
                     $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
 
-                    return view('informe-notarial.index_notario', compact('informeNotarials', 'agente', 'saludo'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
+                    return view('informe-notarial.index_notario', compact('informeNotarials', 'agente'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
 
                 case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
 
