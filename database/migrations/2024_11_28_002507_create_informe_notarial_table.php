@@ -29,6 +29,8 @@ return new class extends Migration
             $table->enum('envio_gober', ['Enviado', 'No enviado'])->default('No enviado'); // 
             $table->enum('estado_vista', ['Revizado', 'No revizado'])->default('No revizado'); // 
 
+            $table->enum('estado_verificado', ['Revizado', 'No revizado'])->default('No revizado'); // 
+
             $table->enum('estado_plazo_sancion', ['Sin crear', 'creado', 'enviado'])->default('Sin crear'); // Estado del informe
 
 

@@ -181,7 +181,7 @@
         </tr>
         <tr>
             <td class="datos-persona__titulo">PERIODO</td>
-            <td class="datos-persona__datos">sin periodo</td>
+            <td class="datos-persona__datos">{{ $certificado->periodo }}</td>
         </tr>
         <tr>
             <td class="datos-persona__titulo">FECHA Y HORA DE PRESENTACIÓN</td>

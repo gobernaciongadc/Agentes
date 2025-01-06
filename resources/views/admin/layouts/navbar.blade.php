@@ -90,16 +90,15 @@
                                               let contenidoHTML = '';
 
                                               //   console.log(data);
-                                              //   console.log(data.observados);
+                                              console.log(data.certificados);
 
                                               if (data.totalNotificaciones > 0 || data.totalSanciones > 0 ||
                                                   data.totalInformes > 0 || data.totalObservados > 0 ||
-                                                  data.totalComunicados > 0 || data.totalPagos > 0) {
+                                                  data.totalComunicados > 0 || data.totalPagos > 0 || data.totalCertificados > 0) {
                                                   punto.style.display = 'block';
                                               } else {
                                                   punto.style.display = 'none';
                                               }
-
 
                                               if (data.totalNotificaciones > 0) {
                                                   // Para Notificaciones
@@ -116,7 +115,6 @@
                                                         </div>
                                                     </a>`;
                                                   });
-
                                               }
 
                                               // Para Sanciones
@@ -183,6 +181,24 @@
                                                                     <p class="mb-0">Remitente: ${element.agente.persona.nombres || 'Nombre no disponible'} ${element.agente.persona.apellidos || 'Apellido no disponible'} </p>
                                                                     <p class="mb-0 text-dark" >Asunto:Comprobante de Pago</p>
                                                                     <p class="text-dark">Tipo: <span class="">${element.agente.tipo_agente}</span> </p>
+                                                                </span>
+                                                            <span class="time">${formatFechaHora(element.updated_at) || 'Fecha no disponible'}</span>
+                                                              </div>
+                                                          </a>`;
+                                                  });
+                                              }
+
+                                              // Para Certificados
+                                              if (data.totalCertificados > 0) {
+                                                  data.certificados.forEach(element => {
+                                                      contenidoHTML += `
+                                                         <a href="/notificacion-certificado/${element.id}">
+                                                            <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                                                            <div class="mail-contnet">
+                                                                <span class="mail-desc">
+                                                                    <p class="mb-0">Remitente: ${element.user.agente.persona.nombres || 'Nombre no disponible'} ${element.user.agente.persona.apellidos || 'Apellido no disponible'} </p>
+                                                                    <p class="mb-0 text-dark" >Asunto: Certificado de informe</p>
+                                                                    <p class="text-dark">Tipo: <span class="">${element.user.agente.tipo_agente}</span> </p>
                                                                 </span>
                                                             <span class="time">${formatFechaHora(element.updated_at) || 'Fecha no disponible'}</span>
                                                               </div>

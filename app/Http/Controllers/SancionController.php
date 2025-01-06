@@ -367,7 +367,26 @@ class SancionController extends Controller
             $informe->estado = 'Verificado';
             $informe->save();
 
+            // Enviar mensaje en tiempo real
+            /**
+             * Paso 1: Enviar el mensaje -> SOCKET.JS
+             * Paso 2: SOCKET.JS agregar una condicion en el swich
+             * paso 3: Crear un bucle en la vista de menu NavBar en (adminController.php y metodo notificacionReal)
+             */
+            $mensaje = [
+                'remitente' => $user->persona->nombres . " " . $user->persona->apellidos,
+                'asunto' => 'Certificado de informe',
+                'idInforme' => $informe->id,
+                'tipoNotificacion' => 'certificado',
+                'tipoAgente' => 'Administrador', // Sancionador
+            ];
+            $jsonMensaje = json_encode($mensaje);
 
+            // Esto es para enviar el mensaje en tiempo real a agente observado
+            Http::post('http://localhost:3001/notify-user', [
+                'userId' => $informe->usuario_id,  // ID del usuario destinatario
+                'message' => $jsonMensaje,        // Mensaje que recibIRA el cliente
+            ]);
 
             return response()->json([
                 'status' => 'success',

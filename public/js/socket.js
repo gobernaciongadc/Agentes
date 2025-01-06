@@ -268,6 +268,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifyPago.style.display = 'block'
                 break;
 
+            case 'certificado':
+
+                toastr.info(`Asunto: ${mensaje.asunto}`, 'Nueva Notificación', {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "15000",
+                    "hideDuration": "1000",
+                    "timeOut": "15000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                });
+
+                // Cambiar la ruta para certificado
+                const newCertificado = `
+                         <a href="/notificacion-certificado/${mensaje.idInforme}">
+                            <div class="btn btn-primary btn-circle"><i class="ti-file"></i></div>
+                            <div class="mail-contnet">
+                                <h5>Nueva Notificación</h5>
+                                <span class="mail-desc">
+                                <p class="mb-0">Remitente: ${mensaje.remitente || ' no disponible'} </p>
+                                <p class="mb-0 text-dark" >Asunto: ${mensaje.asunto || 'Asunto no disponible'}</p>
+                                 <p class="text-dark">Tipo Agente: <span class="">${mensaje.tipoAgente}</span> </p>
+                                </span>
+                                <span class="time">${new Date().toLocaleDateString('es-ES')} ${new Date().toLocaleTimeString('es-ES')}</span>
+                            </div>
+                        </a>`;
+                notifyContainer.insertAdjacentHTML('afterbegin', newCertificado);
+
+                // Actualizar indicador de notificaciones
+                const notifyCertificado = document.querySelector('.notify .point');
+                notifyCertificado.style.display = 'block'
+                break;
 
         }
     });

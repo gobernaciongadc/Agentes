@@ -40,6 +40,7 @@ Route::get('notificacion-real', [App\Http\Controllers\AdminController::class, 'n
 Route::get('notificacion-informe/{id}', [App\Http\Controllers\AdminController::class, 'mostrarInformeNotificacion'])->name('notificacion-informe.mostrarInformeNotificacion');
 Route::get('notificacion-comunicado/{id}', [App\Http\Controllers\AdminController::class, 'mostrarComunicadoNotificacion'])->name('notificacion-informe.mostrarComunicadoNotificacion');
 Route::get('notificacion-pago/{id}', [App\Http\Controllers\AdminController::class, 'mostrarPagoNotificacion'])->name('notificacion-Pago.mostrarPagoNotificacion');
+Route::get('notificacion-certificado/{id}', [App\Http\Controllers\AdminController::class, 'mostrarCertificado'])->name('notificacion-certificado.mostrarCertificado');
 
 
 

@@ -96,6 +96,7 @@ class AdminController extends Controller
         $informesNotificados = [];
         $observadosNotificados = [];
         $comunicadosNotificados = [];
+        $informesCertificados = [];
 
         // Usuario autenticado
         $user = Auth::user();
@@ -171,10 +172,23 @@ class AdminController extends Controller
             foreach ($comunicados as $comunicado) {
 
                 if ($comunicado->destinatario == $user->agente->tipo_agente) {
-
                     $comunicadosNotificados[] = $comunicado;
                 }
             }
+
+            // Para sacar los informes no certificados revizados
+            $infoCertificados = InformeNotarial::with('user.agente.persona')
+                ->where('estado_verificado', 'No revizado')
+                ->where('estado', 'Verificado')
+                ->orderBy('id', 'desc')->get();
+
+            foreach ($infoCertificados as $certificado) {
+                if ($certificado->usuario_id == $user->id) {
+                    $informesCertificados[] = $certificado;
+                }
+            }
+
+            // Para sacar los certificados no revizados
 
 
             $data = array(
@@ -186,12 +200,14 @@ class AdminController extends Controller
                 'informes' => $informesNotificados,
                 'observados' => $observadosNotificados,
                 'comunicados' => $comunicados,
+                'certificados' => $informesCertificados,
                 'tipoAgente' => $tipoAgente,
                 'totalNotificaciones' => count($agentesNotificados),
                 'totalSanciones' => count($sancionesNotificados),
                 'totalInformes' => count($informesNotificados),
                 'totalObservados' => count($observadosNotificados),
                 'totalComunicados' => count($comunicadosNotificados),
+                'totalCertificados' => count($informesCertificados),
                 'usuario' => $user
             );
         } else {
@@ -406,5 +422,92 @@ class AdminController extends Controller
         $sanciones[0]->save();
 
         return view('sanciones.index', compact('sanciones', 'agentesNotificados', 'tipoAgente'), ['titulo' => 'Gestión de sanciones', 'currentPage' => 'Sanciones']);
+    }
+
+
+    function mostrarCertificado($id)
+    {
+        $informeNotarial = InformeNotarial::with('user.agente')->find($id);
+
+        // Cambiamos el estado
+        $informeNotarial->estado_verificado = 'Revizado';
+        $informeNotarial->save();
+
+        switch ($informeNotarial->user->agente->tipo_agente) {
+            case 'SEPREC':
+
+                // Obtener el usuario autenticado
+                $user = Auth::user();
+
+                $agente = Agente::where('id', $user->agente_id)->first();
+
+                $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
+
+                foreach ($informeNotarials as $informe) {
+                    $informe->notarios = Empresa::where('usuario_id', $user->id)
+                        ->where('informe_id', $informe->id)
+                        ->get();
+                }
+                // Periodos
+                $periodos = Periodo::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+                return view('informe-notarial.index_notario', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información de Empresas SEPREC', 'currentPage' => 'Informe de Empresas']);
+
+            case 'Notarios de Fe Pública':
+                // Obtener el usuario autenticado
+                $user = Auth::user();
+
+                $agente = Agente::where('id', $user->agente_id)->first();
+
+                $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+
+                foreach ($informeNotarials as $informe) {
+                    $informe->notarios = NotaryRecord::where('usuario_id', $user->id)
+                        ->where('informe_id', $informe->id)
+                        ->get();
+                }
+
+                // Periodos
+                $periodos = Periodo::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+
+                return view('informe-notarial.index', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información Notarial', 'currentPage' => 'Informe Notarial']);
+
+            case 'Jueces y Secretarios del Tribunal Departamental de Justicia':
+                // Obtener el usuario autenticado
+                $user = Auth::user();
+
+                $agente = Agente::where('id', $user->agente_id)->first();
+
+                $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
+                foreach ($informeNotarials as $informe) {
+                    $informe->notarios = SentenciasJudiciale::where('usuario_id', $user->id)
+                        ->where('informe_id', $informe->id)
+                        ->get();
+                }
+
+                // Periodos Bimestrales
+                $periodos = PeriodoBimestral::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+                return view('informe-notarial.index_juzgado', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información de Setratarios y Juzgados', 'currentPage' => 'Informe Juzgados']);
+            case 'Derechos Reales':
+                // Obtener el usuario autenticado
+                $user = Auth::user();
+
+                $agente = Agente::where('id', $user->agente_id)->first();
+
+                $informeNotarials = InformeNotarial::where('usuario_id', $user->id)->get();
+                foreach ($informeNotarials as $informe) {
+                    $informe->notarios = DerechosReale::where('usuario_id', $user->id)
+                        ->where('informe_id', $informe->id)
+                        ->get();
+                }
+                // Periodos
+                $periodos = Periodo::where('usuario_id', $user->id)->orderBy('id', 'desc')->get();
+                return view('informe-notarial.index_derechos', compact('informeNotarials', 'agente', 'periodos'), ['titulo' => 'Gestión de Información de Derechos Reales', 'currentPage' => 'Informe Derechos Reales']);
+        }
+
+        $tipoAgente = 'Agente';
+        $comunicados = Comunicado::where('id', $id)->get();
+        $comunicados[0]->estado_vista = 'Revizado';
+        $comunicados[0]->save();
+        return view('comunicado.index', compact('comunicados', 'tipoAgente'), ['titulo' => 'Gestión de Comunicados', 'currentPage' => 'Comunicados']);
     }
 }
