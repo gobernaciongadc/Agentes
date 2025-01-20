@@ -145,6 +145,9 @@ class SancionarController extends Controller
             'archivo_auto_inicial' => 'required|file|mimes:pdf|max:4048', // Máximo 2MB
         ]);
 
+        // Puedes verificar si el 'informe_id' existe antes de usarlo
+        $informe_id = $request->input('informe_id', null); // Devuelve null si no existe
+
         // Crear una nueva instancia de Sanción
         $saveSancion = new Sancion_2();
         $saveSancion->nombre = $validated['nombre'];
@@ -169,10 +172,15 @@ class SancionarController extends Controller
 
         $saveSancion->save();
 
+
         // Actualizamos el estado del informe
-        if (!empty($validated['informe_id'])) {
+        if (!empty($informe_id)) {
+
+            // dd($informe_id);
             // Solo se ejecuta si 'informe_id' está presente y no es nulo
-            $informe = InformeNotarial::where('id', $validated['informe_id'])->first();
+            $informe = InformeNotarial::where('id', $informe_id)->first();
+
+
             if ($informe) { // Verificar si el informe existe
                 $informe->estado_plazo_sancion = 'creado';
                 $informe->save();
