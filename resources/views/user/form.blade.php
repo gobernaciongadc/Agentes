@@ -172,11 +172,28 @@
               <input type="text" class="form-control" value="{{ $user->rol }}" readonly>
           </div>
 
+
+          @if(isset($user->agente) && $user->agente->persona !== null)
           <div class="form-group mb-2 mb20">
               <label>Nombre<span class="text-danger">*</span></label>
-              <input type="text" class="form-control" value="{{ $user->agente->persona->nombres }} {{ $user->agente->persona->apellidos }}" readonly>
-
+              <input type="text" class="form-control"
+                  value="{{ $user->agente->persona->nombres }} {{ $user->agente->persona->apellidos }}"
+                  readonly>
           </div>
+          @elseif(isset($user->persona))
+          <div class="form-group mb-2 mb20">
+              <label>Nombre<span class="text-danger">*</span></label>
+              <input type="text" class="form-control"
+                  value="{{ $user->persona->nombres }} {{ $user->persona->apellidos }}"
+                  readonly>
+          </div>
+          @else
+          <div class="form-group mb-2 mb20">
+              <label>Nombre<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" value="No definido" readonly>
+          </div>
+          @endif
+
 
           <div class="form-group mb-2 mb20">
               <label>Usuario<span class="text-danger">*</span></label>

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('telefono', 20)->nullable();
             $table->string('direccion', 255)->nullable();
             $table->enum('estado', ['Activo', 'No activo'])->default('Activo'); // 
-            // $table->integer('estado_user')->default(1);
-            // $table->integer('estado_agente')->default(1);
+            $table->integer('estado_user')->default(1);
+            $table->integer('estado_agente')->default(1);
 
             // Campos de timestamps
             $table->timestamps();

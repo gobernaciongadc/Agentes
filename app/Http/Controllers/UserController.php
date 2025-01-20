@@ -56,6 +56,9 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
+        // dd($request->all());
+
         $params = (object) $request->all(); // Convierte a objeto
         $paramsArray = $request->all(); // Array asociativo
 
@@ -209,9 +212,11 @@ class UserController extends Controller
 
     public function destroy($id): RedirectResponse
     {
+
+
         try {
             // Buscar el agente
-            $user = Agente::findOrFail($id);
+            $user = User::findOrFail($id);
 
             // Cambiar el estado a 0 (inactivo)
             $user->estado = 0;
